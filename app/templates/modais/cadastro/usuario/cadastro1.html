@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro.css') }}">
+<!-- Modal para Cadastro -->
+<div id="cadastro1" class="modal">
+    <div class="modal-image"></div>
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" onclick="closeModal('cadastro1')">< VOLTAR</a>
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro1')">×</a>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-content"><span class="circle">1</span><h4>Dados pessoais</h4></div>
+            <div class="progress-content"><span class="circle">2</span><h4>Interesses pessoais</h4></div>
+            <div class="progress-content"><span class="circle">3</span><h4>Usuário e senha</h4></div>
+            <div class="progress-content"><span class="circle">4</span><h4>Termos e condições</h4></div>
+        </div>
+        <form id="cadastroForm">
+            <div class="content">
+                <div class="group1">
+                    <div class="form-group">
+                        <label for="nome">Nome<span class="required"> *</span>:</label>
+                        <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sobrenome">Sobrenome<span class="required"> *</span>:</label>
+                        <input type="text" id="sobrenome" name="sobrenome" placeholder="Digite seu sobrenome" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail<span class="required"> *</span>:</label>
+                    <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone<span class="required"> *</span>:</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" required pattern="\(\d{2}\) \d{4,5}-\d{4}" title="Formato: (XX) XXXXX-XXXX">
+                </div>
+                <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
+                <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/usuario/cadastro2')">Avançar</a>
+            </div>
+        </form>
+    </div>
+</div>

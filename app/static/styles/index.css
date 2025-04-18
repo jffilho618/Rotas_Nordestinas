@@ -1,0 +1,315 @@
+@import url(/styles/global/global.css);
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: white;
+    overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 500px;
+}
+
+.main-header {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    gap: 15em;
+}
+
+.nav-bar img {
+    width: 8em;
+}
+
+.group1 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 40%;
+}
+
+.group1 a {
+    color: rgb(18, 34, 20);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+}
+
+.group1 a:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background: rgb(18, 34, 20);
+}
+
+.container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    gap: 3em;
+    padding: 20px 90px;
+}
+
+.container2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+.text-box {
+    width: 100%;
+    text-align: start;
+}
+
+.description {
+    color: white;
+    line-height: 1.3;
+}
+
+.essence {
+    font-size: 70px;
+    font-family: jockey one;
+}
+
+.universe {
+    font-size: 26px;
+    font-style: italic;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.explore-button {
+    font-size: 1.2em;
+    border-radius: 15px;
+    border: 1px rgb(255, 255, 255) solid;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 5px 40px;
+    color: white;
+    font-family: Arial;
+    font-weight: 700;
+    word-wrap: break-word;
+    gap: 20px;
+    transition: transform 0.3s ease;
+}
+
+.explore-button:hover {
+    background-color: white;
+    color: var(--cor2);
+}
+
+.explore-button i {
+    font-size: 30px;
+    transition: transform 0.3s ease;
+}
+
+.explore-button:hover i {
+    transform: translateX(-10px);
+}
+
+section.intro {
+    text-align: center;
+    color: #9D4F21;
+    padding: 20px;
+}
+
+section.intro h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+section.intro p {
+    font-size: 20px;
+    color: black;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    padding: 40px 20px;
+}
+
+.feature {
+    background: rgba(217, 217, 217, 0.2);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    text-align: center;
+    padding: 20px;
+    width: 300px;
+}
+
+.feature h2 {
+    font-size: 24px;
+    color: #9D4F21;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 16px;
+    color: black;
+}
+
+footer {
+    background: var(--cor4);    
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+footer .logo {
+    width: 133px;
+    height: 40px;
+    margin: 20px auto;
+}
+
+footer .intro {
+    padding: 0px 100px;
+    text-align: center;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+footer #slogan {
+    text-align: center;
+    color: #ffffff; 
+    font-size: 15px;
+    font-family: Inter;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #F29559;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #9D4F21;
+    transform: scale(1.05);
+}
+
+/* Modais */
+.modal {
+    display: none; /* Oculta o modal inicialmente */
+    opacity: 0; /* Invisível inicialmente */
+    transform: translateY(20px); /* Posição inicial deslocada */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95); /* Leve escala reduzida */
+    z-index: 100;
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animação mais lenta */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.modal.show {
+    display: flex; /* Exibe o modal */
+    opacity: 1; /* Torna visível */
+    transform: translate(-50%, -50%) scale(1); /* Centraliza e escala normal */
+}
+
+/* Overlay */
+#overlay {
+    display: block; /* Sempre presente */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    z-index: 99;
+    opacity: 0; /* Invisível inicialmente */
+    pointer-events: none; /* Sem interações no estado inicial */
+    transition: opacity 0.3s ease; /* Transição rápida para overlay */
+}
+
+#overlay.active {
+    opacity: 1; /* Torna visível */
+    pointer-events: auto; /* Permite interações */
+}
+
+
+.modal .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #F29559;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.modal .btn:hover {
+    background: #9D4F21;
+    transform: scale(1.05);
+}
+
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal .close:hover {
+    color: #9D4F21;
+}

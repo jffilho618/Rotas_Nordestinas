@@ -1,0 +1,95 @@
+.container{
+    width: 100%;
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.cityName{
+    
+    color: #000000;
+    /* padding: 10px; */
+    font-family: 'jockey one';
+    font-size: 60px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Estilo para a descrição da cidade */
+.city-description {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Título da seção de pontos turísticos */
+.points-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    /* background-color: #555; */
+}
+
+/* Lista de pontos turísticos */
+.points-list {
+    list-style: none;
+    padding: 20px;
+    /* background-color: aqua; */
+}
+
+.points-list h1{
+    list-style: none;
+    padding: 10px;
+    margin: 20px 0px;
+    /* background-color: rgb(96, 117, 117); */
+    border-bottom: solid 2px rgb(96, 117, 117);
+    font-size: 1.5em;
+}
+.points-list i{
+    font-size: 1.5em;
+}
+
+
+.group1{
+    display: flex;
+    /* background-color: rgb(255, 231, 50); */
+    margin-bottom: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.group1 img{
+    width: 20%;
+    border-radius: 10px;
+}
+
+.group2{
+    /* background-color: #ff6f00; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    padding: 0px 10px;
+    text-align: center;
+}
+
+/* Nome do ponto turístico */
+.point-name {
+    font-size: 30px;
+    color: #007BFF;
+    padding: 10px 20px;
+}
+
+/* Descrição do ponto turístico */
+.point-description {
+    font-size: 16px;
+    color: #666;
+    padding: 10px 20px;
+}
+

@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+
+<!-- Modal para Login -->
+<div id="login" class="modal">
+    <div class="modal-image"></div> 
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" onclick="closeModal()">< VOLTAR</a> 
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal()">×</a>
+            </div>
+        </div>
+        <form id="loginForm">
+            <h2>Acesse Sua Conta</h2>
+            <div class="content-form">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                <button type="submit" class="login-button">Entrar</button>
+                <a href="javascript:void(0)" onclick="openModal('login/forgotPassword')">Esqueceu a senha? Clique Aqui</a>
+            </div>
+        </form>
+    </div>
+</div>

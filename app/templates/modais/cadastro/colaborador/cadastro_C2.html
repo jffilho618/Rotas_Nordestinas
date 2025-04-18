@@ -1,0 +1,73 @@
+<!-- Elemento de overlay -->
+<div id="overlay"></div>
+
+<!-- Exemplo de um modal -->
+<div id="cadastro_C2" class="modal">
+    <div class="modal-image"></div>
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" 
+                    onclick=" closeModal('cadastro_C2'); openModal('cadastro/colaborador/cadastro_C1')">
+                    &lt; VOLTAR
+                </a> 
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro_C2')">&times;</a>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-content">
+                <span class="circle">1</span>
+                <h4>Dados pessoais</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">2</span>
+                <h4>Dados de contato</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">3</span>
+                <h4>Dados profissionalizantes</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">4</span>
+                <h4>Usuário e senha</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">5</span>
+                <h4>Termos e condições</h4>
+            </div>
+        </div>
+        <form id="cadastroForm">
+            <div class="content">
+                <div class="form-group">
+                    <label for="rua">Rua*:</label>
+                    <input type="text" id="rua" name="rua" placeholder="Digite sua rua" required>
+                </div>
+                <div class="form-group">
+                    <label for="cidade">Cidade*:</label>
+                    <input type="text" id="cidade" name="cidade" placeholder="Digite sua cidade" required>
+                </div>
+                <div class="group1">
+                    <div class="form-group">
+                        <label for="cep">CEP*:</label>
+                        <input type="text" id="cep" name="cep" placeholder="Digite seu CEP" required pattern="\d{5}-\d{3}" title="Formato: XXXXX-XXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="pais">País*:</label>
+                        <input type="text" id="pais" name="pais" placeholder="Digite seu país" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone*:</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="Digite seu telefone" required pattern="\(\d{2}\) \d{4,5}-\d{4}" title="Formato: (XX) XXXXX-XXXX">
+                </div>
+                <p class="info-campos"><span class="required">*</span> Campos obrigatórios</p>
+                <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/colaborador/cadastro_C3')">Avançar</a>
+            </div>
+        </form>
+    </div>
+</div>

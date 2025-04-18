@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro_colaborador.css') }}">
+
+
+<!-- Modal para Cadastro -->
+<div id="cadastro_C4" class="modal">
+        <!-- Parte esquerda: imagem -->
+        <div class="modal-image"></div>
+        <!-- Parte direita: formulário -->
+        <div class="modal-form">
+            <div class="header">
+                <div class="head">
+                    <a class="back-button" href="javascript:void(0)" 
+                    onclick="closeModal('cadastro_C4'); openModal('cadastro/colaborador/cadastro_C3')">
+                    &lt; VOLTAR
+                    </a> 
+                </div>
+                <div class="head">
+                    <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">                </div>
+                <div class="head">
+                    <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro_C4')">&times;</a>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-content">
+                    <span class="circle">1</span>
+                    <h4>Dados pessais</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">2</span>
+                    <h4>Dados de contato</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">3</span>
+                    <h4>Dados profissionalizantes</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">4</span>
+                    <h4>Usuário e senha</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">5</span>
+                    <h4>Termos e condições</h4>
+                </div>
+            </div>
+
+            <form id="cadastroForm">
+                <div class="content">
+                    <div class="form-group">
+                        <label for="usuario">Usuario:</label>
+                        <input type="text" id="usuario" name="usuario" placeholder="Nome de usuario" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" name="password" placeholder="Digite a senha" required>
+                    </div>
+
+                    <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
+                                    
+                    <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/colaborador/cadastro_C5')">Avançar</a>
+                </div>
+
+                
+            </form>
+        </div>
+</div>
+
+

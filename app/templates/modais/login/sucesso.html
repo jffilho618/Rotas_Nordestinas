@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+
+<!-- Modal para Recuperação de Senha (informar codigo)-->
+<div id="sucesso" class="modal">
+    <!-- Parte esquerda: imagem -->
+    <div class="modal-image"></div>     
+    <!-- Parte direita: formulário -->
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" 
+                    onclick="closeModal('sucesso'); openModal('login/alterarSenha')">
+                    &lt; VOLTAR
+                </a> 
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('sucesso')">&times;</a>
+            </div>
+        </div>
+        <div class="sucess"> 
+            <h1>Senha Alterada com sucesso !</h1>
+            <img src="../images/confirm/senha_alterada_sucess.svg" alt="">
+            <a class="login-button" href="javascript:void(0)"  onclick="closeModal('sucesso'); openModal('login/loginModal')">Continuar</a>
+        </div>
+    </div>
+</div>
+

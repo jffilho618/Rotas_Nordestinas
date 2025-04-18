@@ -1,0 +1,27 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root{
+    --cor1: #F6FCDF;
+    --cor2: #31511E;
+    --cor3: #859F3D;
+    --cor4: #1A1A19;
+    --cor5: #ff5c5c;
+    --sombraCor5: #ca3e3e;
+    --cor6: #007BFF;
+    --sombraCor6: #0464cb;
+    --cor7: #FF9800;
+    --cor8: #B80000;
+    --cor9: #820300;
+}

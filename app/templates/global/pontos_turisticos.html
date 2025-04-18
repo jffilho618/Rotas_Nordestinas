@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recife - Pontos Turísticos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/pontos_turisticos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <script defer src="{{ url_for('static', filename='js/pontos_turisticos.js') }}"></script>
+</head>
+
+<body>
+    <header id="header"></header>
+
+    <div class="container">
+        <h1 id="cityName">Recife</h1>
+        <div id="content"></div>
+    </div>
+
+    <footer id="footer"></footer>
+</body>
+</html>

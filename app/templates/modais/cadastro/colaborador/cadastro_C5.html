@@ -1,0 +1,59 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro_colaborador.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+
+<!-- Modal para Cadastro -->
+<div id="cadastro_C5" class="modal">
+    <div class="modal-image"></div>
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" 
+                   onclick="closeModal('cadastro_C5'); openModal('cadastro/colaborador/cadastro_C4')">
+                    < VOLTAR
+                </a> 
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas RDD">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro_C5')">×</a>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-content">
+                <span class="circle">1</span>
+                <h4>Dados pessoais</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">2</span>
+                <h4>Dados de contato</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">3</span>
+                <h4>Dados profissionalizantes</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">4</span>
+                <h4>Usuário e senha</h4>
+            </div>
+            <div class="progress-content">
+                <span class="circle">5</span>
+                <h4>Termos e condições</h4>
+            </div>
+        </div>
+
+        <form id="cadastroForm_C5">
+            <div class="content">
+                <div class="termos">
+                    <p>Ao se cadastrar como Colaborador na plataforma Rotas Nordestinas, você concorda em cumprir os <a href="#">termos e condições</a> descritos neste documento. É sua responsabilidade ler e entender estas condições antes de usar os serviços da plataforma.</p>
+                    <div class="form-group">
+                        <input type="checkbox" id="aceite_termos" name="aceite_termos" required>
+                        <label for="aceite_termos">Concordo com os termos e condições<span class="required"> *</span></label>
+                    </div>
+                </div>
+                <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
+                <button type="submit" class="btn">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>

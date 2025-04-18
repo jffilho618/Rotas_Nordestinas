@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotas Nordestinas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <a href="{{ url_for('home') }}" class="back-button">< VOLTAR</a>
+        <img class="logo" src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+        <button class="menu-button" id="menuButton">☰</button>
+    </header>
+
+    <div id="userSidebarWrapper" class="sidebar-wrapper">
+        <div id="userSidebar" class="sidebar">
+            <div class="sidebar-content">
+                <button class="close-x-button" id="closeXButton">×</button>
+                <div class="header">
+                    <img src="{{ url_for('static', filename='images/icons/PERFIL.png') }}" alt="Perfil">
+                    <h2>Pikachu Silva</h2>
+                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">[email protected]</a></p>
+                </div>
+                <div class="options-container"></div>
+                <div class="bottom-buttons">
+                    <button class="support-button"><i class="bx bx-support"></i>Suporte</button>
+                    <button class="close-button" id="closeButton"><i class="bx bx-log-out"></i>Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="editProfileSidebar" class="sidebar-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-content edit-perfil">
+                <h2>Editar Perfil</h2>
+                <form id="editProfileForm" class="form">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" value="Pikachu Silva" required>
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" value="[email protected]" required>
+                    <label for="bio">Bio (máx. 100 caracteres):</label>
+                    <textarea id="bio" name="bio" rows="3" maxlength="100" placeholder="Digite sua bio"></textarea>
+                    <div class="form-buttons">
+                        <button type="button" class="button cancel" onclick="closeSidebar('editProfileSidebar')">Cancelar</button>
+                        <button type="submit" class="button save">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="main">
+        <section class="region">
+            <h2>Pernambuco</h2>
+            <div class="cities-grid">
+                <a href="{{ url_for('recife') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Recife_01.jpg') }}">
+                    <span>Recife</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='tamandare') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Tamandare_01.jpg') }}">
+                    <span>Tamandaré</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='olinda') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Olinda_01.jpeg') }}">
+                    <span>Olinda</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='caruaru') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}">
+                    <span>Caruaru</span>
+                </a>
+            </div>
+        </section>
+        <section class="region">
+            <h2>Piauí</h2>
+            <div class="cities-grid">
+                <a href="{{ url_for('global_template', template_name='parnaiba') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Parnaiba_01.jpg') }}">
+                    <span>Parnaíba</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='teresina') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Teresina_01.jpg') }}">
+                    <span>Teresina</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='barra_grande') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Barra-Grande-do-Piauí_01.jpg') }}">
+                    <span>Barra Grande</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='sao_raimundo_nonato') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Sao_Raimundo_Nonato_01.jpg') }}">
+                    <span>São Raimundo Nonato</span>
+                </a>
+            </div>
+        </section>
+        <section class="region">
+            <h2>Bahia</h2>
+            <div class="cities-grid">
+                <a href="{{ url_for('global_template', template_name='salvador') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Salvador_01.jpeg') }}">
+                    <span>Salvador</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='porto_seguro') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Porto-Seguro_01.jpg') }}">
+                    <span>Porto Seguro</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='ilheus') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Ilheus_01.jpg') }}">
+                    <span>Ilhéus</span>
+                </a>
+                <a href="{{ url_for('global_template', template_name='luis_eduardo') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Luis_Eduardo_01.jpg') }}">
+                    <span>Luís Eduardo</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <img class="logo" src="{{ url_for('static', filename='images/logo/LOGO_WHITE.svg') }}" alt="Rotas Nordestinas">
+        <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
+        <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
+    </footer>
+
+    <div id="rotas-toast-container" class="rotas-toast-container"></div>
+    <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+    <script>
+        const isPro = false; // Simular usuário Essencial
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cityCards = document.querySelectorAll('.city-card');
+            cityCards.forEach(card => {
+                const bgUrl = card.getAttribute('data-bg');
+                if (bgUrl) {
+                    card.style.backgroundImage = `url('${bgUrl}')`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

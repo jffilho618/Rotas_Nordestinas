@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recife - Dicas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/dicas.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <script defer src="/js/pontos_turisticos.js"></script>
+</head>
+
+<body>
+    <header id="header"></header>
+
+    <div class="container">
+        <h1 class="cityName">Recife</h1>
+        <h2 class="points-title">Dicas:</h2>
+        <div class="points-list">
+            <h1>Hoteis</h1>
+            <div class="group1">
+                <img class="point-image" src="{{ url_for('static', filename='images/dicas/portobello-ondina-praia.png') }}" alt="Portobello Ondina Praia Hotel">
+            
+                <div class="group2">    
+                    <h3 class="point-name">Portobello Ondina Praia Hotel</h3>
+                    <p class="point-description">"O Portobello Ondina Praia está localizado na Avenida Oceânica, a menos de 500 metros da orla. O hotel dispõe de 160 apartamentos equipados com TV de LED, ar-condicionado, frigobar e cofre, com unidades adaptadas para pessoas com mobilidade reduzida. Oferece lazer com piscinas, academia, sauna, salas de leitura e de TV, além de massoterapia. O café da manhã em estilo bufê é servido no Restaurante Terra Mater, que também oferece almoço e jantar com cozinha contemporânea. O hotel possui estacionamento pago, recepção 24 horas com drinque de boas-vindas, centro de convenções para até 500 pessoas, bar e serviço de quarto. Está a menos de 2 km da Praia do Farol da Barra e a 20 minutos de carro do Pelourinho."</p>
+                </div>
+            </div>
+            <div class="group1">
+                <img class="point-image" src="{{ url_for('static', filename='images/dicas/gran-hotel-stella-maris.png') }}" alt="Gran Hotel Stella Maris">
+            
+                <div class="group2">    
+                    <h3 class="point-name">Gran Hotel Stella Maris Urban Resort</h3>
+                    <p class="point-description">"O Gran Hotel Stella Maris Urban Resort & Conventions oferece uma vista deslumbrante entre coqueirais, piscina azul-turquesa e a praia. Os apartamentos têm vista para o mar ou para a piscina, dunas e jardins, e incluem hidromassagem, varanda e Wi-Fi. O hotel dispõe de salão de jogos, brinquedoteca, atividades recreativas e um lobby bar com música ao vivo nas noites de sexta e sábado. A área de eventos acomoda até 2.250 pessoas. O restaurante Palmares serve café da manhã e almoço em estilo bufê, e jantar à la carte e self-service. Uma copa do bebê está disponível para os pais. O hotel está localizado em frente à Praia Stella Maris, a cerca de dez minutos de carro da Praia do Sal e do Farol de Itapuã."</p>
+                </div>
+            </div>
+
+            <h1>Restaurantes</h1>
+            <div class="group1">
+                <img class="point-image" src="{{ url_for('static', filename='images/dicas/jabu_restor.png') }}" alt="Jabú Restô e Bar">
+            
+                <div class="group2">    
+                    <h3 class="point-name">Jabú Restô e Bar</h3>
+                    <p class="point-description">"Pertinho da Praia da Paciência, no Rio Vermelho, o Jabú Restô & Bar é um lugar intimista e charmoso, com uma excelente carta de drinks e gastronomia primorosa. Comandado pelo chef francês Aurélien Roche e pelo mixologista e sommelier Thomas Duprat Pivetta, o restaurante traz uma proposta cosmopolita, combinando experiências internacionais e locais. Exótico, descolado e alegre, é ideal para eventos entre amigos, encontros românticos e happy hours. De terça a quinta, a casa oferece drinks interessantes com base de gin. O cardápio, criado pelo chef Aurélien, mistura produtos nativos da Bahia com a delicadeza da cozinha francesa."</p>
+                </div>
+            </div>
+            <div class="group1">
+                <img class="point-image" src="{{ url_for('static', filename='images/dicas/vini_figueira.png') }}" alt="Restaurante Vini Figueira">
+            
+                <div class="group2">    
+                    <h3 class="point-name">Restaurante Vini Figueira</h3>
+                    <p class="point-description">"A Praia do Forte é uma praia brasileira situada no distrito homônimo, no município baiano de Mata de São João, a cerca de 50 km de Salvador, chega-se até lá pela bonita e bem conservada Estrada do Coco. Muita beleza natural misturado a história fazem da Praia do Forte um dos destinos mais procurados do litoral norte da Bahia. São mais de 12 km de praias, com várias piscinas naturais formadas por arrecifes ao longo da costa. Os coqueiros, vegetação predominante nesta região, fazem o visual ficar ainda melhor. Curtir as praias e as belas paisagens são um convite ao relaxamento. Uma das principais atrações do local é visitar a sede do Projeto Tamar, organização voltada para preservação e estudo das tartarugas marinhas."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer"></footer>
+
+    <script src="{{ url_for('static', filename='js/cidades.js') }}"></script>
+</body>
+</html>

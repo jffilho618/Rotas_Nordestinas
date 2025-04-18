@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recife - Como Chegar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/como_chegar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <script defer src="/js/pontos_turisticos.js"></script>
+</head>
+
+<body>
+    <header id="header"></header>
+
+
+    <h1 id="cityName"></h1>
+
+    <div class="container">
+        <h1>COMO CHEGAR</h1>
+        <p>Recife está localizado no estado de Pernambuco e pode ser acessado facilmente pelo Aeroporto Internacional dos Guararapes.</p>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252823.60132890497!2d-34.923626766884624!3d-8.063815594091169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab196f94e5408b%3A0xe5800ef782bde3a6!2sRecife%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1736165678441!5m2!1spt-BR!2sbr" 
+        class="mapa"
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+
+    <footer id="footer"></footer>
+
+    <script src="{{ url_for('static', filename='js/cidades.js') }}"></script>
+</body>
+</html>

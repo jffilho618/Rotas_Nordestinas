@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugerir Rota - Rotas Nordestinas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/suggest_route.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <a href="{{ url_for('main') }}" class="back-button">< VOLTAR</a>
+        <img class="logo" src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+    </header>
+
+    <main class="main">
+        <section class="suggest-form">
+            <h1>Sugerir uma Rota</h1>
+            <form id="suggestionForm" class="form">
+                <label for="city">Cidade:</label>
+                <input type="text" id="city" name="city" placeholder="Digite a cidade" required>
+                <label for="category">Categoria:</label>
+                <select id="category" name="category" required>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="gastronomia">Gastronomia</option>
+                    <option value="praias">Praias</option>
+                    <option value="festas-tradicionais">Festas Tradicionais</option>
+                    <option value="artesanato">Artesanato</option>
+                    <option value="trilhas-ecologicas">Trilhas Ecológicas</option>
+                    <option value="pontos-historicos">Pontos Históricos</option>
+                    <option value="roteiros-culturais">Roteiros Culturais</option>
+                </select>
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" placeholder="Digite o nome" required>
+                <label for="description">Descrição:</label>
+                <textarea id="description" name="description" placeholder="Digite a descrição (máx. 1000 caracteres)" rows="4" maxlength="1000" required></textarea>
+                <label for="attachment">Anexo:</label>
+                <input type="file" id="attachment" name="attachment" accept="image/*, .pdf, .doc, .docx">
+                <div class="form-buttons">
+                    <button type="button" class="button cancel" onclick="goToMainPage()">Cancelar</button>
+                    <button type="submit" class="button send">Enviar Sugestão</button>
+                </div>
+            </form>
+            <div id="successMessage" class="success-container" style="display: none;">
+                <div class="content">
+                    <img src="{{ url_for('static', filename='images/confirm/green-check-mark-icon-with-circle-tick-box-check-list-circle-frame-checkbox-symbol-sign-png 1.png') }}" alt="Ícone de Sucesso" class="success-image">
+                    <p>Enviado com sucesso!</p>
+                    <button class="button back-home" onclick="goToMainPage()">Voltar à Página Principal</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <img class="logo" src="{{ url_for('static', filename='images/logo/LOGO_WHITE.svg') }}" alt="Rotas Nordestinas">
+        <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
+        <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
+    </footer>
+
+    <div id="rotas-toast-container" class="rotas-toast-container"></div>
+    <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
+    <script>
+        const mainUrl = "{{ url_for('main') }}"; // Adicionado para goToMainPage()
+    </script>
+    <script src="{{ url_for('static', filename='js/suggest_route.js') }}"></script>
+</body>
+</html>

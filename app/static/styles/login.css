@@ -1,0 +1,396 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: white;
+    overflow-x: hidden;
+}
+
+.modal {
+    background: #fff;
+    width: 90%;
+    height: 90%;
+    max-width: 1000px;
+    max-height: 700px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex; 
+    flex-direction: row; 
+    z-index: 999;
+    display: none; 
+}
+
+.modal-image {
+    width: 50%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.modal-image {
+    background-image: url('../images/cidades/c91a33f41deaf0e6aeb01309747b3b1d--beautiful-places-argentina-4098095181.jpg');
+}
+
+
+
+.modal-form {
+    width: 50%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    /* background-color: #56e22f; */
+}
+
+.header {
+    width: 100%;
+    height: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 80px;
+    background-color: var(--cor1);
+}
+
+.head{
+    width: 20%;
+    /* background-color: #ee1d1d; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.header img{
+    width: 8em;
+}
+
+/* Botão de fechar */
+.close {
+    top: 20px;
+    right: 20px;
+    font-size: 2em;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.5s ease; 
+}
+
+.close:hover {
+    transform: rotate(180deg); 
+    color: #ee1d1d; 
+}
+
+/* Botão de voltar */
+.back-button {
+    top: 30px;
+    left: 20px;
+    font-size: 0.8em;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.back-button:hover {
+    color: #2d7d28; 
+}
+
+
+
+
+
+
+
+/*********** Formulário ***********/
+
+#loginForm {
+    gap: 50px;
+    /* background-color: #c04cff; */
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-top: 40px;
+}
+
+#loginForm h2{
+    text-align: center;
+}
+
+#loginForm label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;
+}
+
+#loginForm input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#loginForm .login-button {
+    background-color: var(--cor6);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#loginForm .login-button:hover {
+    background-color: var(--sombraCor6);
+}
+
+/* Link "Esqueceu a senha" */
+#loginForm a {
+    text-decoration: none;
+    color: var(--sombraCor6);
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+#loginForm a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+/************* esqueceu a senha ********************/
+
+.content-forgot{
+    /* background-color: #e7c9c9; */
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    gap: 2em;
+    margin-top: 50px;
+}
+
+.inputs-forgot{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+
+.inputs-forgot label{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.inputs-forgot input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.inputs-forgot .login-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--cor6);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-decoration: none;
+}
+
+.inputs-forgot .login-button:hover{
+    background-color: var(--sombraCor6);
+}
+
+
+
+
+/************* recuperar senha ********************/
+
+.content-codigo {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: 70%;
+    margin-top: 50px;
+    /* background-color: #a2b4c7; */
+}
+
+.content-codigo p{
+    margin: 30px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    gap: 8px; /* Espaço entre os campos de entrada */
+    margin: 20px 0;
+    /* background-color: #ee1d1d; */
+}
+
+
+.digit-input {
+    width: 40px;
+    height: 50px;
+    text-align: center;
+    font-size: 18px;
+    border: 0.1em solid #767676;
+    border-radius: 5px;
+}
+
+.digit-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.confirm-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 16px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.confirm-button:hover {
+    background-color: #0056b3;
+}
+
+.resend-link {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--sombraCor6);
+    text-decoration: none;
+}
+
+.resend-link:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+/********** Alterar senha **************/
+
+.alterarPassword{
+    /* background-color: #93a2b2; */
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    text-align: start;
+    margin-top: 80px;
+}
+
+
+.alterarPassword label{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.alterarPassword input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.alterarPassword a{
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+}
+
+.alterarPassword a:hover{
+    background-color: #0056b3;
+}
+
+
+
+/******* sucesso-Modal *********/
+
+.sucess{
+    /* background-color: #0056b3; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.sucess h1{
+    margin-top: 60px;
+    font-size: 24px;
+}
+
+.sucess img{
+    width: 200px;
+    margin-top: 50px;
+}
+
+.sucess a{
+    width: 50%;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 60px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+}
+
+.sucess a:hover{
+    background-color: #0056b3;  
+}

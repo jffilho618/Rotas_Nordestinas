@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro_colaborador.css') }}">
+
+
+<!-- Modal para Cadastro -->
+<div id="cadastro_C1" class="modal">
+        <!-- Parte esquerda: imagem -->
+        <div class="modal-image"></div>
+        <!-- Parte direita: formulário -->
+        <div class="modal-form">
+            <div class="header">
+                <div class="head">
+                    <a class="back-button" href="javascript:void(0)" 
+                        onclick="closeModal('cadastro_C1')">
+                        &lt; VOLTAR
+                    </a> 
+                </div>
+                <div class="head">
+                    <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+                </div>
+                <div class="head">
+                    <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro_C1')">&times;</a>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-content">
+                    <span class="circle">1</span>
+                    <h4>Dados pessais</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">2</span>
+                    <h4>Dados de contato</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">3</span>
+                    <h4>Dados profissionalizantes</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">4</span>
+                    <h4>Usuário e senha</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">5</span>
+                    <h4>Termos e condições</h4>
+                </div>
+            </div>
+
+            <form id="cadastroForm">
+                <div class="content">
+                    <div class="group1">
+                        <div class="form-group">
+                            <label for="nome">Nome<span class="required"> *</span>:</label>
+                            <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="sobrenome">Sobrenome<span class="required"> *</span>:</label>
+                            <input type="text" id="sobrenome" name="sobrenome" placeholder="Digite seu sobrenome" required>
+                        </div>
+                    </div>
+                    
+                
+                    <div class="form-group">
+                        <label for="email">E-mail<span class="required"> *</span>:</label>
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="cpf">CPF<span class="required"> *</span>:</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: XXX.XXX.XXX-XX">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="dataNascimento">Data de Nascimento<span class="required"> *</span>:</label>
+                        <input type="date" id="dataNascimento" name="dataNascimento" required>
+                    </div>
+                
+                    <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
+                                    
+                    <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/colaborador/cadastro_C2')">Avançar</a>
+                </div>
+
+                
+            </form>
+        </div>
+</div>
+
+

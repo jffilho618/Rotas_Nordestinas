@@ -1,0 +1,211 @@
+@import url(/styles/global/global.css);
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--cor1);
+    padding: 15px 50px;
+    border-bottom: 1px solid #6A4519;
+}
+
+.back-button {
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+.back-button:hover {
+    color: #2d7d28;
+}
+
+.header .logo {
+    width: 133px;
+    height: 40px;
+    margin-right: 55px;
+}
+
+/* Main Content */
+.main {
+    padding: 2em;
+    background: #FFFDF8;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.suggest-form {
+    width: 100%;
+    max-width: 500px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.suggest-form h1 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.suggest-form .form {
+    width: 100%;
+}
+
+.suggest-form .form label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.suggest-form .form input,
+.suggest-form .form select,
+.suggest-form .form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.suggest-form .form input:focus,
+.suggest-form .form select:focus,
+.suggest-form .form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+.suggest-form .form .form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.suggest-form .form .cancel {
+    background-color: #6c757d;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 1;
+    transition: background-color 0.2s ease;
+}
+.suggest-form .form .cancel:hover {
+    background-color: #5a6268;
+}
+
+.suggest-form .form .send {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 1;
+    transition: background-color 0.2s ease;
+}
+.suggest-form .form .send:hover {
+    background-color: #0056b3;
+}
+
+.success-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.success-container .content {
+    text-align: center;
+}
+
+.success-container img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.success-container p {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.success-container .back-home {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.success-container .back-home:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+    background: var(--cor4);
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+footer .logo {
+    width: 133px;
+    height: 40px;
+    margin: 20px auto;
+}
+footer .intro {
+    padding: 0 100px;
+    text-align: center;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+footer #slogan {
+    color: #ffffff;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+    .main {
+        padding: 1em;
+    }
+    .suggest-form {
+        padding: 20px;
+    }
+    footer .intro {
+        padding: 0 20px;
+    }
+}

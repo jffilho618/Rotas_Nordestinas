@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro.css') }}">
+<!-- Modal para Cadastro -->
+<div id="cadastro3" class="modal">
+    <div class="modal-image"></div>
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" onclick="closeModal('cadastro3'); openModal('cadastro/usuario/cadastro2')">< VOLTAR</a>
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro3')">×</a>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-content"><span class="circle">1</span><h4>Dados pessoais</h4></div>
+            <div class="progress-content"><span class="circle">2</span><h4>Interesses pessoais</h4></div>
+            <div class="progress-content"><span class="circle">3</span><h4>Usuário e senha</h4></div>
+            <div class="progress-content"><span class="circle">4</span><h4>Termos e condições</h4></div>
+        </div>
+        <form id="cadastroForm">
+            <div class="content">
+                <div class="form-group">
+                    <label for="usuario">Usuário<span class="required"> *</span>:</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="Nome de usuário" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha<span class="required"> *</span>:</label>
+                    <input type="password" id="password" name="password" placeholder="Digite a senha" required>
+                </div>
+                <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
+                <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/usuario/cadastro4')">Avançar</a>
+            </div>
+        </form>
+    </div>
+</div>

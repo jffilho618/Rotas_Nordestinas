@@ -1,0 +1,376 @@
+@import url(/styles/global/global.css);
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*******************  header ****************/
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--cor1);
+    padding: 15px 50px;
+    /* border-bottom: 1px solid #6A4519; */
+}
+
+.div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33%;
+    /* background-color: #007bff; */
+}
+
+.div1{
+    justify-content: start; 
+}
+
+.div2{
+    justify-content: center; 
+}
+
+
+.div3{
+    justify-content: end;
+    display: flex;
+    gap: 30px;
+}
+
+.back-button {
+    /* background-color: #ff8d8d; */
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.back-button:hover {
+    color: #2d7d28; 
+}
+
+.header .logo {
+    font-size: 1.5rem;
+    color: #333;
+    /* background-color: #ff2a2a; */
+    align-items: center;
+    width: 133px;
+    height: 40px;
+    margin-right: 55px;
+}
+
+
+.menu-button {
+    /* background-color: #ff2a2a; */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+
+
+
+
+
+/*******************  main ****************/
+
+
+.city-banner {
+    position: relative;
+    /* background-color: #c5f8c1; */
+    width: 100%;
+    height: 400px; /* Altura fixa do contêiner */
+    display: flex; /* Ativa o flexbox para centralizar a imagem */
+    justify-content: center; /* Centraliza a imagem horizontalmente */
+    align-items: center; /* Centraliza a imagem verticalmente */
+    overflow: hidden; /* Garante que partes da imagem excedentes sejam cortadas */
+}
+
+.city-banner img {
+    width: 100%; /* Permite que a largura da imagem seja ajustada automaticamente */
+    height: 100%; /* Faz com que a altura da imagem preencha o contêiner */
+    object-fit: cover; /* Garante que a imagem seja cortada para preencher o espaço */
+    display: block; /* Elimina margens indesejadas */
+}
+
+.city-name{
+    position: absolute;
+    top: 50%; /* Centraliza verticalmente */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta o alinhamento */
+    font-size: 5rem;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Adiciona contraste */
+    z-index: 1;
+    text-align: center;
+    font-family:jockey one;
+}
+
+.city-description {
+    /* background-color: #0056b3; */
+    text-align: center;
+    padding: 30px 200px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.city-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.city-buttons img{
+    width: 1.5em;
+}
+
+.city-buttons .button-link {
+    width: 15%;
+    height: 50px;
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.city-buttons .button-link:hover {
+    background-color: #095cb5;
+}
+
+
+
+
+
+/*******************  Feedbacks ****************/
+
+
+
+
+
+#feedback-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin-top: 20px;
+}
+
+
+#feedback-section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.divider-line {
+    border: none; /* Remove a borda padrão */
+    border-top: 3px solid #fb7725; /* Linha superior */
+    width: 70%; /* Ajusta a largura */
+    background:none;
+}
+
+
+.part1{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #007BFF; */
+    margin-bottom: 10px;
+}
+
+.part2{
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #007BFF; */
+}
+
+
+.part2-1{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #a7d1ff; */
+    width: 100%;
+}
+
+.part2-1 h3{
+    font-size: 1.4em;
+    margin: 0;
+}
+
+.part2-1 .user-info{
+    width: 18%;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #2d7d28; */
+}
+
+.user-data{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background-color: #0056b3; */
+    text-align: left;
+    gap: 5px;
+}   
+
+.user-data p{
+    font-size: 0.9em;
+    margin: 0;
+}   
+
+.part2 .user{
+    width: 70px;
+    /* background-color: #86c0ff; */
+}
+
+.part2 .like{
+    width: 25px;
+    /* background-color: #86c0ff; */
+}
+
+.part2-2{
+    /* background-color: #555; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+
+.feedback-list {
+    margin-bottom: 20px;
+}
+
+.feedback-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.feedback-form {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.feedback-form h3 {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.feedback-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.feedback-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.feedback-form button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*******************  footer ****************/
+
+
+
+footer {
+    background: var(--cor4);    
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+
+}
+
+footer .logo {
+    width: 133px;
+    height: 40px;
+    margin: 20px auto;
+}
+
+footer .intro {
+    padding: 0px 100px;
+    text-align: center;
+    color: #ffffff;
+    /* font-size: 12.85px;  */
+    /* font-family: Inter;  */
+    font-weight: 500;
+    margin-bottom: 20px;
+
+    font-family: Arial, sans-serif; /* Fonte para o texto */
+    line-height: 1.5; /* Espaçamento entre linhas */
+    /* text-align: justify;  */
+    color: #ffffff; /* Cor do texto */
+    font-size: 15px; /* Tamanho da fonte */
+}
+
+footer #slogan {
+    text-align: center; color: #ffffff; 
+    font-size: 15px; /* Tamanho da fonte */
+    font-family: Inter;
+    font-weight: 800;
+    margin-bottom: 20px;
+}

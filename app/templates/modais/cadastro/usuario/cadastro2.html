@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro.css') }}">
+<!-- Modal para Cadastro -->
+<div id="cadastro2" class="modal">
+    <div class="modal-image"></div>
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" onclick="closeModal('cadastro2'); openModal('cadastro/usuario/cadastro1')">< VOLTAR</a>
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro2')">×</a>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-content"><span class="circle">1</span><h4>Dados pessoais</h4></div>
+            <div class="progress-content"><span class="circle">2</span><h4>Interesses pessoais</h4></div>
+            <div class="progress-content"><span class="circle">3</span><h4>Usuário e senha</h4></div>
+            <div class="progress-content"><span class="circle">4</span><h4>Termos e condições</h4></div>
+        </div>
+        <form id="cadastroForm">
+            <div class="atividades">
+                <h3>Atividades preferidas:</h3>
+                <div class="opcoes grid">
+                    <button type="button" class="opcao" onclick="selecionarAtividade('praias')">Praias</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('trilhas')">Trilhas</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('museus')">Museus</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('igrejas')">Igrejas</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('festas_regionais')">Festas Regionais</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('baladas_locais')">Baladas Locais</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('rios_e_cachoeiras')">Rios e Cachoeiras</button>
+                    <button type="button" class="opcao" onclick="selecionarAtividade('vivencias_rurais')">Vivências Rurais</button>
+                </div>
+            </div>
+            <div class="linha-divisoria"></div>
+            <div class="destinos">
+                <h3>Destinos de interesse</h3>
+                <div class="opcoes grid">
+                    <button type="button" class="opcao" onclick="selecionarDestino('recife')">Recife</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('olinda')">Olinda</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('teresina')">Teresina</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('tamandare')">Tamandaré</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('parnaiba')">Parnaíba</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('salvador')">Salvador</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('ilheus')">Ilhéus</button>
+                    <button type="button" class="opcao" onclick="selecionarDestino('barra_grande')">Barra Grande</button>
+                </div>
+            </div>
+            <p class="info-campos"><span class="required"> *</span> Selecione pelo menos uma opção</p>
+            <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/usuario/cadastro3')">Avançar</a>
+        </form>
+    </div>
+</div>

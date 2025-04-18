@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro_colaborador.css') }}">
+
+
+<!-- Modal para Cadastro -->
+<div id="cadastro_C6" class="modal">
+        <!-- Parte esquerda: imagem -->
+        <div class="modal-image"></div>
+        <!-- Parte direita: formulário -->
+        <div class="modal-form">
+            <div class="header">
+                <div class="head">
+                    <a class="back-button" href="javascript:void(0)" 
+                    onclick="closeModal('cadastro_C6'); openModal('cadastro/colaborador/cadastro_C5')">
+                    &lt; VOLTAR
+                    </a> 
+                </div>
+                <div class="head">
+                    <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">                </div>
+                <div class="head">
+                    <a class="close" href="javascript:void(0)" onclick="closeModal('cadastro_C6')">&times;</a>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-content">
+                    <span class="circle">1</span>
+                    <h4>Dados pessoais</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">2</span>
+                    <h4>Dados de contato</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">3</span>
+                    <h4>Dados profissionalizantes</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">4</span>
+                    <h4>Usuário e senha</h4>
+                </div>
+                <div class="progress-content">
+                    <span class="circle">5</span>
+                    <h4>Termos e condições</h4>
+                </div>
+            </div>
+
+            <form id="cadastroForm">
+                <div class="sucess"> 
+                    <h1>Cadastro realizado com sucesso !</h1>
+                </div>           
+                
+                <a class="btn" href="javascript:void(0)" onclick="closeModal('cadastro_C6')">Avançar</a>
+            </form>
+        </div>
+</div>
+
+

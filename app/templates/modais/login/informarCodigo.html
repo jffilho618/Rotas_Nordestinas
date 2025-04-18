@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+
+<!-- Modal para Recuperação de Senha (informar codigo)-->
+<div id="informarCodigo" class="modal">
+    <!-- Parte esquerda: imagem -->
+    <div class="modal-image"></div>    
+    <!-- Parte direita: formulário -->
+    <div class="modal-form">
+        <div class="header">
+            <div class="head">
+                <a class="back-button" href="javascript:void(0)" 
+                    onclick="closeModal('informarCodigo'); openModal('login/forgotPassword')">
+                    &lt; VOLTAR
+                </a> 
+            </div>
+            <div class="head">
+                <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
+            </div>
+            <div class="head">
+                <a class="close" href="javascript:void(0)" onclick="closeModal('informarCodigo')">&times;</a>
+            </div>
+        </div>
+        <div class="content-codigo"> 
+            <h2>Recuperação de senha</h2>
+            <p>Digite o código enviado ao seu e-mail:</p>
+            <div class="input-group">
+                <input type="text" maxlength="1" class="digit-input" />
+                <input type="text" maxlength="1" class="digit-input" />
+                <input type="text" maxlength="1" class="digit-input" />
+                <input type="text" maxlength="1" class="digit-input" />
+                <input type="text" maxlength="1" class="digit-input" />
+            </div>
+            <a class="confirm-button" href="javascript:void(0)"  onclick="openModal('login/alterarSenha')">Confirmar</button>
+            <a class="resend-link" href="javascript:void(0)"  onclick="resendCode()">Não recebeu o código? Clique aqui</a>
+        </div>
+    </div>
+</div>
