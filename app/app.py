@@ -89,22 +89,15 @@ def inject_back_button():
 
 @app.route('/cidade/<nome_cidade>', methods=['GET', 'POST'])
 def cidade(nome_cidade):
-    feedbacks = Feedback.query.filter_by(cidade=nome_cidade).order_by(Feedback.data.desc()).all()
-    
-    estado = request.args.get('estado')  # Isso pega o estado passado via URL, se existir
-    if not estado:  # Se não estiver na URL, pega do formulário, se estiver
-       estado = request.form.get('estado', 'padrao')  # Valor padrão para estado
-
-    # Se o usuário enviar um novo feedback
     if request.method == 'POST':
         if 'usuario_id' not in session:
             flash('Você precisa estar logado para enviar feedback.', 'warning')
             return redirect(url_for('login'))
-        
+
         titulo = request.form['titulo']
         descricao = request.form['descricao']
         usuario_id = session['usuario_id']
-        estado = request.form['estado']  # O estado vem do formulário
+        estado = request.form['estado']  # Agora está seguro usar isso aqui
 
         novo_feedback = Feedback(
             cidade=nome_cidade,
@@ -115,14 +108,13 @@ def cidade(nome_cidade):
         db.session.add(novo_feedback)
         db.session.commit()
         flash('Feedback enviado com sucesso!', 'success')
-        
-        # Redireciona para a mesma página da cidade
-        return redirect(url_for('cidade', nome_cidade=nome_cidade))
 
-    # Caso ocorra algum erro na carga dos feedbacks, mostra uma mensagem
-    flash('Não foi possível carregar os feedbacks', 'warning')
+        return redirect(url_for('cidade', nome_cidade=nome_cidade, estado=estado))
+    
+    # Agora sim, aqui tratamos requisições GET
+    estado = request.args.get('estado', 'padrao')  # usa query param se vier pela URL
+    feedbacks = Feedback.query.filter_by(cidade=nome_cidade).order_by(Feedback.data.desc()).all()
 
-    # Usando f-string para carregar o template dinâmico com base no estado
     return render_template(f'estados/{estado}/{nome_cidade}.html', cidade=nome_cidade, estado=estado, feedbacks=feedbacks)
 
 
