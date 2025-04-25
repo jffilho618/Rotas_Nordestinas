@@ -23,10 +23,17 @@
                 <button class="close-x-button" id="closeXButton">×</button>
                 <div class="header">
                     <img src="{{ url_for('static', filename='images/icons/PERFIL.png') }}" alt="Perfil">
-                    <h2>Pikachu Silva</h2>
-                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">[email protected]</a></p>
+                    <h2>{{usuario.nome}}</h2>
+                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">{{usuario.email}}</a></p>
                 </div>
-                <div class="options-container"></div>
+                <div class="options-container">
+                    <a href="{{ url_for('home') }}" class="option"><i class="bx bx-home"></i><span>Início</span></a>
+                    <a href="{{ url_for('favoritos') }}" class="option"><i class="bx bx-star"></i><span>Meus Favoritos</span></a>
+                    <a href="#" class="option" id="editProfileButton"><i class="bx bx-user"></i><span>Meu Perfil</span></a>
+                    <a href="#" class="option"><i class="bx bx-list-ul"></i><span>Minhas Publicações</span></a>
+                    <a href="#" class="option"><i class="bx bx-bar-chart"></i><span>Estatísticas</span></a>
+                    <a href="#" class="option"><i class="bx bx-heart"></i><span>Avaliar Destinos</span></a>
+                </div>
                 <div class="bottom-buttons">
                     <button class="support-button"><i class="bx bx-support"></i>Suporte</button>
                     <button class="close-button" id="closeButton"><i class="bx bx-log-out"></i>Sair</button>

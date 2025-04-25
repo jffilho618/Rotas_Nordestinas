@@ -1,31 +1,6 @@
-function renderSidebar() {
-    const optionsContainer = document.querySelector('#userSidebar .options-container');
-    const bottomButtons = document.querySelector('#userSidebar .bottom-buttons');
-    
-    optionsContainer.innerHTML = isPro
-        ? `
-            <div class="option"><i class="bx bx-home"></i><span>Início</span></div>
-            <div class="option"><i class="bx bx-search"></i><span>Buscar Destinos Avançado</span></div>
-            <div class="option"><i class="bx bx-star"></i><span>Meus Favoritos</span></div>
-            <div class="option" id="editProfileButton"><i class="bx bx-user"></i><span>Meu Perfil Personalizado</span></div>
-            <div class="option" id="suggestionButton"><i class="bx bx-comment-detail"></i><span>Sugerir Rota Avançado</span></div>
-            <div class="option"><i class="bx bx-list-ul"></i><span>Minhas Publicações</span></div>
-            <div class="option"><i class="bx bx-bar-chart"></i><span>Estatísticas</span></div>
-            <div class="option"><i class="bx bx-heart"></i><span>Avaliar Destinos</span></div>
-        `
-        : `
-            <div class="option"><i class="bx bx-search"></i><span>Buscar Destinos</span></div>
-            <div class="option"><i class="bx bx-star"></i><span>Meus Favoritos</span></div>
-            <div class="option" id="editProfileButton"><i class="bx bx-user"></i><span>Meu Perfil</span></div>
-            <div class="option" id="suggestionButton"><i class="bx bx-comment-detail"></i><span>Sugerir Rota</span></div>
-            <div class="option"><i class="bx bx-list-ul"></i><span>Minhas Publicações</span></div>
-            <div class="option"><i class="bx bx-heart"></i><span>Avaliar Destinos</span></div>
-            <div class="option"><i class="bx bx-crown"></i><span>Tornar-se PRO</span></div>
-        `;
-}
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderSidebar();
 
     // Selecionar elementos
     const menuButton = document.getElementById('menuButton');

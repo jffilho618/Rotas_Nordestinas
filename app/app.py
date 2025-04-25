@@ -124,8 +124,18 @@ def home():
 
 @app.route('/main')
 def main():
-    # Página principal após o index
-    return render_template('main.html')
+    usuario = None
+    if 'usuario_id' in session:
+        usuario = Usuario.query.get(session['usuario_id'])
+    return render_template('main.html', usuario=usuario)
+
+@app.route('/favoritos')
+def favoritos():
+    usuario = None
+    if 'usuario_id' in session:
+        usuario = Usuario.query.get(session['usuario_id'])
+    return render_template('global/favoritos.html', usuario=usuario)
+
 
 @app.route('/recife')
 def recife():
