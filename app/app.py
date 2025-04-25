@@ -91,6 +91,10 @@ def inject_back_button():
 def cidade(nome_cidade):
     feedbacks = Feedback.query.filter_by(cidade=nome_cidade).order_by(Feedback.data.desc()).all()
     
+    estado = request.args.get('estado')  # Isso pega o estado passado via URL, se existir
+    if not estado:  # Se não estiver na URL, pega do formulário, se estiver
+       estado = request.form.get('estado', 'padrao')  # Valor padrão para estado
+
     # Se o usuário enviar um novo feedback
     if request.method == 'POST':
         if 'usuario_id' not in session:
@@ -100,7 +104,8 @@ def cidade(nome_cidade):
         titulo = request.form['titulo']
         descricao = request.form['descricao']
         usuario_id = session['usuario_id']
-        
+        estado = request.form['estado']  # O estado vem do formulário
+
         novo_feedback = Feedback(
             cidade=nome_cidade,
             usuario_id=usuario_id,
@@ -110,10 +115,15 @@ def cidade(nome_cidade):
         db.session.add(novo_feedback)
         db.session.commit()
         flash('Feedback enviado com sucesso!', 'success')
+        
+        # Redireciona para a mesma página da cidade
         return redirect(url_for('cidade', nome_cidade=nome_cidade))
-    
-    flash('não foi possível carregar os feedbacks', 'warning')
-    return render_template('estados/pernambuco/caruaru.html', cidade=nome_cidade, feedbacks=feedbacks)
+
+    # Caso ocorra algum erro na carga dos feedbacks, mostra uma mensagem
+    flash('Não foi possível carregar os feedbacks', 'warning')
+
+    # Usando f-string para carregar o template dinâmico com base no estado
+    return render_template(f'estados/{estado}/{nome_cidade}.html', cidade=nome_cidade, estado=estado, feedbacks=feedbacks)
 
 
 @app.route('/')

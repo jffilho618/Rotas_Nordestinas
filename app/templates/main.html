@@ -62,13 +62,13 @@
                 <a href="{{ url_for('recife') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Recife_01.jpg') }}">
                     <span>Recife</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/tamandare') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Tamandare_01.jpg') }}">
+                <a href="{{  url_for('cidade', nome_cidade='tamandare', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Tamandare_01.jpg') }}">
                     <span>Tamandaré</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/olinda') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Olinda_01.jpeg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='olinda', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Olinda_01.jpeg') }}">
                     <span>Olinda</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/caruaru') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='caruaru', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}">
                     <span>Caruaru</span>
                 </a>
             </div>
@@ -76,16 +76,16 @@
         <section class="region">
             <h2>Piauí</h2>
             <div class="cities-grid">
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/parnaiba') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Parnaiba_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='parnaiba', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Parnaiba_01.jpg') }}">
                     <span>Parnaíba</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/teresina') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Teresina_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='teresina', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Teresina_01.jpg') }}">
                     <span>Teresina</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/barra_grande') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Barra-Grande-do-Piauí_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='barra_grande', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Barra-Grande-do-Piauí_01.jpg') }}">
                     <span>Barra Grande</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/sao_raimundo_nonato') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Sao_Raimundo_Nonato_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='sao_raimundo_nonato', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Sao_Raimundo_Nonato_01.jpg') }}">
                     <span>São Raimundo Nonato</span>
                 </a>
             </div>
@@ -93,16 +93,16 @@
         <section class="region">
             <h2>Bahia</h2>
             <div class="cities-grid">
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/salvador') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Salvador_01.jpeg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='salvador', estado='bahia') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Salvador_01.jpeg') }}">
                     <span>Salvador</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/ilheus') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Porto-Seguro_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='porto_seguro', estado='bahia')}}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Porto-Seguro_01.jpg') }}">
                     <span>Porto Seguro</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/ilheus') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Ilheus_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='ilheus', estado='bahia') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Ilheus_01.jpg') }}">
                     <span>Ilhéus</span>
                 </a>
-                <a href="{{ url_for('render_dynamic_template', template_path='cidade/luis_eduardo') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Luis_Eduardo_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='luis_eduardo', estado='bahia')}}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Luis_Eduardo_01.jpg') }}">
                     <span>Luís Eduardo</span>
                 </a>
             </div>

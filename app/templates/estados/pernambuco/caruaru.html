@@ -67,6 +67,8 @@
             <h3>Deixe seu Feedback</h3>
             <form method="POST" action="{{ url_for('cidade', nome_cidade='caruaru') }}">
                 <input type="hidden" name="cidade" value="Caruaru">
+
+                <input type="hidden" name="estado" value="pernambuco">
                 
                 <label for="titulo">Título:</label>
                 <input type="text" id="titulo" name="titulo" placeholder="Digite um título" required>
