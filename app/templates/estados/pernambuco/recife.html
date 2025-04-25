@@ -37,7 +37,52 @@
         </div>
     </div>
     
-    <section id="feedback-section"></section>
+    
+    <section id="feedback-section">
+        <div class="part1">
+            <h2>Feedback dos Usuários em Recife</h2>
+            <hr class="divider-line">
+        </div>
+
+        {% for f in feedbacks %}
+        <div class="part2">
+            <div class="part2-1">
+                <div class="user-info">
+                    <img class="user" src="{{ url_for('static', filename='images/icons/user1.png') }}">
+                    <div class="user-data">
+                        <h3>{{ f.autor.nome }}</h3>
+                        <p>{{ f.data.strftime('%d/%m/%Y') }}</p>
+                    </div>
+                </div>
+                <img class="like" src="{{ url_for('static', filename='images/confirm/like.png') }}">
+            </div>
+            <div class="part2-2">
+                <p><strong>{{ f.titulo }}</strong><br>{{ f.descricao }}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if session.get('usuario_id') %}
+        <div class="feedback-form">
+            <h3>Deixe seu Feedback</h3>
+            <form method="POST" action="{{ url_for('cidade', nome_cidade='recife') }}">
+                <input type="hidden" name="cidade" value="recife">
+
+                <input type="hidden" name="estado" value="pernambuco">
+                
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" placeholder="Digite um título" required>
+
+                <label for="descricao">Seu Feedback:</label>
+                <textarea id="descricao" name="descricao" rows="4" placeholder="Escreva seu feedback" required></textarea>
+
+                <button type="submit">Enviar Feedback</button>
+            </form>
+        </div>
+        {% else %}
+            <p><a href="{{ url_for('login') }}">Faça login</a> para enviar um feedback.</p>
+        {% endif %}
+    </section>
 
     <footer id="footer"></footer>
 

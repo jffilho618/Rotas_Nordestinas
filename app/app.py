@@ -111,7 +111,6 @@ def cidade(nome_cidade):
 
         return redirect(url_for('cidade', nome_cidade=nome_cidade, estado=estado))
     
-    # Agora sim, aqui tratamos requisições GET
     estado = request.args.get('estado', 'padrao')  # usa query param se vier pela URL
     feedbacks = Feedback.query.filter_by(cidade=nome_cidade).order_by(Feedback.data.desc()).all()
 

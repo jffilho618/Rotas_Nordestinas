@@ -59,7 +59,7 @@
         <section class="region">
             <h2>Pernambuco</h2>
             <div class="cities-grid">
-                <a href="{{ url_for('recife') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Recife_01.jpg') }}">
+                <a href="{{  url_for('cidade', nome_cidade='recife', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Recife_01.jpg') }}">
                     <span>Recife</span>
                 </a>
                 <a href="{{  url_for('cidade', nome_cidade='tamandare', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Tamandare_01.jpg') }}">
