@@ -22,16 +22,16 @@
             <p>Recife é um município brasileiro, capital do estado de Pernambuco, localizado na Região Nordeste do país. Com área territorial de aproximadamente 218 km², é formado por uma planície aluvial, tendo as ilhas, penínsulas e manguezais como suas principais características geográficas.</p>
         </div>
         <div class="city-buttons">
-            <a href="{{ url_for('global_template', template_name='como_chegar.html') }}" class="button-link">
+            <a href="{{ url_for('como_chegar', estado='pernambuco', cidade='recife') }}" class="button-link">
                 <img src="{{ url_for('static', filename='images/icons/location-white.svg') }}" alt="Como chegar"> Como chegar
             </a>
-            <a href="{{ url_for('global_template', template_name='pontos_turisticos.html') }}" class="button-link">
+            <a href="{{ url_for('pontos_turisticos', estado='pernambuco', cidade='recife') }}" class="button-link">
                 <img src="{{ url_for('static', filename='images/icons/places-white.svg') }}" alt="Pontos turísticos"> Pontos Turísticos
             </a>
-            <a href="{{ url_for('global_template', template_name='atividades.html') }}" class="button-link">
+            <a href="{{ url_for('atividades', estado='pernambuco', cidade='recife') }}" class="button-link">
                 <img src="{{ url_for('static', filename='images/icons/calendar-white.svg') }}" alt="Atividades"> Atividades
             </a>
-            <a href="{{ url_for('global_template', template_name='dicas.html') }}" class="button-link">
+            <a href="{{ url_for('dicas', estado='pernambuco', cidade='recife') }}" class="button-link">
                 <img src="{{ url_for('static', filename='images/icons/lampada-white.svg') }}" alt="Dicas"> Dicas
             </a>
         </div>
