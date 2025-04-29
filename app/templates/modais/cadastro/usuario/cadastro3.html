@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro.css') }}">
+<script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
+
 <!-- Modal para Cadastro -->
 <div id="cadastro3" class="modal">
     <div class="modal-image"></div>
@@ -31,7 +33,7 @@
                     <input type="password" id="password" name="password" placeholder="Digite a senha" required>
                 </div>
                 <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
-                <a class="btn" href="javascript:void(0)" onclick="openModal('cadastro/usuario/cadastro4')">Avançar</a>
+                <a class="btn" href="javascript:void(0)" onclick="saveStep3(); openModal('cadastro/usuario/cadastro4')">Avançar</a>
             </div>
         </form>
     </div>

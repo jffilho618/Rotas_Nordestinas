@@ -317,20 +317,52 @@ body {
 }
 
 
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.like {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.delete-form {
+    margin: 0;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
 
 
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.delete-button:hover {
+    background-color: #b02a37;
+}
 
 
 /*******************  footer ****************/

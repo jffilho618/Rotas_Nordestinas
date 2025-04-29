@@ -1,0 +1,148 @@
+
+{% extends "base.html" %}
+
+{% block title %}Perfil de Usuário - Rotas Nordestinas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
+
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="page-title">Perfil do Usuário</h1>
+
+        <div class="profile-container">
+            <!-- Coluna esquerda - Foto e informações básicas -->
+            <div class="profile-sidebar">
+                <div class="profile-pic">
+                    <span>FT</span> <!-- Iniciais do usuário -->
+                </div>
+                <div class="profile-info">
+                    <h2>{{usuario.nome}} {{usuario.sobrenome}}</h2>
+                    <p>{{usuario.email}}</p>
+                    <p>{{usuario.telefone}}</p>
+                    <p class="member-since">{{usuario.data_cadastro}}</p>
+                </div>
+            </div>
+
+            <!-- Coluna direita - Formulário de edição -->
+            <div class="profile-content view-mode" id="profileForm">
+                <div class="profile-section">
+                    <h3>Informações Pessoais</h3>
+                    
+                    <!-- Nome -->
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <span class="static-field">{{usuario.nome}}</span>
+                        <input type="text" id="name" class="form-control" value="{{usuario.nome}}">
+                    </div>
+
+                    <!-- Sobrenome -->
+                    <div class="form-group">
+                        <label for="name">Sobrenome</label>
+                        <span class="static-field">{{usuario.sobrenome}}</span>
+                        <input type="text" id="name" class="form-control" value={{usuario.sobrenome}}>
+                    </div>
+                    
+                    
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <span class="static-field">{{usuario.email}}</span>
+                        <input type="email" id="email" class="form-control" value={{usuario.email}}>
+                    </div>
+                    
+                    <!-- Telefone -->
+                    <div class="form-group">
+                        <label for="phone">Telefone</label>
+                        <span class="static-field">{{usuario.telefone}}</span>
+                        <input type="tel" id="phone" class="form-control" value={{usuario.telefone}}>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary btn-edit" onclick="enableEditMode()">Editar Perfil</button>
+                    <button class="btn btn-primary btn-save" onclick="saveProfile()">Salvar Alterações</button>
+                    <button class="btn btn-danger btn-cancel" onclick="cancelEdit()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% block extra_js %}
+    <script>
+        // Função para ativar o modo de edição
+        function enableEditMode() {
+            document.getElementById('profileForm').classList.remove('view-mode');
+            document.getElementById('profileForm').classList.add('edit-mode');
+        }
+        
+        // Função para salvar as alterações
+        function saveProfile() {
+            // Aqui você adicionaria a lógica para salvar as informações
+            alert('Perfil atualizado com sucesso!');
+            
+            // Atualizar as informações visíveis no sidebar
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            
+            // Atualizar o sidebar com os novos valores
+            document.querySelector('.profile-info h2').textContent = name;
+            document.querySelector('.profile-info p:nth-child(2)').textContent = email;
+            document.querySelector('.profile-info p:nth-child(3)').textContent = phone;
+            
+            // Voltar para o modo de visualização
+            document.getElementById('profileForm').classList.remove('edit-mode');
+            document.getElementById('profileForm').classList.add('view-mode');
+            
+            // Atualizar os campos estáticos
+            document.querySelectorAll('.static-field')[0].textContent = name;
+            document.querySelectorAll('.static-field')[1].textContent = email;
+            document.querySelectorAll('.static-field')[2].textContent = phone;
+        }
+        
+        // Função para cancelar a edição
+        function cancelEdit() {
+            // Resetar os valores dos campos para os valores originais
+            const nameStatic = document.querySelectorAll('.static-field')[0].textContent;
+            const emailStatic = document.querySelectorAll('.static-field')[1].textContent;
+            const phoneStatic = document.querySelectorAll('.static-field')[2].textContent;
+            
+            document.getElementById('name').value = nameStatic;
+            document.getElementById('email').value = emailStatic;
+            document.getElementById('phone').value = phoneStatic;
+            
+            // Limpar campos de senha
+            document.getElementById('current_password').value = '';
+            document.getElementById('new_password').value = '';
+            document.getElementById('confirm_password').value = '';
+            
+            // Voltar para o modo de visualização
+            document.getElementById('profileForm').classList.remove('edit-mode');
+            document.getElementById('profileForm').classList.add('view-mode');
+        }
+        
+        // Função para mostrar/ocultar senha
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '🔒';
+                } else {
+                    input.type = 'password';
+                    this.textContent = '👁️';
+                }
+            });
+        });
+    </script>
+    {% endblock %}

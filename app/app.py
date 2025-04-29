@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask import session
 
 from models import db, Usuario, Feedback
@@ -20,60 +20,57 @@ with app.app_context():
 def logout():
     session.clear()
     flash('Você saiu da sua conta.', 'info')
-    return redirect(url_for('login'))
+    return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        senha = request.form['senha']
-        
-        usuario = Usuario.query.filter_by(email=email).first()
-        
-        if usuario and usuario.verificar_senha(senha):
-            session['usuario_id'] = usuario.id
-            session['usuario_nome'] = usuario.nome
-            flash(f'Bem-vindo(a), {usuario.nome}!', 'success')
-            return redirect(url_for('main'))  # redirecione para a rota desejada
-        else:
-            flash('Email ou senha incorretos.', 'danger')
+    usuario_nome = request.form.get('usuario')
+    senha = request.form.get('senha')
     
-    return render_template('login.html')
+    usuario = Usuario.query.filter_by(usuario=usuario_nome).first()
+    
+    if usuario and usuario.verificar_senha(senha):
+        session['usuario_id'] = usuario.id
+        session['usuario_nome'] = usuario.nome
+        session['usuario_role'] = usuario.role
+        return jsonify(success=True, mensagem=f'Bem-vindo(a), {usuario.nome}!')
+    else:
+        return jsonify(success=False, mensagem='Usuário ou senha incorretos.')
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        nome = request.form['nome']
-        email = request.form['email']
-        senha = request.form['senha']
-        confirmar_senha = request.form['confirmar_senha']
+        data = request.get_json()
+    
+        nome = data.get('nome')
+        sobrenome = data.get('sobrenome')
+        email = data.get('email')
+        telefone = data.get('telefone')
+        usuario = data.get('usuario')
+        senha = data.get('senha')
         
-        if senha != confirmar_senha:
-            flash('As senhas não coincidem.', 'warning')
-            return redirect(url_for('cadastro'))
+        if Usuario.query.filter_by(usuario=usuario).first():
+            flash('Este nome de usuário já está cadastrado.', 'danger')
+            return redirect(url_for('index'))
         
-        if Usuario.query.filter_by(email=email).first():
-            flash('Este email já está cadastrado.', 'danger')
-            return redirect(url_for('cadastro'))
-        
-        novo_usuario = Usuario(nome=nome, email=email)
+        novo_usuario = Usuario(nome=nome, sobrenome=sobrenome, email=email, telefone=telefone, usuario=usuario)
         novo_usuario.set_senha(senha)
         
         db.session.add(novo_usuario)
         db.session.commit()
         
         flash('Cadastro realizado com sucesso! Faça login.', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('home'))
     
-    return render_template('cadastro.html')        
+    return render_template('index.html')        
 
 @app.before_request
 def verificar_autenticacao():
-    rotas_liberadas = ['home', 'login', 'cadastro', 'static']
+    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal']
     
     if request.endpoint not in rotas_liberadas and 'usuario_id' not in session:
         flash('Você precisa estar logado para acessar esta página.', 'warning')
-        return redirect(url_for('login'))
+        return redirect(url_for('home'))
 
 
 @app.context_processor
@@ -97,7 +94,7 @@ def cidade(nome_cidade):
         titulo = request.form['titulo']
         descricao = request.form['descricao']
         usuario_id = session['usuario_id']
-        estado = request.form['estado']  # Agora está seguro usar isso aqui
+        estado = request.form['estado']
 
         novo_feedback = Feedback(
             cidade=nome_cidade,
@@ -116,6 +113,10 @@ def cidade(nome_cidade):
 
     return render_template(f'estados/{estado}/{nome_cidade}.html', cidade=nome_cidade, estado=estado, feedbacks=feedbacks)
 
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
 
 @app.route('/')
 def home():
@@ -129,6 +130,23 @@ def main():
         usuario = Usuario.query.get(session['usuario_id'])
     return render_template('main.html', usuario=usuario)
 
+@app.route('/deletar_feedback/<int:feedback_id>', methods=['POST'])
+def deletar_feedback(feedback_id):
+    if session.get('usuario_role') != 'admin':
+        flash('Apenas administradores podem excluir feedbacks.', 'danger')
+        return redirect(url_for('main'))
+
+    feedback = Feedback.query.get_or_404(feedback_id)
+    cidade = feedback.cidade
+
+    estado = request.args.get('estado', 'pernambuco')
+
+    db.session.delete(feedback)
+    db.session.commit()
+    flash('Feedback excluído com sucesso!', 'success')
+
+    return redirect(url_for('cidade', nome_cidade=cidade, estado=estado))
+
 @app.route('/favoritos')
 def favoritos():
     usuario = None
@@ -136,6 +154,12 @@ def favoritos():
         usuario = Usuario.query.get(session['usuario_id'])
     return render_template('global/favoritos.html', usuario=usuario)
 
+@app.route('/perfil')
+def perfil():
+    usuario = None
+    if 'usuario_id' in session:
+        usuario = Usuario.query.get(session['usuario_id'])
+    return render_template('global/perfil.html', usuario=usuario)
 
 @app.route('/recife')
 def recife():
@@ -152,7 +176,6 @@ def global_template(template_name):
     except Exception as e:
         print(f"Erro ao carregar template {template_name}: {str(e)}")
         return f"Erro ao carregar template {template_name}", 500
-
 
 @app.route('/<path:template_path>')
 def render_dynamic_template(template_path):
@@ -198,9 +221,10 @@ def dicas(estado, cidade):
 
 
 @app.route('/modais/<path:modal_path>')
-def modal_template(modal_path):
-    # Para servir os modais
-    return render_template(f'modais/{modal_path}.html')
+def load_modal(modal_path):
+    print(f"Carregando modal: {modal_path}")
+    return render_template(f"modais/{modal_path}.html")
+
 
 # Rotas para os componentes reutilizáveis
 @app.route('/components/<component_name>')
