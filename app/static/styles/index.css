@@ -313,3 +313,299 @@ footer #slogan {
 .modal .close:hover {
     color: #9D4F21;
 }
+/* Solução Responsiva Final para Rotas Nordestinas - Apenas CSS */
+
+/* Reset e configurações base */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ajustes básicos de container */
+.container1 {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ====== MEDIA QUERIES ====== */
+
+/* Tablets grandes e notebooks pequenos */
+@media screen and (max-width: 1200px) {
+    .nav-bar {
+        gap: 5em;
+    }
+    
+    .group1 {
+        width: 50%;
+    }
+    
+    .container1 {
+        padding: 20px 60px;
+    }
+    
+    .essence {
+        font-size: 60px;
+    }
+    
+    .features {
+        gap: 40px;
+    }
+}
+
+/* Tablets e dispositivos médios */
+@media screen and (max-width: 1024px) {
+    .nav-bar {
+        gap: 2em;
+        padding: 0 20px;
+    }
+    
+    .group1 {
+        width: 60%;
+    }
+    
+    .container1 {
+        padding: 20px 40px;
+    }
+    
+    .essence {
+        font-size: 50px;
+    }
+    
+    .universe {
+        font-size: 22px;
+    }
+    
+    .features {
+        gap: 30px;
+        padding: 30px;
+    }
+    
+    .feature {
+        width: 280px;
+    }
+    
+    footer .intro {
+        padding: 0px 50px;
+    }
+}
+
+/* Tablets pequenos e dispositivos médios */
+@media screen and (max-width: 768px) {
+    header, .main-header {
+        height: 450px;
+    }
+    
+    .nav-bar {
+        position: relative;
+        padding: 15px 0;
+    }
+    
+    /* Criando o ícone de menu hambúrguer com CSS puro */
+    .nav-bar::after {
+        content: '';
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        width: 30px;
+        height: 22px;
+        background: linear-gradient(
+            to bottom,
+            #122214 0%, #122214 20%,
+            transparent 20%, transparent 40%,
+            #122214 40%, #122214 60%,
+            transparent 60%, transparent 80%,
+            #122214 80%, #122214 100%
+        );
+        cursor: pointer;
+        z-index: 100;
+        border-radius: 3px;
+    }
+    
+    /* O menu começa escondido em dispositivos móveis */
+    .group1 {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+        gap: 15px;
+    }
+    
+    /* Exibe o menu quando o nav-bar é clicado/hover */
+    .nav-bar:hover .group1, 
+    .nav-bar:active .group1,
+    .nav-bar:focus-within .group1 {
+        display: flex;
+    }
+    
+    .group1 a {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .divider {
+        display: none; /* Remove divisores em telas pequenas */
+    }
+    
+    .container1 {
+        gap: 2em;
+        padding: 20px 30px;
+    }
+    
+    .essence {
+        font-size: 40px;
+    }
+    
+    .universe {
+        font-size: 18px;
+    }
+    
+    .explore-button {
+        font-size: 1em;
+        padding: 5px 30px;
+    }
+    
+    .features {
+        padding: 30px 15px;
+        gap: 25px;
+    }
+    
+    .feature {
+        width: 220px;
+    }
+    
+    footer .intro {
+        padding: 0px 30px;
+        font-size: 14px;
+    }
+}
+
+/* Smartphones e dispositivos pequenos */
+@media screen and (max-width: 480px) {
+    header, .main-header {
+        height: 400px;
+    }
+    
+    .nav-bar img {
+        width: 6em;
+    }
+    
+    .container1 {
+        padding: 10px 20px;
+        align-items: center;
+    }
+    
+    .text-box {
+        text-align: center;
+    }
+    
+    .essence {
+        font-size: 32px;
+    }
+    
+    .universe {
+        font-size: 16px;
+    }
+    
+    .explore-button {
+        font-size: 0.9em;
+        padding: 5px 20px;
+        gap: 10px;
+    }
+    
+    .explore-button i {
+        font-size: 20px;
+    }
+    
+    .features {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 10px;
+    }
+    
+    .feature {
+        width: 90%;
+        max-width: 300px;
+    }
+    
+    footer .intro {
+        padding: 0px 15px;
+        font-size: 13px;
+    }
+    
+    footer #slogan {
+        font-size: 13px;
+    }
+    
+    /* Modal responsivo */
+    .modal {
+        width: 90%;
+        max-width: none;
+    }
+}
+
+/* Dispositivos muito pequenos */
+@media screen and (max-width: 320px) {
+    .essence {
+        font-size: 28px;
+    }
+    
+    .universe {
+        font-size: 14px;
+    }
+    
+    .explore-button {
+        font-size: 0.8em;
+        padding: 5px 15px;
+    }
+}
+
+/* Melhorias para acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ====== MELHORIAS GERAIS ====== */
+
+/* Melhoria para o footer */
+footer {
+    margin-top: auto; /* Empurra o footer para o fim da página */
+}
+
+/* Melhoria para o botão de explorar */
+.explore-button:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* Melhoria para os links do menu */
+.group1 a:focus {
+    outline: 2px solid rgb(18, 34, 20);
+    outline-offset: 2px;
+}
+
+/* Melhoria para os cards de feature */
+.feature {
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+}

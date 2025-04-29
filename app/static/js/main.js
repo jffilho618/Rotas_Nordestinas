@@ -18,11 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
         userSidebar.classList.add('open');
     });
 
-    // Fechar sidebar do usuário
+    // Fechar sidebar com o botão "Sair"
     closeButton.addEventListener('click', () => {
         userSidebarWrapper.classList.remove('open');
         userSidebar.classList.remove('open');
         showSuccessToast('Logout realizado com sucesso!');
+    });
+
+    // Fechar sidebar com o "X"
+    closeXButton.addEventListener('click', () => {
+        userSidebarWrapper.classList.remove('open');
+        userSidebar.classList.remove('open');
     });
 
     // Fechar sidebar ao clicar fora
