@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}Perfil de Usuário - Rotas Nordestinas{% endblock %}
@@ -10,7 +9,6 @@
 <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
-
 {% endblock %}
 
 {% block content %}
@@ -21,13 +19,16 @@
             <!-- Coluna esquerda - Foto e informações básicas -->
             <div class="profile-sidebar">
                 <div class="profile-pic">
-                    <span>FT</span> <!-- Iniciais do usuário -->
+                    <span>{{ usuario.nome[0] }}{{ usuario.sobrenome[0] }}</span> <!-- Iniciais do usuário -->
                 </div>
                 <div class="profile-info">
                     <h2>{{usuario.nome}} {{usuario.sobrenome}}</h2>
                     <p>{{usuario.email}}</p>
                     <p>{{usuario.telefone}}</p>
-                    <p class="member-since">{{usuario.data_cadastro}}</p>
+                    {% if usuario.role == 'admin' %}
+                    <div class="admin-badge">Administrador</div>
+                    {% endif %}
+                    <p class="member-since">Membro desde: {{usuario.data_cadastro}}</p>
                 </div>
             </div>
 
@@ -38,31 +39,30 @@
                     
                     <!-- Nome -->
                     <div class="form-group">
-                        <label for="name">Nome</label>
+                        <label for="nome">Nome</label>
                         <span class="static-field">{{usuario.nome}}</span>
-                        <input type="text" id="name" class="form-control" value="{{usuario.nome}}">
+                        <input type="text" id="nome" class="form-control" value="{{usuario.nome}}">
                     </div>
 
                     <!-- Sobrenome -->
                     <div class="form-group">
-                        <label for="name">Sobrenome</label>
+                        <label for="sobrenome">Sobrenome</label>
                         <span class="static-field">{{usuario.sobrenome}}</span>
-                        <input type="text" id="name" class="form-control" value={{usuario.sobrenome}}>
+                        <input type="text" id="sobrenome" class="form-control" value="{{usuario.sobrenome}}">
                     </div>
-                    
                     
                     <!-- Email -->
                     <div class="form-group">
                         <label for="email">Email</label>
                         <span class="static-field">{{usuario.email}}</span>
-                        <input type="email" id="email" class="form-control" value={{usuario.email}}>
+                        <input type="email" id="email" class="form-control" value="{{usuario.email}}">
                     </div>
                     
                     <!-- Telefone -->
                     <div class="form-group">
-                        <label for="phone">Telefone</label>
+                        <label for="telefone">Telefone</label>
                         <span class="static-field">{{usuario.telefone}}</span>
-                        <input type="tel" id="phone" class="form-control" value={{usuario.telefone}}>
+                        <input type="tel" id="telefone" class="form-control" value="{{usuario.telefone}}">
                     </div>
                 </div>
 
@@ -73,76 +73,506 @@
                 </div>
             </div>
         </div>
+
+        {% if usuario.role == 'user' %}
+        <!-- Seção de administração - visível apenas para admins -->
+        <div class="admin-section">
+            <h2 class="admin-title">Painel de Administração</h2>
+            
+            <!-- Abas para alternar entre visualizações -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="openTab('feedbacks')">Feedbacks Denunciados</button>
+                <button class="tab-btn" onclick="openTab('banned')">Usuários Banidos</button>
+            </div>
+            
+            <!-- Conteúdo das abas -->
+            <div class="tab-content">
+                <!-- Feedbacks Denunciados -->
+                <div id="feedbacks" class="tab-pane active">
+                    <div class="section-header">
+                        <h3>Feedbacks Denunciados</h3>
+                        <span class="badge">5</span>
+                    </div>
+                    
+                    <div class="admin-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuário</th>
+                                    <th>Rota</th>
+                                    <th>Conteúdo</th>
+                                    <th>Denúncias</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>001</td>
+                                    <td>Maria Silva</td>
+                                    <td>Rota das Praias</td>
+                                    <td class="feedback-content">Este comentário contém conteúdo impróprio que foi denunciado por vários usuários.</td>
+                                    <td>8</td>
+                                    <td class="action-cell">
+                                        <button class="btn-view" onclick="viewFeedback(1)"><i class='bx bx-show'></i></button>
+                                        <button class="btn-approve" onclick="approveFeedback(1)"><i class='bx bx-check'></i></button>
+                                        <button class="btn-remove" onclick="removeFeedback(1)"><i class='bx bx-trash'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>002</td>
+                                    <td>João Pereira</td>
+                                    <td>Rota do Cangaço</td>
+                                    <td class="feedback-content">Esta avaliação contém linguagem ofensiva e foi reportada.</td>
+                                    <td>5</td>
+                                    <td class="action-cell">
+                                        <button class="btn-view" onclick="viewFeedback(2)"><i class='bx bx-show'></i></button>
+                                        <button class="btn-approve" onclick="approveFeedback(2)"><i class='bx bx-check'></i></button>
+                                        <button class="btn-remove" onclick="removeFeedback(2)"><i class='bx bx-trash'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>003</td>
+                                    <td>Ana Costa</td>
+                                    <td>Rota das Dunas</td>
+                                    <td class="feedback-content">Comentário com informações enganosas sobre a rota.</td>
+                                    <td>3</td>
+                                    <td class="action-cell">
+                                        <button class="btn-view" onclick="viewFeedback(3)"><i class='bx bx-show'></i></button>
+                                        <button class="btn-approve" onclick="approveFeedback(3)"><i class='bx bx-check'></i></button>
+                                        <button class="btn-remove" onclick="removeFeedback(3)"><i class='bx bx-trash'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>004</td>
+                                    <td>Carlos Santos</td>
+                                    <td>Rota dos Cânions</td>
+                                    <td class="feedback-content">Spam promocional disfarçado de avaliação genuína.</td>
+                                    <td>6</td>
+                                    <td class="action-cell">
+                                        <button class="btn-view" onclick="viewFeedback(4)"><i class='bx bx-show'></i></button>
+                                        <button class="btn-approve" onclick="approveFeedback(4)"><i class='bx bx-check'></i></button>
+                                        <button class="btn-remove" onclick="removeFeedback(4)"><i class='bx bx-trash'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>005</td>
+                                    <td>Luiza Oliveira</td>
+                                    <td>Rota Gastronômica</td>
+                                    <td class="feedback-content">Conteúdo que viola os termos de uso da plataforma.</td>
+                                    <td>4</td>
+                                    <td class="action-cell">
+                                        <button class="btn-view" onclick="viewFeedback(5)"><i class='bx bx-show'></i></button>
+                                        <button class="btn-approve" onclick="approveFeedback(5)"><i class='bx bx-check'></i></button>
+                                        <button class="btn-remove" onclick="removeFeedback(5)"><i class='bx bx-trash'></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Usuários Banidos -->
+                <div id="banned" class="tab-pane">
+                    <div class="section-header">
+                        <h3>Usuários Banidos</h3>
+                        <span class="badge">4</span>
+                    </div>
+                    
+                    <div class="admin-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>101</td>
+                                    <td>Roberto Almeida</td>
+                                    <td>roberto.almeida@email.com</td>
+                                    <td class="action-cell">
+                                        <button class="btn-unban" onclick="unbanUser(101)">Desbanir</button>
+                                        <button class="btn-view" onclick="viewUserDetails(101)"><i class='bx bx-show'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>102</td>
+                                    <td>Fernanda Lima</td>
+                                    <td>fernanda.lima@email.com</td>
+                                    <td class="action-cell">
+                                        <button class="btn-unban" onclick="unbanUser(102)">Desbanir</button>
+                                        <button class="btn-view" onclick="viewUserDetails(102)"><i class='bx bx-show'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>103</td>
+                                    <td>Paulo Ribeiro</td>
+                                    <td>paulo.ribeiro@email.com</td>
+                                    <td class="action-cell">
+                                        <button class="btn-unban" onclick="unbanUser(103)">Desbanir</button>
+                                        <button class="btn-view" onclick="viewUserDetails(103)"><i class='bx bx-show'></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>104</td>
+                                    <td>Camila Rocha</td>
+                                    <td>camila.rocha@email.com</td>
+                                    <td class="action-cell">
+                                        <button class="btn-unban" onclick="unbanUser(104)">Desbanir</button>
+                                        <button class="btn-view" onclick="viewUserDetails(104)"><i class='bx bx-show'></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 
-    {% endblock %}
+    <!-- Modais para exibir detalhes -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('feedbackModal')">&times;</span>
+            <h2>Detalhes do Feedback</h2>
+            <div id="feedbackDetails">
+                <!-- Conteúdo preenchido via JavaScript -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="approveFeedbackFromModal()">Aprovar</button>
+                <button class="btn btn-danger" onclick="removeFeedbackFromModal()">Remover</button>
+            </div>
+        </div>
+    </div>
 
-    {% block extra_js %}
-    <script>
-        // Função para ativar o modo de edição
-        function enableEditMode() {
-            document.getElementById('profileForm').classList.remove('view-mode');
-            document.getElementById('profileForm').classList.add('edit-mode');
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('userModal')">&times;</span>
+            <h2>Detalhes do Usuário</h2>
+            <div id="userDetails">
+                <!-- Conteúdo preenchido via JavaScript -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="unbanUserFromModal()">Desbanir Usuário</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Função para ativar o modo de edição
+    function enableEditMode() {
+        document.getElementById('profileForm').classList.remove('view-mode');
+        document.getElementById('profileForm').classList.add('edit-mode');
+    }
+    
+    // Função para salvar as alterações
+    function saveProfile() {
+        // Aqui você adicionaria a lógica para salvar as informações
+        alert('Perfil atualizado com sucesso!');
+        
+        // Atualizar as informações visíveis no sidebar
+        const nome = document.getElementById('nome').value;
+        const sobrenome = document.getElementById('sobrenome').value;
+        const email = document.getElementById('email').value;
+        const telefone = document.getElementById('telefone').value;
+        
+        // Atualizar o sidebar com os novos valores
+        document.querySelector('.profile-info h2').textContent = nome + ' ' + sobrenome;
+        document.querySelector('.profile-info p:nth-child(2)').textContent = email;
+        document.querySelector('.profile-info p:nth-child(3)').textContent = telefone;
+        
+        // Voltar para o modo de visualização
+        document.getElementById('profileForm').classList.remove('edit-mode');
+        document.getElementById('profileForm').classList.add('view-mode');
+        
+        // Atualizar os campos estáticos
+        document.querySelectorAll('.static-field')[0].textContent = nome;
+        document.querySelectorAll('.static-field')[1].textContent = sobrenome;
+        document.querySelectorAll('.static-field')[2].textContent = email;
+        document.querySelectorAll('.static-field')[3].textContent = telefone;
+    }
+    
+    // Função para cancelar a edição
+    function cancelEdit() {
+        // Resetar os valores dos campos para os valores originais
+        const nomeStatic = document.querySelectorAll('.static-field')[0].textContent;
+        const sobrenomeStatic = document.querySelectorAll('.static-field')[1].textContent;
+        const emailStatic = document.querySelectorAll('.static-field')[2].textContent;
+        const telefoneStatic = document.querySelectorAll('.static-field')[3].textContent;
+        
+        document.getElementById('nome').value = nomeStatic;
+        document.getElementById('sobrenome').value = sobrenomeStatic;
+        document.getElementById('email').value = emailStatic;
+        document.getElementById('telefone').value = telefoneStatic;
+        
+        // Voltar para o modo de visualização
+        document.getElementById('profileForm').classList.remove('edit-mode');
+        document.getElementById('profileForm').classList.add('view-mode');
+    }
+    
+    // Funções para a seção de administração
+    function openTab(tabName) {
+        // Esconder todas as abas
+        const tabPanes = document.getElementsByClassName('tab-pane');
+        for (let i = 0; i < tabPanes.length; i++) {
+            tabPanes[i].classList.remove('active');
         }
         
-        // Função para salvar as alterações
-        function saveProfile() {
-            // Aqui você adicionaria a lógica para salvar as informações
-            alert('Perfil atualizado com sucesso!');
-            
-            // Atualizar as informações visíveis no sidebar
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            
-            // Atualizar o sidebar com os novos valores
-            document.querySelector('.profile-info h2').textContent = name;
-            document.querySelector('.profile-info p:nth-child(2)').textContent = email;
-            document.querySelector('.profile-info p:nth-child(3)').textContent = phone;
-            
-            // Voltar para o modo de visualização
-            document.getElementById('profileForm').classList.remove('edit-mode');
-            document.getElementById('profileForm').classList.add('view-mode');
-            
-            // Atualizar os campos estáticos
-            document.querySelectorAll('.static-field')[0].textContent = name;
-            document.querySelectorAll('.static-field')[1].textContent = email;
-            document.querySelectorAll('.static-field')[2].textContent = phone;
+        // Remover classe active de todos os botões
+        const tabButtons = document.getElementsByClassName('tab-btn');
+        for (let i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].classList.remove('active');
         }
         
-        // Função para cancelar a edição
-        function cancelEdit() {
-            // Resetar os valores dos campos para os valores originais
-            const nameStatic = document.querySelectorAll('.static-field')[0].textContent;
-            const emailStatic = document.querySelectorAll('.static-field')[1].textContent;
-            const phoneStatic = document.querySelectorAll('.static-field')[2].textContent;
-            
-            document.getElementById('name').value = nameStatic;
-            document.getElementById('email').value = emailStatic;
-            document.getElementById('phone').value = phoneStatic;
-            
-            // Limpar campos de senha
-            document.getElementById('current_password').value = '';
-            document.getElementById('new_password').value = '';
-            document.getElementById('confirm_password').value = '';
-            
-            // Voltar para o modo de visualização
-            document.getElementById('profileForm').classList.remove('edit-mode');
-            document.getElementById('profileForm').classList.add('view-mode');
-        }
+        // Mostrar a aba selecionada
+        document.getElementById(tabName).classList.add('active');
         
-        // Função para mostrar/ocultar senha
-        document.querySelectorAll('.toggle-password').forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.previousElementSibling;
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    this.textContent = '🔒';
-                } else {
-                    input.type = 'password';
-                    this.textContent = '👁️';
-                }
-            });
-        });
-    </script>
-    {% endblock %}
+        // Ativar o botão correspondente
+        event.currentTarget.classList.add('active');
+    }
+    
+    // Funções para ações nos feedbacks
+    function viewFeedback(id) {
+        // Dados ilustrativos para o modal
+        const feedbacks = {
+            1: {
+                id: "001",
+                usuario: "Maria Silva",
+                rota: "Rota das Praias",
+                conteudo: "Este comentário contém conteúdo impróprio que foi denunciado por vários usuários. O texto completo inclui linguagem ofensiva e referências inadequadas que violam os termos de uso da plataforma.",
+                data: "10/04/2025",
+                denuncias: 8,
+                denunciantes: ["João P.", "Ana C.", "Carlos M.", "Fernanda L.", "Roberto A.", "Camila R.", "Lucas S.", "Mariana T."]
+            },
+            2: {
+                id: "002",
+                usuario: "João Pereira",
+                rota: "Rota do Cangaço",
+                conteudo: "Esta avaliação contém linguagem ofensiva e foi reportada por vários usuários. O texto completo inclui palavrões e ataques pessoais a outros membros da comunidade.",
+                data: "15/04/2025",
+                denuncias: 5,
+                denunciantes: ["Maria S.", "Carlos M.", "Roberto A.", "Camila R.", "Lucas S."]
+            },
+            3: {
+                id: "003",
+                usuario: "Ana Costa",
+                rota: "Rota das Dunas",
+                conteudo: "Comentário com informações enganosas sobre a rota. O usuário afirma que há serviços que não existem e dissemina informações incorretas sobre acessibilidade e segurança.",
+                data: "18/04/2025",
+                denuncias: 3,
+                denunciantes: ["Maria S.", "João P.", "Roberto A."]
+            },
+            4: {
+                id: "004",
+                usuario: "Carlos Santos",
+                rota: "Rota dos Cânions",
+                conteudo: "Spam promocional disfarçado de avaliação genuína. O comentário inclui links para serviços externos e tenta promover negócios não relacionados à plataforma.",
+                data: "20/04/2025",
+                denuncias: 6,
+                denunciantes: ["Maria S.", "João P.", "Ana C.", "Roberto A.", "Camila R.", "Lucas S."]
+            },
+            5: {
+                id: "005",
+                usuario: "Luiza Oliveira",
+                rota: "Rota Gastronômica",
+                conteudo: "Conteúdo que viola os termos de uso da plataforma. O comentário contém desinformação sobre estabelecimentos locais e acusações sem fundamento.",
+                data: "22/04/2025",
+                denuncias: 4,
+                denunciantes: ["Maria S.", "João P.", "Carlos M.", "Roberto A."]
+            }
+        };
+        
+        const feedback = feedbacks[id];
+        
+        // Preencher o modal com os dados
+        let html = `
+            <div class="feedback-detail">
+                <p><strong>ID:</strong> ${feedback.id}</p>
+                <p><strong>Usuário:</strong> ${feedback.usuario}</p>
+                <p><strong>Rota:</strong> ${feedback.rota}</p>
+                <p><strong>Data:</strong> ${feedback.data}</p>
+                <p><strong>Número de Denúncias:</strong> ${feedback.denuncias}</p>
+                <div class="denunciantes">
+                    <p><strong>Denunciado por:</strong></p>
+                    <ul>
+                        ${feedback.denunciantes.map(d => `<li>${d}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="feedback-full-content">
+                    <p><strong>Conteúdo completo:</strong></p>
+                    <div class="content-box">${feedback.conteudo}</div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('feedbackDetails').innerHTML = html;
+        document.getElementById('feedbackModal').style.display = 'block';
+        
+        // Armazenar o ID do feedback atual para uso nas ações do modal
+        document.getElementById('feedbackModal').dataset.feedbackId = id;
+    }
+    
+    function approveFeedback(id) {
+        if (confirm(`Deseja aprovar o feedback ID ${id}? Isso removerá todas as denúncias.`)) {
+            alert(`Feedback ID ${id} aprovado com sucesso!`);
+            // Aqui você adicionaria a lógica para aprovar o feedback
+            // Como é apenas ilustrativo, vamos remover a linha da tabela
+            const row = document.querySelector(`tr td:first-child:contains(${id.toString().padStart(3, '0')})`).parentNode;
+            row.parentNode.removeChild(row);
+            updateBadgeCount('feedbacks');
+        }
+    }
+    
+    function removeFeedback(id) {
+        if (confirm(`Deseja remover permanentemente o feedback ID ${id}?`)) {
+            alert(`Feedback ID ${id} removido com sucesso!`);
+            // Aqui você adicionaria a lógica para remover o feedback
+            // Como é apenas ilustrativo, vamos remover a linha da tabela
+            const row = document.querySelector(`tbody tr:nth-child(${id})`);
+            row.parentNode.removeChild(row);
+            updateBadgeCount('feedbacks');
+        }
+    }
+    
+    // Funções para ações nos usuários banidos
+    function viewUserDetails(id) {
+        // Dados ilustrativos para o modal
+        const users = {
+            101: {
+                id: "101",
+                nome: "Roberto Almeida",
+                email: "roberto.almeida@email.com",
+                telefone: "(81) 99876-5432",
+                data_registro: "15/01/2024",
+                data_banimento: "12/03/2025",
+                motivo: "Múltiplas violações dos termos de uso",
+                detalhes: "Usuário acumulou 15 denúncias em um período de 30 dias. Publicou conteúdo ofensivo e spam comercial em diversas rotas.",
+                avisos_previos: ["01/02/2025 - Aviso por comentário ofensivo", "20/02/2025 - Aviso por spam", "05/03/2025 - Aviso final"]
+            },
+            102: {
+                id: "102",
+                nome: "Fernanda Lima",
+                email: "fernanda.lima@email.com",
+                telefone: "(85) 98765-4321",
+                data_registro: "03/02/2024",
+                data_banimento: "05/04/2025",
+                motivo: "Criação de conteúdo ofensivo",
+                detalhes: "Usuária postou comentários com linguagem ofensiva e ataques a outras pessoas em diversas rotas.",
+                avisos_previos: ["15/03/2025 - Primeiro aviso", "30/03/2025 - Aviso final"]
+            },
+            103: {
+                id: "103",
+                nome: "Paulo Ribeiro",
+                email: "paulo.ribeiro@email.com",
+                telefone: "(71) 97654-3210",
+                data_registro: "10/12/2023",
+                data_banimento: "18/03/2025",
+                motivo: "Comportamento abusivo contra outros usuários",
+                detalhes: "Usuário enviou mensagens abusivas para outros membros da comunidade e fez ameaças.",
+                avisos_previos: ["25/02/2025 - Primeiro aviso", "10/03/2025 - Aviso final"]
+            },
+            104: {
+                id: "104",
+                nome: "Camila Rocha",
+                email: "camila.rocha@email.com",
+                telefone: "(83) 96543-2109",
+                data_registro: "22/03/2024",
+                data_banimento: "22/04/2025",
+                motivo: "Spam e promoção comercial não autorizada",
+                detalhes: "Usuária utilizou a plataforma para divulgar serviços comerciais não autorizados, criando múltiplos posts promocionais.",
+                avisos_previos: ["01/04/2025 - Primeiro aviso", "15/04/2025 - Aviso final"]
+            }
+        };
+        
+        const user = users[id];
+        
+        // Preencher o modal com os dados
+        let html = `
+            <div class="user-detail">
+                <p><strong>ID:</strong> ${user.id}</p>
+                <p><strong>Nome:</strong> ${user.nome}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Telefone:</strong> ${user.telefone}</p>
+                <p><strong>Data de Registro:</strong> ${user.data_registro}</p>
+                <p><strong>Data de Banimento:</strong> ${user.data_banimento}</p>
+                <div class="ban-reason">
+                    <p><strong>Motivo do Banimento:</strong> ${user.motivo}</p>
+                    <div class="details-box">${user.detalhes}</div>
+                </div>
+                <div class="previous-warnings">
+                    <p><strong>Avisos Prévios:</strong></p>
+                    <ul>
+                        ${user.avisos_previos.map(w => `<li>${w}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('userDetails').innerHTML = html;
+        document.getElementById('userModal').style.display = 'block';
+        
+        // Armazenar o ID do usuário atual para uso nas ações do modal
+        document.getElementById('userModal').dataset.userId = id;
+    }
+    
+    function unbanUser(id) {
+        if (confirm(`Deseja desbanir o usuário ID ${id}?`)) {
+            alert(`Usuário ID ${id} desbanido com sucesso!`);
+            // Aqui você adicionaria a lógica para desbanir o usuário
+            // Como é apenas ilustrativo, vamos remover a linha da tabela
+            const row = document.querySelector(`tbody tr td:first-child:contains('${id}')`).parentNode;
+            row.parentNode.removeChild(row);
+            updateBadgeCount('banned');
+        }
+    }
+    
+    // Funções para os modais
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+    
+    function approveFeedbackFromModal() {
+        const id = document.getElementById('feedbackModal').dataset.feedbackId;
+        closeModal('feedbackModal');
+        approveFeedback(id);
+    }
+    
+    function removeFeedbackFromModal() {
+        const id = document.getElementById('feedbackModal').dataset.feedbackId;
+        closeModal('feedbackModal');
+        removeFeedback(id);
+    }
+    
+    function unbanUserFromModal() {
+        const id = document.getElementById('userModal').dataset.userId;
+        closeModal('userModal');
+        unbanUser(id);
+    }
+    
+    // Função para atualizar o contador de itens
+    function updateBadgeCount(tabName) {
+        const badge = document.querySelector(`#${tabName} .badge`);
+        const count = document.querySelectorAll(`#${tabName} tbody tr`).length;
+        badge.textContent = count;
+    }
+    
+    // Polyfill para o seletor :contains (usado na função de remover linhas)
+    jQuery.expr[':'].contains = function(a, i, m) {
+        return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+    
+    // Fechar modais quando clicar fora deles
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    };
+</script>
+{% endblock %}
