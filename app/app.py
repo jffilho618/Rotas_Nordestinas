@@ -89,7 +89,7 @@ def cidade(nome_cidade):
     if request.method == 'POST':
         if 'usuario_id' not in session:
             flash('Você precisa estar logado para enviar feedback.', 'warning')
-            return redirect(url_for('login'))
+            return redirect(url_for('main'))
 
         titulo = request.form['titulo']
         descricao = request.form['descricao']
