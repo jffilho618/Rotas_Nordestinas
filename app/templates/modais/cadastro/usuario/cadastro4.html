@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/cadastro.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+<script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
+
 
 <!-- Modal para Cadastro -->
 <div id="cadastro4" class="modal">
@@ -32,7 +34,7 @@
                     </div>
                 </div>
                 <p class="info-campos"><span class="required"> *</span> Campos obrigatórios</p>
-                <button type="submit" class="btn">Confirmar</button>
+                <button type="submit" class="btn" onclick="finalizarCadastro()">Confirmar</button>
             </div>
         </form>
     </div>

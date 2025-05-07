@@ -17,8 +17,7 @@
             <img class="logo" src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
             <div class="group1">
                 <a href="javascript:void(0)" onclick="openModal('cadastro/usuario/cadastro1')">CRIE UMA CONTA</a>
-                <div class="divider"></div>
-                <a href="javascript:void(0)" onclick="openModal('cadastro/colaborador/cadastro_C1')">SEJA UM USUÁRIO PRO</a>
+
                 <div class="divider"></div>
                 <a href="javascript:void(0)" onclick="openModal('login/login')">ACESSE SUA CONTA</a>
             </div>
@@ -67,6 +66,7 @@
     <div id="rotas-toast-container" class="rotas-toast-container"></div>
     <script src="{{ url_for('static', filename='js/toast.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.querySelector('.main-header');

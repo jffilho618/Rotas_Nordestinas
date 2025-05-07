@@ -12,7 +12,7 @@
 </head>
 <body>
     <header class="header">
-        <a href="{{ url_for('home') }}" class="back-button">< VOLTAR</a>
+        <a href="{{ url_for('home') }}" class="back-button"> VOLTAR</a>
         <img class="logo" src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas">
         <button class="menu-button" id="menuButton">☰</button>
     </header>
@@ -23,13 +23,17 @@
                 <button class="close-x-button" id="closeXButton">×</button>
                 <div class="header">
                     <img src="{{ url_for('static', filename='images/icons/PERFIL.png') }}" alt="Perfil">
-                    <h2>Pikachu Silva</h2>
-                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">[email protected]</a></p>
+                    <h2>{{usuario.nome}}</h2>
+                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">{{usuario.email}}</a></p>
                 </div>
-                <div class="options-container"></div>
+                <div class="options-container">
+                    <a href="{{ url_for('home') }}" class="option"><i class="bx bx-home"></i><span>Início</span></a>
+                    <a href="{{ url_for('favoritos') }}" class="option"><i class="bx bx-star"></i><span>Meus Favoritos</span></a>
+                    <a href="{{ url_for('perfil') }}" class="option" id="editProfileButton"><i class="bx bx-user"></i><span>Meu Perfil</span></a>
+                </div>
                 <div class="bottom-buttons">
                     <button class="support-button"><i class="bx bx-support"></i>Suporte</button>
-                    <button class="close-button" id="closeButton"><i class="bx bx-log-out"></i>Sair</button>
+                    <a href="{{url_for('logout')}}" class="close-button" id="closeButton"><i class="bx bx-log-out"></i>Sair</a>
                 </div>
             </div>
         </div>
@@ -59,16 +63,16 @@
         <section class="region">
             <h2>Pernambuco</h2>
             <div class="cities-grid">
-                <a href="{{ url_for('recife') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Recife_01.jpg') }}">
+                <a href="{{  url_for('cidade', nome_cidade='recife', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Recife_01.jpg') }}">
                     <span>Recife</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='tamandare') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Tamandare_01.jpg') }}">
+                <a href="{{  url_for('cidade', nome_cidade='tamandare', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Tamandare_01.jpg') }}">
                     <span>Tamandaré</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='olinda') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Olinda_01.jpeg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='olinda', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Olinda_01.jpeg') }}">
                     <span>Olinda</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='caruaru') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='caruaru', estado='pernambuco') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}">
                     <span>Caruaru</span>
                 </a>
             </div>
@@ -76,16 +80,16 @@
         <section class="region">
             <h2>Piauí</h2>
             <div class="cities-grid">
-                <a href="{{ url_for('global_template', template_name='parnaiba') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Parnaiba_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='parnaiba', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Parnaiba_01.jpg') }}">
                     <span>Parnaíba</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='teresina') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Teresina_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='teresina', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Teresina_01.jpg') }}">
                     <span>Teresina</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='barra_grande') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Barra-Grande-do-Piauí_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='barra_grande', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Barra-Grande-do-Piauí_01.jpg') }}">
                     <span>Barra Grande</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='sao_raimundo_nonato') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Sao_Raimundo_Nonato_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='sao_raimundo_nonato', estado='piaui') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Sao_Raimundo_Nonato_01.jpg') }}">
                     <span>São Raimundo Nonato</span>
                 </a>
             </div>
@@ -93,16 +97,16 @@
         <section class="region">
             <h2>Bahia</h2>
             <div class="cities-grid">
-                <a href="{{ url_for('global_template', template_name='salvador') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Salvador_01.jpeg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='salvador', estado='bahia') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Salvador_01.jpeg') }}">
                     <span>Salvador</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='porto_seguro') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Porto-Seguro_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='porto_seguro', estado='bahia')}}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Porto-Seguro_01.jpg') }}">
                     <span>Porto Seguro</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='ilheus') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Ilheus_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='ilheus', estado='bahia') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Ilheus_01.jpg') }}">
                     <span>Ilhéus</span>
                 </a>
-                <a href="{{ url_for('global_template', template_name='luis_eduardo') }}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Luis_Eduardo_01.jpg') }}">
+                <a href="{{ url_for('cidade', nome_cidade='luis_eduardo', estado='bahia')}}" class="city-card" data-bg="{{ url_for('static', filename='images/cidades/Luis_Eduardo_01.jpg') }}">
                     <span>Luís Eduardo</span>
                 </a>
             </div>

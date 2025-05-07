@@ -15,31 +15,32 @@
     
     <div class="banner">
         <div class="city-banner">
-            <img src="{{ url_for('static', filename='images/cidades/Porto-Seguro_01.jpg') }}" alt="Porto_seguro">
-            <div class="city-name">PORTO SEGURO</div>
+            <img src="{{ url_for('static', filename='images/cidades/recife.png') }}" alt="Recife">
+            <div class="city-name">RECIFE</div>
         </div>
         <div class="city-description">
-            <p>Porto Seguro é um dos destinos turísticos mais visitados da Bahia, localizado no sul do estado. Foi onde os portugueses desembarcaram pela primeira vez em 1500. A cidade encanta com suas praias, vida noturna agitada, vilas como Arraial d'Ajuda e Trancoso, e rica história.</p>
+            <p>Recife é um município brasileiro, capital do estado de Pernambuco, localizado na Região Nordeste do país. Com área territorial de aproximadamente 218 km², é formado por uma planície aluvial, tendo as ilhas, penínsulas e manguezais como suas principais características geográficas.</p>
         </div>
         <div class="city-buttons">
-            <a href="{{ url_for('como_chegar', estado='bahia', cidade='porto_seguro')}}" class="button-link">
+            <a href="{{ url_for('como_chegar', estado='pernambuco', cidade='recife') }}" class="button-link">
                 <img src="{{ url_for('static', filename='images/icons/location-white.svg') }}" alt="Como chegar"> Como chegar
             </a>
-            <a href="{{ url_for('pontos_turisticos', estado='bahia', cidade='porto_seguro') }}" class="button-link">
-                  <img src="{{ url_for('static', filename='images/icons/places-white.svg') }}" alt="Pontos turísticos"> Pontos Turísticos
-              </a>
-            <a href="{{ url_for('atividades', estado='bahia', cidade='porto_seguro') }}" class="button-link">
-                  <img src="{{ url_for('static', filename='images/icons/calendar-white.svg') }}" alt="Atividades"> Atividades
-              </a>
-            <a href="{{ url_for('dicas', estado='bahia', cidade='porto_seguro') }}" class="button-link">
-                  <img src="{{ url_for('static', filename='images/icons/lampada-white.svg') }}" alt="Dicas"> Dicas
-              </a>
+            <a href="{{ url_for('pontos_turisticos', estado='pernambuco', cidade='recife') }}" class="button-link">
+                <img src="{{ url_for('static', filename='images/icons/places-white.svg') }}" alt="Pontos turísticos"> Pontos Turísticos
+            </a>
+            <a href="{{ url_for('atividades', estado='pernambuco', cidade='recife') }}" class="button-link">
+                <img src="{{ url_for('static', filename='images/icons/calendar-white.svg') }}" alt="Atividades"> Atividades
+            </a>
+            <a href="{{ url_for('dicas', estado='pernambuco', cidade='recife') }}" class="button-link">
+                <img src="{{ url_for('static', filename='images/icons/lampada-white.svg') }}" alt="Dicas"> Dicas
+            </a>
         </div>
     </div>
     
+    
     <section id="feedback-section">
         <div class="part1">
-            <h2>Feedback dos Usuários em Porto Seguro</h2>
+            <h2>Feedback dos Usuários em Recife</h2>
             <hr class="divider-line">
         </div>
 
@@ -62,7 +63,6 @@
                     {% endif %}
                 </div>
             </div>
-            </div>
             <div class="part2-2">
                 <p><strong>{{ f.titulo }}</strong><br>{{ f.descricao }}</p>
             </div>
@@ -72,10 +72,10 @@
         {% if session.get('usuario_id') %}
         <div class="feedback-form">
             <h3>Deixe seu Feedback</h3>
-            <form method="POST" action="{{ url_for('cidade', nome_cidade='porto_seguro') }}">
-                <input type="hidden" name="cidade" value="porto_seguro">
+            <form method="POST" action="{{ url_for('cidade', nome_cidade='recife') }}">
+                <input type="hidden" name="cidade" value="recife">
 
-                <input type="hidden" name="estado" value="bahia">
+                <input type="hidden" name="estado" value="pernambuco">
                 
                 <label for="titulo">Título:</label>
                 <input type="text" id="titulo" name="titulo" placeholder="Digite um título" required>

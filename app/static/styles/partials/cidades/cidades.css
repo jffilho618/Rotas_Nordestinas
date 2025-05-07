@@ -317,20 +317,52 @@ body {
 }
 
 
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.like {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.delete-form {
+    margin: 0;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
 
 
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+.delete-button:hover {
+    background-color: #b02a37;
+}
 
 
 /*******************  footer ****************/
@@ -373,4 +405,199 @@ footer #slogan {
     font-family: Inter;
     font-weight: 800;
     margin-bottom: 20px;
+}
+
+
+
+/* Estilos Globais Responsivos */
+@media screen and (max-width: 1200px) {
+    .city-description {
+        padding: 30px 100px;
+    }
+    
+    .city-buttons .button-link {
+        width: 20%;
+    }
+    
+    footer .intro {
+        padding: 0 50px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .header {
+        padding: 15px 30px;
+    }
+    
+    .city-name {
+        font-size: 4rem;
+    }
+    
+    .city-description {
+        padding: 30px 50px;
+    }
+    
+    .city-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .city-buttons .button-link {
+        width: 45%;
+        margin-bottom: 10px;
+    }
+    
+    .part2-1 .user-info {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 10px 20px;
+    }
+    
+    .div {
+        width: auto;
+    }
+    
+    .header .logo {
+        margin-right: 20px;
+    }
+    
+    .city-banner {
+        height: 300px;
+    }
+    
+    .city-name {
+        font-size: 3rem;
+    }
+    
+    .city-description {
+        padding: 20px 30px;
+    }
+    
+    .city-buttons .button-link {
+        width: 48%;
+    }
+    
+    .part2 {
+        padding: 10px 15px;
+    }
+    
+    .part2-1 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .part2-1 .user-info {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .actions {
+        align-self: flex-end;
+        margin-top: -30px;
+    }
+    
+    footer .intro {
+        padding: 0 30px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .div1, .div2, .div3 {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    
+    .city-banner {
+        height: 200px;
+    }
+    
+    .city-name {
+        font-size: 2.5rem;
+    }
+    
+    .city-description {
+        padding: 15px;
+    }
+    
+    .city-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .city-buttons .button-link {
+        width: 90%;
+    }
+    
+    .part1 h2 {
+        font-size: 1.5rem;
+    }
+    
+    .part2-1 h3 {
+        font-size: 1.2em;
+    }
+    
+    .part2 .user {
+        width: 50px;
+    }
+    
+    .feedback-form {
+        padding: 15px;
+    }
+    
+    footer #slogan {
+        font-size: 14px;
+    }
+}
+
+/* Responsividade para a seção de Feedback */
+@media screen and (max-width: 768px) {
+    .user-data h3 {
+        font-size: 1.2em;
+    }
+    
+    .user-data p {
+        font-size: 0.8em;
+    }
+    
+    .part2-2 {
+        font-size: 0.9em;
+    }
+    
+    .delete-button {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+}
+
+/* Ajustes específicos para dispositivos muito pequenos */
+@media screen and (max-width: 400px) {
+    .city-name {
+        font-size: 2rem;
+    }
+    
+    .part2-1 {
+        gap: 10px;
+    }
+    
+    .part2 .user {
+        width: 40px;
+    }
+    
+    .actions {
+        margin-top: -25px;
+    }
+    
+    .delete-button {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
 }

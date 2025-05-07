@@ -25,5 +25,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Usar a rota do Flask para carregar os componentes
     loadTemplate('header', '/components/header.html');
     loadTemplate('footer', '/components/footer.html');
-    loadTemplate('feedback-section', '/components/feedback.html');
 });

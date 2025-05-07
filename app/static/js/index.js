@@ -85,17 +85,40 @@ function openModal(modalPath) {
                 if (modalId === 'login') {
                     const form = document.getElementById('loginForm');
                     if (form) {
-                        form.addEventListener('submit', function(event) {
+                        form.addEventListener('submit', async function(event) {
                             event.preventDefault();
                             if (form.checkValidity()) {
-                                showSuccessToast('Login realizado com sucesso!');
-                                setTimeout(() => closeModal('login'), 3000);
+                                const formData = new FormData(form);
+                
+                                try {
+                                    const response = await fetch('/login', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                
+                                    const result = await response.json();
+                
+                                    if (result.success) {
+                                        showSuccessToast(result.mensagem);
+                                        setTimeout(() => {
+                                            closeModal('login');
+                                            window.location.href = '/main'; // Redireciona para a rota principal
+                                        }, 2000);
+                                    } else {
+                                        showErrorToast(result.mensagem);
+                                    }
+                                } catch (error) {
+                                    console.error('Erro na requisição de login:', error);
+                                    showErrorToast('Erro ao tentar logar. Tente novamente.');
+                                }
+                
                             } else {
                                 showErrorToast('Por favor, preencha todos os campos.');
                             }
                         });
                     }
                 }
+                
             })
             .catch(error => console.error(error));
     }
