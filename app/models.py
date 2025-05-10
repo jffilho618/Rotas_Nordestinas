@@ -10,6 +10,8 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100), nullable=False)
     sobrenome = db.Column(db.String(100), nullable=False)
+    strikes = db.Column(db.Integer, default=0)
+    banido = db.Column(db.Boolean, default=False)
     telefone = db.Column(db.String(15), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     usuario = db.Column(db.String(120), unique=True, nullable=False)
@@ -17,7 +19,6 @@ class Usuario(db.Model):
     role = db.Column(db.String(100), nullable=False, default='user')
     data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
     
-        
     # Relacionamentos
     feedbacks = db.relationship('Feedback', backref='autor', lazy=True)
 
@@ -42,3 +43,17 @@ class Feedback(db.Model):
     
     def __repr__(self):
         return f'<Feedback {self.titulo}>'
+    
+class Denuncia(db.Model):
+    __tablename__ = 'denuncias'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    feedback_id = db.Column(db.Integer, db.ForeignKey('feedbacks.id'), nullable=False)
+    data = db.Column(db.DateTime, default=datetime.utcnow)
+
+    usuario = db.relationship('Usuario', backref='denuncias', lazy=True)
+    feedback = db.relationship('Feedback', backref='denuncias', lazy=True)
+
+    def __repr__(self):
+        return f'<Denuncia de Usuario {self.usuario_id} no Feedback {self.feedback_id}>'

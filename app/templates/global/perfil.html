@@ -91,7 +91,7 @@
                 <div id="feedbacks" class="tab-pane active">
                     <div class="section-header">
                         <h3>Feedbacks Denunciados</h3>
-                        <span class="badge">5</span>
+                        <span class="badge">{{ feedbacks_denunciados|length }}</span>
                     </div>
                     
                     <div class="admin-table">
@@ -107,66 +107,26 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for feedback, num_denuncias in feedbacks_denunciados %}
                                 <tr>
-                                    <td>001</td>
-                                    <td>Maria Silva</td>
-                                    <td>Rota das Praias</td>
-                                    <td class="feedback-content">Este comentário contém conteúdo impróprio que foi denunciado por vários usuários.</td>
-                                    <td>8</td>
+                                    <td>{{num_denuncias}}</td>
+                                    <td>{{feedback.autor.nome}}</td>
+                                    <td>{{feedback.titulo}}</td>
+                                    <td class="feedback-content">{{feedback.descricao}}</td>
+                                    <td>{{num_denuncias}}</td>
                                     <td class="action-cell">
-                                        <button class="btn-view" onclick="viewFeedback(1)"><i class='bx bx-show'></i></button>
-                                        <button class="btn-approve" onclick="approveFeedback(1)"><i class='bx bx-check'></i></button>
-                                        <button class="btn-remove" onclick="removeFeedback(1)"><i class='bx bx-trash'></i></button>
+                                        <!-- Formulário para dar strike -->
+                                        <form action="{{ url_for('dar_strike', usuario_id=feedback.autor.id, feedback_id=feedback.id) }}" method="POST" style="display:inline;">
+                                            <button class="btn-approve" type="submit"><i class="bx bx-check"></i></button>
+                                        </form>
+                                        
+                                        <!-- Formulário para remover denúncia -->
+                                        <form action="{{ url_for('remover_denuncia', feedback_id=feedback.id) }}" method="POST" style="display:inline;">
+                                            <button class="btn-remove" type="submit"><i class="bx bx-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>002</td>
-                                    <td>João Pereira</td>
-                                    <td>Rota do Cangaço</td>
-                                    <td class="feedback-content">Esta avaliação contém linguagem ofensiva e foi reportada.</td>
-                                    <td>5</td>
-                                    <td class="action-cell">
-                                        <button class="btn-view" onclick="viewFeedback(2)"><i class='bx bx-show'></i></button>
-                                        <button class="btn-approve" onclick="approveFeedback(2)"><i class='bx bx-check'></i></button>
-                                        <button class="btn-remove" onclick="removeFeedback(2)"><i class='bx bx-trash'></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>003</td>
-                                    <td>Ana Costa</td>
-                                    <td>Rota das Dunas</td>
-                                    <td class="feedback-content">Comentário com informações enganosas sobre a rota.</td>
-                                    <td>3</td>
-                                    <td class="action-cell">
-                                        <button class="btn-view" onclick="viewFeedback(3)"><i class='bx bx-show'></i></button>
-                                        <button class="btn-approve" onclick="approveFeedback(3)"><i class='bx bx-check'></i></button>
-                                        <button class="btn-remove" onclick="removeFeedback(3)"><i class='bx bx-trash'></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>004</td>
-                                    <td>Carlos Santos</td>
-                                    <td>Rota dos Cânions</td>
-                                    <td class="feedback-content">Spam promocional disfarçado de avaliação genuína.</td>
-                                    <td>6</td>
-                                    <td class="action-cell">
-                                        <button class="btn-view" onclick="viewFeedback(4)"><i class='bx bx-show'></i></button>
-                                        <button class="btn-approve" onclick="approveFeedback(4)"><i class='bx bx-check'></i></button>
-                                        <button class="btn-remove" onclick="removeFeedback(4)"><i class='bx bx-trash'></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>005</td>
-                                    <td>Luiza Oliveira</td>
-                                    <td>Rota Gastronômica</td>
-                                    <td class="feedback-content">Conteúdo que viola os termos de uso da plataforma.</td>
-                                    <td>4</td>
-                                    <td class="action-cell">
-                                        <button class="btn-view" onclick="viewFeedback(5)"><i class='bx bx-show'></i></button>
-                                        <button class="btn-approve" onclick="approveFeedback(5)"><i class='bx bx-check'></i></button>
-                                        <button class="btn-remove" onclick="removeFeedback(5)"><i class='bx bx-trash'></i></button>
-                                    </td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -176,7 +136,7 @@
                 <div id="banned" class="tab-pane">
                     <div class="section-header">
                         <h3>Usuários Banidos</h3>
-                        <span class="badge">4</span>
+                        <span class="badge">{{ usuarios_banidos|length }}</span>
                     </div>
                     
                     <div class="admin-table">
@@ -190,42 +150,22 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for usuario in usuarios_banidos %}
                                 <tr>
-                                    <td>101</td>
-                                    <td>Roberto Almeida</td>
-                                    <td>roberto.almeida@email.com</td>
+                                    <td>{{ usuario.id }}</td>
+                                    <td>{{ usuario.nome }}</td>
+                                    <td>{{ usuario.email }}</td>
                                     <td class="action-cell">
-                                        <button class="btn-unban" onclick="unbanUser(101)">Desbanir</button>
-                                        <button class="btn-view" onclick="viewUserDetails(101)"><i class='bx bx-show'></i></button>
+                                        <form method="POST" action="{{ url_for('desbanir_usuario', usuario_id=usuario.id) }}" style="display:inline;">
+                                            <button type="submit" class="btn-unban">Desbanir</button>
+                                        </form>
                                     </td>
                                 </tr>
+                                {% else %}
                                 <tr>
-                                    <td>102</td>
-                                    <td>Fernanda Lima</td>
-                                    <td>fernanda.lima@email.com</td>
-                                    <td class="action-cell">
-                                        <button class="btn-unban" onclick="unbanUser(102)">Desbanir</button>
-                                        <button class="btn-view" onclick="viewUserDetails(102)"><i class='bx bx-show'></i></button>
-                                    </td>
+                                    <td colspan="4">Nenhum usuário banido no momento.</td>
                                 </tr>
-                                <tr>
-                                    <td>103</td>
-                                    <td>Paulo Ribeiro</td>
-                                    <td>paulo.ribeiro@email.com</td>
-                                    <td class="action-cell">
-                                        <button class="btn-unban" onclick="unbanUser(103)">Desbanir</button>
-                                        <button class="btn-view" onclick="viewUserDetails(103)"><i class='bx bx-show'></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>104</td>
-                                    <td>Camila Rocha</td>
-                                    <td>camila.rocha@email.com</td>
-                                    <td class="action-cell">
-                                        <button class="btn-unban" onclick="unbanUser(104)">Desbanir</button>
-                                        <button class="btn-view" onclick="viewUserDetails(104)"><i class='bx bx-show'></i></button>
-                                    </td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask import session
 
-from models import db, Usuario, Feedback
+from models import db, Usuario, Feedback, Denuncia
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -156,10 +156,20 @@ def favoritos():
 
 @app.route('/perfil')
 def perfil():
-    usuario = None
-    if 'usuario_id' in session:
-        usuario = Usuario.query.get(session['usuario_id'])
-    return render_template('global/perfil.html', usuario=usuario)
+    usuario = Usuario.query.get(session['usuario_id'])
+
+    feedbacks_denunciados = (
+        db.session.query(Feedback, db.func.count(Denuncia.id).label('num_denuncias'))
+        .join(Denuncia)
+        .group_by(Feedback)
+        .all()
+    )
+
+    usuarios_banidos = Usuario.query.filter_by(banido=True).all()
+
+    return render_template('global/perfil.html', usuario=usuario,
+                           feedbacks_denunciados=feedbacks_denunciados,
+                           usuarios_banidos=usuarios_banidos)
 
 @app.route('/recife')
 def recife():
@@ -235,6 +245,76 @@ def component(component_name):
         print(f"Erro ao carregar componente {component_name}: {str(e)}")
         return f"Erro ao carregar componente {component_name}", 500
     
+
+@app.route('/denunciar/<int:feedback_id>', methods=['POST'])
+def denunciar_feedback(feedback_id):
+    if 'usuario_id' not in session:
+        flash('Você precisa estar logado para denunciar.', 'warning')
+        return redirect(url_for('login'))
+
+    usuario_id = session['usuario_id']
+    cidade = request.args.get('cidade')
+    estado = request.args.get('estado', 'padrao')
+
+    # Verifica se o usuário já denunciou esse feedback
+    denuncia_existente = Denuncia.query.filter_by(usuario_id=usuario_id, feedback_id=feedback_id).first()
+    if denuncia_existente:
+        flash('Você já denunciou este feedback.', 'info')
+    else:
+        nova_denuncia = Denuncia(usuario_id=usuario_id, feedback_id=feedback_id)
+        db.session.add(nova_denuncia)
+        db.session.commit()
+        flash('Feedback denunciado com sucesso!', 'success')
+
+    return redirect(url_for('cidade', nome_cidade=cidade, estado=estado))
+
+
+@app.route('/dar_strike/<int:usuario_id>/<int:feedback_id>', methods=['POST'])
+def dar_strike(usuario_id, feedback_id):
+    usuario = Usuario.query.get(usuario_id)
+    feedback = Feedback.query.get(feedback_id)
+    
+    # Adiciona um strike ao usuário
+    usuario.strikes += 1
+
+    # Verifica se o usuário deve ser banido
+    if usuario.strikes >= 3:
+        usuario.banido = True
+    
+    db.session.commit()
+
+    # Remover todas as denúncias relacionadas ao feedback
+    denuncias = Denuncia.query.filter_by(feedback_id=feedback_id).all()
+    for denuncia in denuncias:
+        db.session.delete(denuncia)
+    
+    # Remover o feedback após os strikes
+    db.session.delete(feedback)
+    
+    db.session.commit()
+    
+    return redirect(url_for('perfil'))  # Redireciona de volta para o perfil após dar o strike
+
+
+@app.route('/remover_denuncia/<int:feedback_id>', methods=['POST'])
+def remover_denuncia(feedback_id):
+    # Remover todas as denúncias do feedback
+    denuncias = Denuncia.query.filter_by(feedback_id=feedback_id).all()
+    for denuncia in denuncias:
+        db.session.delete(denuncia)
+    
+    db.session.commit()
+    
+    return redirect(url_for('perfil'))  # Redireciona de volta para o perfil após remover as denúncias
+
+@app.route('/desbanir_usuario/<int:usuario_id>', methods=['POST'])
+def desbanir_usuario(usuario_id):
+    usuario = Usuario.query.get(usuario_id)
+    if usuario:
+        usuario.banido = False
+        usuario.strikes = 0  # Opcional: zera strikes
+        db.session.commit()
+    return redirect(url_for('perfil'))
 
 
 if __name__ == '__main__':
