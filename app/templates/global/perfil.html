@@ -33,45 +33,41 @@
             </div>
 
             <!-- Coluna direita - Formulário de edição -->
-            <div class="profile-content view-mode" id="profileForm">
+            <form action="{{ url_for('atualizar_perfil') }}" method="POST" class="profile-content view-mode" id="profileForm">
                 <div class="profile-section">
                     <h3>Informações Pessoais</h3>
                     
-                    <!-- Nome -->
                     <div class="form-group">
                         <label for="nome">Nome</label>
                         <span class="static-field">{{usuario.nome}}</span>
-                        <input type="text" id="nome" class="form-control" value="{{usuario.nome}}">
+                        <input type="text" name="nome" id="nome" class="form-control" value="{{usuario.nome}}">
                     </div>
-
-                    <!-- Sobrenome -->
+            
                     <div class="form-group">
                         <label for="sobrenome">Sobrenome</label>
                         <span class="static-field">{{usuario.sobrenome}}</span>
-                        <input type="text" id="sobrenome" class="form-control" value="{{usuario.sobrenome}}">
+                        <input type="text" name="sobrenome" id="sobrenome" class="form-control" value="{{usuario.sobrenome}}">
                     </div>
                     
-                    <!-- Email -->
                     <div class="form-group">
                         <label for="email">Email</label>
                         <span class="static-field">{{usuario.email}}</span>
-                        <input type="email" id="email" class="form-control" value="{{usuario.email}}">
+                        <input type="email" name="email" id="email" class="form-control" value="{{usuario.email}}">
                     </div>
                     
-                    <!-- Telefone -->
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
                         <span class="static-field">{{usuario.telefone}}</span>
-                        <input type="tel" id="telefone" class="form-control" value="{{usuario.telefone}}">
+                        <input type="tel" name="telefone" id="telefone" class="form-control" value="{{usuario.telefone}}">
                     </div>
                 </div>
-
+            
                 <div class="action-buttons">
-                    <button class="btn btn-primary btn-edit" onclick="enableEditMode()">Editar Perfil</button>
-                    <button class="btn btn-primary btn-save" onclick="saveProfile()">Salvar Alterações</button>
-                    <button class="btn btn-danger btn-cancel" onclick="cancelEdit()">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-edit" onclick="enableEditMode()">Editar Perfil</button>
+                    <button type="submit" class="btn btn-primary btn-save">Salvar Alterações</button>
+                    <button type="button" class="btn btn-danger btn-cancel" onclick="cancelEdit()">Cancelar</button>
                 </div>
-            </div>
+            </form>
         </div>
 
         {% if usuario.role == 'user' %}

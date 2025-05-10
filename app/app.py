@@ -312,8 +312,27 @@ def desbanir_usuario(usuario_id):
     usuario = Usuario.query.get(usuario_id)
     if usuario:
         usuario.banido = False
-        usuario.strikes = 0  # Opcional: zera strikes
+        usuario.strikes = 0  
         db.session.commit()
+    return redirect(url_for('perfil'))
+
+@app.route('/atualizar_perfil', methods=['POST'])
+def atualizar_perfil():
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+
+    usuario = Usuario.query.get(session['usuario_id'])
+    if not usuario:
+        return redirect(url_for('login'))
+
+    # Atualiza os dados
+    usuario.nome = request.form.get('nome')
+    usuario.sobrenome = request.form.get('sobrenome')
+    usuario.email = request.form.get('email')
+    usuario.telefone = request.form.get('telefone')
+
+    db.session.commit()
+
     return redirect(url_for('perfil'))
 
 
