@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil de Usuário - Rotas Nordestinas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/components/toast.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/sugerir_rotas.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="page-title">Sugerir Nova Rota</h1>
+        
+        <div class="form-container">
+            <form action="/sugerir_rota" method="POST" enctype="multipart/form-data" id="sugerir-rota-form">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="estado" class="required">Estado</label>
+                            <select id="estado" name="estado" class="form-control" required>
+                                <option value="">Selecione o estado</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="SE">Sergipe</option>
+                            </select>
+                            <div class="error-message" id="estado-error">Por favor, selecione um estado.</div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="cidade" class="required">Cidade</label>
+                            <input type="text" id="cidade" name="cidade" class="form-control" placeholder="Digite o nome da cidade" required>
+                            <div class="error-message" id="cidade-error">Por favor, informe a cidade.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pontos-turisticos">Pontos Turísticos</label>
+                    <div id="tourist-spots-container" class="tourist-spots">
+                        <div class="spot-item">
+                            <input type="text" name="pontos_turisticos[]" class="form-control" placeholder="Nome do ponto turístico">
+                            <button type="button" class="remove-spot">Remover</button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-spot-btn" class="add-spot">+ Adicionar Ponto Turístico</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="fotos">Fotos do Lugar</label>
+                    <div class="file-upload">
+                        <label class="file-upload-label">
+                            <span class="file-upload-icon">📷</span>
+                            <span>Clique ou arraste fotos aqui</span>
+                            <span class="note">Máximo 5 fotos</span>
+                        </label>
+                        <input type="file" id="fotos" name="fotos[]" accept="image/*" multiple>
+                    </div>
+                    <div id="preview-container" class="preview-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição do Lugar</label>
+                    <textarea id="descricao" name="descricao" class="form-control" rows="5" placeholder="Conte-nos sobre este lugar, suas características, história, cultura e o que o torna especial..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">ENVIAR SUGESTÃO</button>
+            </form>
+        </div>
+    </div>
+
+    {% endblock %}
+    
+    {% block extra_js %}
+    
+    <script>
+        // Adicionar ponto turístico
+        document.getElementById('add-spot-btn').addEventListener('click', function() {
+            const container = document.getElementById('tourist-spots-container');
+            const newSpot = document.createElement('div');
+            newSpot.className = 'spot-item';
+            newSpot.innerHTML = `
+                <input type="text" name="pontos_turisticos[]" class="form-control" placeholder="Nome do ponto turístico">
+                <button type="button" class="remove-spot">Remover</button>
+            `;
+            container.appendChild(newSpot);
+            
+            // Adicionar evento ao botão remover
+            newSpot.querySelector('.remove-spot').addEventListener('click', function() {
+                container.removeChild(newSpot);
+            });
+        });
+        
+        // Remover ponto turístico (para o primeiro item)
+        document.querySelector('.remove-spot').addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            input.value = '';
+        });
+        
+        // Preview de imagens
+        document.getElementById('fotos').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('preview-container');
+            previewContainer.innerHTML = '';
+            
+            if (this.files.length > 5) {
+                alert('Você pode enviar no máximo 5 fotos.');
+                this.value = '';
+                return;
+            }
+            
+            for (let i = 0; i < this.files.length; i++) {
+                const file = this.files[i];
+                if (!file.type.match('image.*')) continue;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Validação do formulário
+        document.getElementById('sugerir-rota-form').addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validar estado
+            const estado = document.getElementById('estado');
+            if (!estado.value) {
+                document.getElementById('estado-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('estado-error').style.display = 'none';
+            }
+            
+            // Validar cidade
+            const cidade = document.getElementById('cidade');
+            if (!cidade.value.trim()) {
+                document.getElementById('cidade-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('cidade-error').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+{% endblock %}

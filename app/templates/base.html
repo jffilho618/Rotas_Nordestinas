@@ -19,14 +19,17 @@
             <div class="sidebar-content">
                 <button class="close-x-button" id="closeXButton">×</button>
                 <div class="header">
-                    <img src="{{ url_for('static', filename='images/icons/PERFIL.png') }}" alt="Perfil">
+                    <div class="profile-pic">
+                        <span>{{ usuario.nome[0] }}{{ usuario.sobrenome[0] }}</span> <!-- Iniciais do usuário -->
+                    </div>
                     <h2>{{usuario.nome}}</h2>
-                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">{{usuario.email}}</a></p>
+                    <p>Email: {{usuario.email}}</a></p>
                 </div>
                 <div class="options-container">
                     <a href="{{ url_for('home') }}" class="option"><i class="bx bx-home"></i><span>Início</span></a>
                     <a href="{{ url_for('favoritos') }}" class="option"><i class="bx bx-star"></i><span>Meus Favoritos</span></a>
                     <a href="{{ url_for('perfil') }}" class="option" id="editProfileButton"><i class="bx bx-user"></i><span>Meu Perfil</span></a>
+                    <a href="{{ url_for('sugerir_rotas') }}" class="option"><i class="bx bx-map"></i><span>Sugerir Rota</span></a>
                 </div>
                 <div class="bottom-buttons">
                     <button class="support-button"><i class="bx bx-support"></i>Suporte</button>

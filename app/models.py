@@ -21,6 +21,7 @@ class Usuario(db.Model):
     
     # Relacionamentos
     feedbacks = db.relationship('Feedback', backref='autor', lazy=True)
+    sugestoes = db.relationship('Sugestao', backref='autor', lazy=True)
 
     def set_senha(self, senha):
         self.senha_hash = generate_password_hash(senha)
@@ -57,3 +58,45 @@ class Denuncia(db.Model):
 
     def __repr__(self):
         return f'<Denuncia de Usuario {self.usuario_id} no Feedback {self.feedback_id}>'
+
+# Nova classe para Sugestões de Rotas
+class Sugestao(db.Model):
+    __tablename__ = 'sugestoes'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    estado = db.Column(db.String(2), nullable=False)  # Sigla do estado (ex: PE, BA)
+    cidade = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.Text)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(20), default='pendente')  # pendente, aprovada, rejeitada
+    
+    # Relacionamentos
+    pontos_turisticos = db.relationship('PontoTuristico', backref='sugestao', lazy=True, cascade='all, delete-orphan')
+    fotos = db.relationship('FotoSugestao', backref='sugestao', lazy=True, cascade='all, delete-orphan')
+    
+    def __repr__(self):
+        return f'<Sugestao {self.cidade}, {self.estado}>'
+
+# Classe para Pontos Turísticos de uma Sugestão
+class PontoTuristico(db.Model):
+    __tablename__ = 'pontos_turisticos'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sugestao_id = db.Column(db.Integer, db.ForeignKey('sugestoes.id'), nullable=False)
+    nome = db.Column(db.String(150), nullable=False)
+    
+    def __repr__(self):
+        return f'<PontoTuristico {self.nome}>'
+
+# Classe para Fotos de uma Sugestão
+class FotoSugestao(db.Model):
+    __tablename__ = 'fotos_sugestao'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sugestao_id = db.Column(db.Integer, db.ForeignKey('sugestoes.id'), nullable=False)
+    caminho = db.Column(db.String(255), nullable=False)  # Caminho para o arquivo da foto
+    legenda = db.Column(db.String(200))  # Legenda opcional para a foto
+    
+    def __repr__(self):
+        return f'<FotoSugestao {self.id} da Sugestao {self.sugestao_id}>'

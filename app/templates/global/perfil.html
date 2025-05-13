@@ -70,7 +70,7 @@
             </form>
         </div>
 
-        {% if usuario.role == 'user' %}
+        {% if usuario.role == 'admin' %}
         <!-- Seção de administração - visível apenas para admins -->
         <div class="admin-section">
             <h2 class="admin-title">Painel de Administração</h2>
@@ -124,7 +124,7 @@
                                 </tr>
                                 {% else %}
                                 <tr>
-                                    <td colspan="4">Nenhum feedback denunciado no momento.</td>
+                                    <td colspan="6" class="no-data">Nenhum feedback denunciado no momento.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -163,7 +163,7 @@
                                 </tr>
                                 {% else %}
                                 <tr>
-                                    <td colspan="4">Nenhum usuário banido no momento.</td>
+                                    <td colspan="6" class="no-data">Nenhum usuário banido no momento.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -189,6 +189,222 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <!-- Seção de Sugestões de Rotas -->
+<div class="suggestions-section">
+    <h2 class="section-title">Sugestões de Rotas</h2>
+    
+    {% if usuario.role == 'admin' %}
+        <!-- Visualização para administradores - todas as sugestões -->
+        <div class="admin-tabs suggestions-tabs">
+            <button class="tab-btn active" onclick="openSuggestionsTab('pending')">Pendentes</button>
+            <button class="tab-btn" onclick="openSuggestionsTab('approved')">Aprovadas</button>
+            <button class="tab-btn" onclick="openSuggestionsTab('rejected')">Rejeitadas</button>
+        </div>
+        
+        <div class="tab-content">
+            <!-- Sugestões Pendentes -->
+            <div id="pending" class="tab-pane active">
+                <div class="section-header">
+                    <h3>Sugestões Pendentes</h3>
+                    <span class="badge">{{ sugestoes_pendentes|length }}</span>
+                </div>
+                
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Estado</th>
+                                <th>Cidade</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sugestao in sugestoes_pendentes %}
+                            <tr>
+                                <td>{{ sugestao.id }}</td>
+                                <td>{{ sugestao.autor.nome }}</td>
+                                <td>{{ sugestao.estado }}</td>
+                                <td>{{ sugestao.cidade }}</td>
+                                <td>{{ sugestao.data_criacao.strftime('%d/%m/%Y') }}</td>
+                                <td class="action-cell">
+                                    <button class="btn-view" onclick="viewSuggestion('{{ sugestao.id }}')"><i class="bx bx-show"></i></button>
+                                    <form action="{{ url_for('aprovar_sugestao', sugestao_id=sugestao.id) }}" method="POST" style="display:inline;">
+                                        <button class="btn-approve" type="submit"><i class="bx bx-check"></i></button>
+                                    </form>
+                                    <form action="{{ url_for('rejeitar_sugestao', sugestao_id=sugestao.id) }}" method="POST" style="display:inline;">
+                                        <button class="btn-remove" type="submit"><i class="bx bx-x"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="no-data">Nenhuma sugestão pendente no momento.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Sugestões Aprovadas -->
+            <div id="approved" class="tab-pane">
+                <div class="section-header">
+                    <h3>Sugestões Aprovadas</h3>
+                    <span class="badge">{{ sugestoes_aprovadas|length }}</span>
+                </div>
+                
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Estado</th>
+                                <th>Cidade</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sugestao in sugestoes_aprovadas %}
+                            <tr>
+                                <td>{{ sugestao.id }}</td>
+                                <td>{{ sugestao.autor.nome }}</td>
+                                <td>{{ sugestao.estado }}</td>
+                                <td>{{ sugestao.cidade }}</td>
+                                <td>{{ sugestao.data_criacao.strftime('%d/%m/%Y') }}</td>
+                                <td class="action-cell">
+                                    <button class="btn-view" onclick="viewSuggestion('{{ sugestao.id }}')"><i class="bx bx-show"></i></button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="no-data">Nenhuma sugestão aprovada no momento.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Sugestões Rejeitadas -->
+            <div id="rejected" class="tab-pane">
+                <div class="section-header">
+                    <h3>Sugestões Rejeitadas</h3>
+                    <span class="badge">{{ sugestoes_rejeitadas|length }}</span>
+                </div>
+                
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Estado</th>
+                                <th>Cidade</th>
+                                <th>Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sugestao in sugestoes_rejeitadas %}
+                            <tr>
+                                <td>{{ sugestao.id }}</td>
+                                <td>{{ sugestao.autor.nome }}</td>
+                                <td>{{ sugestao.estado }}</td>
+                                <td>{{ sugestao.cidade }}</td>
+                                <td>{{ sugestao.data_criacao.strftime('%d/%m/%Y') }}</td>
+                                <td class="action-cell">
+                                    <button class="btn-view" onclick="viewSuggestion('{{ sugestao.id }}')"><i class="bx bx-show"></i></button>
+                                    <form action="{{ url_for('aprovar_sugestao', sugestao_id=sugestao.id) }}" method="POST" style="display:inline;">
+                                        <button class="btn-approve" type="submit"><i class="bx bx-check"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="no-data">Nenhuma sugestão rejeitada no momento.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Visualização para usuários comuns - apenas suas próprias sugestões -->
+        <div class="user-suggestions">
+            {% if sugestoes_usuario %}
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Estado</th>
+                                <th>Cidade</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sugestao in sugestoes_usuario %}
+                            <tr>
+                                <td>{{ sugestao.estado }}</td>
+                                <td>{{ sugestao.cidade }}</td>
+                                <td>{{ sugestao.data_criacao.strftime('%d/%m/%Y') }}</td>
+                                <td>
+                                    {% if sugestao.status == 'pendente' %}
+                                        <span class="status-badge pending">Pendente</span>
+                                    {% elif sugestao.status == 'aprovada' %}
+                                        <span class="status-badge approved">Aprovada</span>
+                                    {% else %}
+                                        <span class="status-badge rejected">Rejeitada</span>
+                                    {% endif %}
+                                </td>
+                                <td class="action-cell">
+                                    <button class="btn-view" onclick="viewSuggestion('{{ sugestao.id }}')"><i class="bx bx-show"></i></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="no-suggestions">
+                    <p>Você ainda não enviou nenhuma sugestão de rota.</p>
+                    <a href="{{ url_for('sugerir_rotas') }}" class="btn btn-primary">Sugerir Nova Rota</a>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal para visualizar detalhes da sugestão -->
+<div id="suggestionModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('suggestionModal')">&times;</span>
+        <h2>Detalhes da Sugestão</h2>
+        <div id="suggestionDetails">
+            <!-- Conteúdo preenchido via JavaScript -->
+        </div>
+        <div class="modal-actions">
+            {% if usuario.role == 'admin' %}
+                <button class="btn btn-primary" onclick="approveSuggestionFromModal()">Aprovar</button>
+                <button class="btn btn-danger" onclick="rejectSuggestionFromModal()">Rejeitar</button>
+            {% endif %}
+            <button class="btn btn-secondary" onclick="closeModal('suggestionModal')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+
 
     <div id="userModal" class="modal">
         <div class="modal-content">
@@ -514,5 +730,132 @@
             event.target.style.display = 'none';
         }
     };
+
+    // Funções para as abas de sugestões
+function openSuggestionsTab(tabName) {
+    // Esconder todas as abas
+    const tabPanes = document.querySelectorAll('.suggestions-section .tab-pane');
+    tabPanes.forEach(pane => {
+        pane.classList.remove('active');
+    });
+    
+    // Remover classe active de todos os botões
+    const tabButtons = document.querySelectorAll('.suggestions-tabs .tab-btn');
+    tabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Mostrar a aba selecionada
+    document.getElementById(tabName).classList.add('active');
+    
+    // Ativar o botão correspondente
+    event.currentTarget.classList.add('active');
+}
+
+// Função para visualizar detalhes da sugestão
+function viewSuggestion(id) {
+    // Fazer uma requisição AJAX para obter os detalhes da sugestão
+    fetch(`/api/sugestao/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            // Preencher o modal com os dados
+            let html = `
+                <div class="suggestion-detail">
+                    <p><strong>ID:</strong> ${data.id}</p>
+                    <p><strong>Usuário:</strong> ${data.autor_nome}</p>
+                    <p><strong>Estado:</strong> ${data.estado}</p>
+                    <p><strong>Cidade:</strong> ${data.cidade}</p>
+                    <p><strong>Data de Criação:</strong> ${data.data_criacao}</p>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    
+                    <div class="tourist-spots">
+                        <p><strong>Pontos Turísticos:</strong></p>
+                        ${data.pontos_turisticos.length > 0 ? 
+                            `<ul>${data.pontos_turisticos.map(ponto => `<li>${ponto.nome}</li>`).join('')}</ul>` : 
+                            '<p>Nenhum ponto turístico informado.</p>'}
+                    </div>
+                    
+                    <div class="suggestion-description">
+                        <p><strong>Descrição:</strong></p>
+                        <div class="content-box">${data.descricao || 'Nenhuma descrição fornecida.'}</div>
+                    </div>
+                    
+                    ${data.fotos.length > 0 ? 
+                        `<div class="suggestion-photos">
+                            <p><strong>Fotos:</strong></p>
+                            <div class="photos-container">
+                                ${data.fotos.map(foto => 
+                                    `<img src="${foto.caminho}" alt="Foto da sugestão" class="suggestion-photo">`
+                                ).join('')}
+                            </div>
+                        </div>` : 
+                        '<p><strong>Fotos:</strong> Nenhuma foto enviada.</p>'}
+                </div>
+            `;
+            
+            document.getElementById('suggestionDetails').innerHTML = html;
+            document.getElementById('suggestionModal').style.display = 'block';
+            
+            // Armazenar o ID da sugestão atual para uso nas ações do modal
+            document.getElementById('suggestionModal').dataset.suggestionId = id;
+        })
+        .catch(error => {
+            console.error('Erro ao carregar detalhes da sugestão:', error);
+            alert('Erro ao carregar detalhes da sugestão. Por favor, tente novamente.');
+        });
+}
+
+// Funções para ações no modal
+function approveSuggestionFromModal() {
+    const id = document.getElementById('suggestionModal').dataset.suggestionId;
+    if (confirm(`Deseja aprovar a sugestão ID ${id}?`)) {
+        // Enviar requisição para aprovar a sugestão
+        fetch(`/aprovar_sugestao/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Sugestão aprovada com sucesso!');
+                closeModal('suggestionModal');
+                location.reload();  // Recarregar a página para atualizar as listas
+            } else {
+                throw new Error('Erro ao aprovar sugestão');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao aprovar sugestão. Por favor, tente novamente.');
+        });
+    }
+}
+
+function rejectSuggestionFromModal() {
+    const id = document.getElementById('suggestionModal').dataset.suggestionId;
+    if (confirm(`Deseja rejeitar a sugestão ID ${id}?`)) {
+        // Enviar requisição para rejeitar a sugestão
+        fetch(`/rejeitar_sugestao/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Sugestão rejeitada com sucesso!');
+                closeModal('suggestionModal');
+                location.reload();  // Recarregar a página para atualizar as listas
+            } else {
+                throw new Error('Erro ao rejeitar sugestão');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao rejeitar sugestão. Por favor, tente novamente.');
+        });
+    }
+}
 </script>
 {% endblock %}
