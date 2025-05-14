@@ -12,7 +12,6 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///usuarios.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'segredo'
-# csrf = CSRFProtect(app)
 
 # Inicializa o banco de dados
 db.init_app(app)
@@ -69,7 +68,7 @@ def cadastro():
 
 @app.before_request
 def verificar_autenticacao():
-    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal']
+    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal', 'como_chegar', 'atividades', 'pontos-turisticos', 'dicas', 'cidade', 'recife', 'global_template', 'render_dynamic_template', 'main']    
     
     if request.endpoint not in rotas_liberadas and 'usuario_id' not in session:
         flash('Você precisa estar logado para acessar esta página.', 'warning')
