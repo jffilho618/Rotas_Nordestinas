@@ -68,8 +68,8 @@ def cadastro():
 
 @app.before_request
 def verificar_autenticacao():
-    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal', 'como_chegar', 'atividades', 'pontos-turisticos', 'dicas', 'cidade', 'recife', 'global_template', 'render_dynamic_template', 'main']    
-    
+    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal', 'como_chegar', 'atividades', 'pontos_turisticos', 'dicas', 'cidade', 'recife', 'global_template', 'render_dynamic_template', 'main']    
+
     if request.endpoint not in rotas_liberadas and 'usuario_id' not in session:
         flash('Você precisa estar logado para acessar esta página.', 'warning')
         return redirect(url_for('home'))

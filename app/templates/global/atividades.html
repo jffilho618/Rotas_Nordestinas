@@ -4,6 +4,8 @@
 {% block title %}Rotas Nordestinas{% endblock %}
 
 {% block extra_css %}
+<title>{{cidade.title()}} - Atividades</title>
+
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/atividades.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
@@ -17,7 +19,7 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="cityName">Recife</h1>
+    <h1 class="cityName">{{ cidade.title() }}</h1>
     <h2 class="points-title">Atividades:</h2>
     <div class="points-list">
         <div class="group1" data-id="atividade1">
