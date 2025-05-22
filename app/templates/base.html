@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Rotas Nordestinas{% endblock %}</title>
+    {% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    {% block extra_css %}{% endblock %}
+    {% endblock %}
 </head>
 <body>
     <header class="header">
@@ -18,20 +19,41 @@
         <div id="userSidebar" class="sidebar">
             <div class="sidebar-content">
                 <button class="close-x-button" id="closeXButton">×</button>
+                {% if 'usuario_id' in session %}
                 <div class="header">
-                    <img src="{{ url_for('static', filename='images/icons/PERFIL.png') }}" alt="Perfil">
+                    <div class="profile-pic" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #666; font-size: 50px;">
+                        <span>{{ usuario.nome[0] }}{{ usuario.sobrenome[0] }}</span> <!-- Iniciais do usuário -->
+                    </div>
                     <h2>{{usuario.nome}}</h2>
-                    <p>Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85f5eceee4e6edf0abf6ece9f3e4c5f5eaeee0e7eae9e4abe6eae8">{{usuario.email}}</a></p>
+                    <p>Email: {{usuario.email}}</a></p>
                 </div>
                 <div class="options-container">
                     <a href="{{ url_for('home') }}" class="option"><i class="bx bx-home"></i><span>Início</span></a>
                     <a href="{{ url_for('favoritos') }}" class="option"><i class="bx bx-star"></i><span>Meus Favoritos</span></a>
                     <a href="{{ url_for('perfil') }}" class="option" id="editProfileButton"><i class="bx bx-user"></i><span>Meu Perfil</span></a>
+                    <a href="{{ url_for('sugerir_rotas') }}" class="option"><i class="bx bx-map"></i><span>Sugerir Rota</span></a>
                 </div>
                 <div class="bottom-buttons">
                     <button class="support-button"><i class="bx bx-support"></i>Suporte</button>
                     <a href="{{url_for('logout')}}" class="close-button" id="closeButton"><i class="bx bx-log-out"></i>Sair</a>
                 </div>
+                {% else %}
+                <!-- Conteúdo para usuário não logado -->
+                <div class="header">
+                    <div class="logo-container">
+                        <img src="{{ url_for('static', filename='images/logo/Rota.svg') }}" alt="Rotas Nordestinas" class="sidebar-logo">
+                    </div>
+                    <h2>Bem-vindo ao Rotas Nordestinas</h2>
+                    <p>Faça login para acessar todos os recursos</p>
+                </div>
+                <div class="options-container">
+                    <a href="{{ url_for('home') }}" class="option"><i class="bx bx-home"></i><span>Início</span></a>
+                </div>
+                <div class="login-container">
+                    <a href="{{ url_for('index') }}" class="login-button"><i class="bx bx-log-in"></i>Entrar</a>
+                    <a href="{{ url_for('cadastro') }}" class="register-button"><i class="bx bx-user-plus"></i>Cadastrar</a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -40,7 +62,42 @@
         {% block content %}{% endblock %}
     </main>
 
-    {% block extra_js %}{% endblock %}
+    <style>.login-button, .register-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+    
+    .login-button {
+        background-color: var(--cor6);
+        color: white;
+    }
+    
+    .login-button:hover {
+        background-color: var(--sombraCor6);
+    }
+    
+    .register-button {
+        background-color: var(--cor3);
+        color: white;
+    }
+    
+    .register-button:hover {
+        background-color: var(--cor2);
+    }
+    
+    .login-button i, .register-button i {
+        margin-right: 8px;
+        font-size: 18px;
+    }</style>
+
+    {% block extra_js %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% endblock %}
 </body>
 </html>

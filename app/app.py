@@ -1,7 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
+from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
 from flask import session
-
-from models import db, Usuario, Feedback
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
+from models import db, Usuario, Feedback, Denuncia, Sugestao, PontoTuristico, FotoSugestao
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -66,8 +68,8 @@ def cadastro():
 
 @app.before_request
 def verificar_autenticacao():
-    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal']
-    
+    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal', 'como_chegar', 'atividades', 'pontos_turisticos', 'dicas', 'cidade', 'recife', 'global_template', 'render_dynamic_template', 'main']    
+
     if request.endpoint not in rotas_liberadas and 'usuario_id' not in session:
         flash('Você precisa estar logado para acessar esta página.', 'warning')
         return redirect(url_for('home'))
@@ -156,10 +158,192 @@ def favoritos():
 
 @app.route('/perfil')
 def perfil():
-    usuario = None
-    if 'usuario_id' in session:
-        usuario = Usuario.query.get(session['usuario_id'])
-    return render_template('global/perfil.html', usuario=usuario)
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+    
+    usuario = Usuario.query.get(session['usuario_id'])
+    
+    # Obter sugestões com base no papel do usuário
+    if usuario.role == 'admin':
+        # Para administradores, obter todas as sugestões agrupadas por status
+        sugestoes_pendentes = Sugestao.query.filter_by(status='pendente').all()
+        sugestoes_aprovadas = Sugestao.query.filter_by(status='aprovada').all()
+        sugestoes_rejeitadas = Sugestao.query.filter_by(status='rejeitada').all()
+        
+        # Obter feedbacks denunciados e usuários banidos para o painel de admin
+        feedbacks_denunciados = db.session.query(Feedback, db.func.count(Denuncia.id).label('num_denuncias'))\
+            .join(Denuncia, Denuncia.feedback_id == Feedback.id)\
+            .group_by(Feedback.id)\
+            .order_by(db.desc('num_denuncias'))\
+            .all()
+        
+        usuarios_banidos = Usuario.query.filter_by(banido=True).all()
+        
+        return render_template('global/perfil.html', 
+                              usuario=usuario, 
+                              sugestoes_pendentes=sugestoes_pendentes,
+                              sugestoes_aprovadas=sugestoes_aprovadas,
+                              sugestoes_rejeitadas=sugestoes_rejeitadas,
+                              feedbacks_denunciados=feedbacks_denunciados,
+                              usuarios_banidos=usuarios_banidos)
+    else:
+        # Para usuários comuns, obter apenas suas próprias sugestões
+        sugestoes_usuario = Sugestao.query.filter_by(usuario_id=usuario.id).order_by(Sugestao.data_criacao.desc()).all()
+        
+        return render_template('global/perfil.html', 
+                              usuario=usuario, 
+                              sugestoes_usuario=sugestoes_usuario)
+
+@app.route('/sugerir_rota', methods=['GET', 'POST'])
+def sugerir_rotas():
+    
+    # Verificar se o usuário está logado
+    if 'usuario_id' not in session:
+        flash('Você precisa estar logado para sugerir rotas.', 'error')
+        return redirect(url_for('login'))
+    
+    usuario = db.session.get(Usuario, session['usuario_id'])
+    
+    if request.method == 'POST':
+        try:
+            # Obter dados básicos do formulário
+            estado = request.form.get('estado')
+            cidade = request.form.get('cidade')
+            descricao = request.form.get('descricao', '')
+            
+            # Validar campos obrigatórios
+            if not estado or not cidade:
+                flash('Estado e cidade são campos obrigatórios.', 'error')
+                return render_template('global/sugerir_rotas.html', usuario=usuario)
+            
+            # Criar nova sugestão
+            nova_sugestao = Sugestao(
+                usuario_id=session['usuario_id'],
+                estado=estado,
+                cidade=cidade,
+                descricao=descricao
+            )
+            
+            db.session.add(nova_sugestao)
+            db.session.flush()  # Para obter o ID da sugestão antes do commit
+            
+            # Processar pontos turísticos
+            pontos_turisticos = request.form.getlist('pontos_turisticos[]')
+            for ponto in pontos_turisticos:
+                if ponto.strip():  # Verificar se não está vazio
+                    novo_ponto = PontoTuristico(
+                        sugestao_id=nova_sugestao.id,
+                        nome=ponto.strip()
+                    )
+                    db.session.add(novo_ponto)
+            
+            # Processar fotos
+            if 'fotos[]' in request.files:
+                fotos = request.files.getlist('fotos[]')
+                for foto in fotos:
+                    if foto and foto.filename:
+                        # Gerar nome único para o arquivo
+                        filename = secure_filename(foto.filename)
+                        unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+                        
+                        # Definir o caminho para salvar a foto
+                        upload_folder = os.path.join(app.static_folder, 'uploads', 'sugestoes')
+                        
+                        # Criar o diretório se não existir
+                        if not os.path.exists(upload_folder):
+                            os.makedirs(upload_folder)
+                        
+                        # Salvar arquivo
+                        foto_path = os.path.join(upload_folder, unique_filename)
+                        foto.save(foto_path)
+                        
+                        # Caminho relativo para armazenar no banco de dados
+                        db_path = f"uploads/sugestoes/{unique_filename}"
+                        
+                        # Criar registro no banco
+                        nova_foto = FotoSugestao(
+                            sugestao_id=nova_sugestao.id,
+                            caminho=db_path
+                        )
+                        db.session.add(nova_foto)
+            
+            # Commit das alterações
+            db.session.commit()
+            flash('Sugestão enviada com sucesso! Obrigado por contribuir.', 'success')
+            return redirect(url_for('sugerir_rotas'))
+            
+        except Exception as e:
+            # Rollback em caso de erro
+            db.session.rollback()
+            flash(f'Erro ao enviar sugestão: {str(e)}', 'error')
+            return render_template('global/sugerir_rotas.html', usuario=usuario)
+
+    return render_template('global/sugerir_rotas.html', usuario=usuario)
+
+@app.route('/api/sugestao/<int:sugestao_id>')
+def api_sugestao(sugestao_id):
+    if 'usuario_id' not in session:
+        return jsonify({'error': 'Não autorizado'}), 401
+    
+    usuario = Usuario.query.get(session['usuario_id'])
+    sugestao = Sugestao.query.get_or_404(sugestao_id)
+    
+    # Verificar permissão: apenas admin ou o próprio usuário pode ver os detalhes
+    if usuario.role != 'admin' and sugestao.usuario_id != usuario.id:
+        return jsonify({'error': 'Não autorizado'}), 403
+    
+    # Preparar dados para JSON
+    pontos_turisticos = [{'id': pt.id, 'nome': pt.nome} for pt in sugestao.pontos_turisticos]
+    fotos = [{'id': foto.id, 'caminho': url_for('static', filename=foto.caminho)} for foto in sugestao.fotos]
+    
+    return jsonify({
+        'id': sugestao.id,
+        'autor_id': sugestao.usuario_id,
+        'autor_nome': sugestao.autor.nome + ' ' + sugestao.autor.sobrenome,
+        'estado': sugestao.estado,
+        'cidade': sugestao.cidade,
+        'descricao': sugestao.descricao,
+        'data_criacao': sugestao.data_criacao.strftime('%d/%m/%Y %H:%M'),
+        'status': sugestao.status,
+        'pontos_turisticos': pontos_turisticos,
+        'fotos': fotos
+    })
+
+@app.route('/aprovar_sugestao/<int:sugestao_id>', methods=['POST'])
+def aprovar_sugestao(sugestao_id):
+    if 'usuario_id' not in session:
+        flash('Você precisa estar logado para realizar esta ação.', 'warning')
+        return redirect(url_for('home'))
+    
+    usuario = Usuario.query.get(session['usuario_id'])
+    if usuario.role != 'admin':
+        flash('Apenas administradores podem aprovar sugestões.', 'warning')
+        return redirect(url_for('perfil'))
+    
+    sugestao = Sugestao.query.get_or_404(sugestao_id)
+    sugestao.status = 'aprovada'
+    db.session.commit()
+    
+    flash('Sugestão aprovada com sucesso!', 'success')
+    return redirect(url_for('perfil'))
+
+@app.route('/rejeitar_sugestao/<int:sugestao_id>', methods=['POST'])
+def rejeitar_sugestao(sugestao_id):
+    if 'usuario_id' not in session:
+        flash('Você precisa estar logado para realizar esta ação.', 'warning')
+        return redirect(url_for('home'))
+    
+    usuario = Usuario.query.get(session['usuario_id'])
+    if usuario.role != 'admin':
+        flash('Apenas administradores podem rejeitar sugestões.', 'warning')
+        return redirect(url_for('perfil'))
+    
+    sugestao = Sugestao.query.get_or_404(sugestao_id)
+    sugestao.status = 'rejeitada'
+    db.session.commit()
+    
+    flash('Sugestão rejeitada com sucesso!', 'success')
+    return redirect(url_for('perfil'))
 
 @app.route('/recife')
 def recife():
@@ -235,6 +419,95 @@ def component(component_name):
         print(f"Erro ao carregar componente {component_name}: {str(e)}")
         return f"Erro ao carregar componente {component_name}", 500
     
+
+@app.route('/denunciar/<int:feedback_id>', methods=['POST'])
+def denunciar_feedback(feedback_id):
+    if 'usuario_id' not in session:
+        flash('Você precisa estar logado para denunciar.', 'warning')
+        return redirect(url_for('login'))
+
+    usuario_id = session['usuario_id']
+    cidade = request.args.get('cidade')
+    estado = request.args.get('estado', 'padrao')
+
+    # Verifica se o usuário já denunciou esse feedback
+    denuncia_existente = Denuncia.query.filter_by(usuario_id=usuario_id, feedback_id=feedback_id).first()
+    if denuncia_existente:
+        flash('Você já denunciou este feedback.', 'info')
+    else:
+        nova_denuncia = Denuncia(usuario_id=usuario_id, feedback_id=feedback_id)
+        db.session.add(nova_denuncia)
+        db.session.commit()
+        flash('Feedback denunciado com sucesso!', 'success')
+
+    return redirect(url_for('cidade', nome_cidade=cidade, estado=estado))
+
+
+@app.route('/dar_strike/<int:usuario_id>/<int:feedback_id>', methods=['POST'])
+def dar_strike(usuario_id, feedback_id):
+    usuario = Usuario.query.get(usuario_id)
+    feedback = Feedback.query.get(feedback_id)
+    
+    # Adiciona um strike ao usuário
+    usuario.strikes += 1
+
+    # Verifica se o usuário deve ser banido
+    if usuario.strikes >= 3:
+        usuario.banido = True
+    
+    db.session.commit()
+
+    # Remover todas as denúncias relacionadas ao feedback
+    denuncias = Denuncia.query.filter_by(feedback_id=feedback_id).all()
+    for denuncia in denuncias:
+        db.session.delete(denuncia)
+    
+    # Remover o feedback após os strikes
+    db.session.delete(feedback)
+    
+    db.session.commit()
+    
+    return redirect(url_for('perfil'))  # Redireciona de volta para o perfil após dar o strike
+
+
+@app.route('/remover_denuncia/<int:feedback_id>', methods=['POST'])
+def remover_denuncia(feedback_id):
+    # Remover todas as denúncias do feedback
+    denuncias = Denuncia.query.filter_by(feedback_id=feedback_id).all()
+    for denuncia in denuncias:
+        db.session.delete(denuncia)
+    
+    db.session.commit()
+    
+    return redirect(url_for('perfil'))  # Redireciona de volta para o perfil após remover as denúncias
+
+@app.route('/desbanir_usuario/<int:usuario_id>', methods=['POST'])
+def desbanir_usuario(usuario_id):
+    usuario = Usuario.query.get(usuario_id)
+    if usuario:
+        usuario.banido = False
+        usuario.strikes = 0  
+        db.session.commit()
+    return redirect(url_for('perfil'))
+
+@app.route('/atualizar_perfil', methods=['POST'])
+def atualizar_perfil():
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+
+    usuario = Usuario.query.get(session['usuario_id'])
+    if not usuario:
+        return redirect(url_for('login'))
+
+    # Atualiza os dados
+    usuario.nome = request.form.get('nome')
+    usuario.sobrenome = request.form.get('sobrenome')
+    usuario.email = request.form.get('email')
+    usuario.telefone = request.form.get('telefone')
+
+    db.session.commit()
+
+    return redirect(url_for('perfil'))
 
 
 if __name__ == '__main__':

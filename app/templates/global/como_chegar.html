@@ -1,82 +1,87 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recife - Como Chegar</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
+
+{% extends "base.html" %}
+
+{% block title %}Rotas Nordestinas{% endblock %}
+
+{% block extra_css %}
+<title>{{cidade.title()}} - Como chegar</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/como_chegar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <script defer src="/js/pontos_turisticos.js"></script>
-</head>
+{% endblock %}
+{% block content %}
 
-<body>
-    <header id="header"></header>
+<h1 id="cityName"></h1>
 
-
-    <h1 id="cityName"></h1>
-
-    <div class="container">
-        <h1>COMO CHEGAR</h1>
-        
-            {% if cidade == 'recife' %}
-                <p>Recife está localizado no estado de Pernambuco e pode ser acessado facilmente pelo Aeroporto Internacional dos Guararapes.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252823.60132890497!2d-34.923626766884624!3d-8.063815594091169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab196f94e5408b%3A0xe5800ef782bde3a6!2sRecife%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1736165678441!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'tamandare' %}
-                <p>Tamandaré é uma cidade litorânea de Pernambuco, acessível pela PE-060, a partir do Recife. O aeroporto mais próximo é o Aeroporto Internacional do Recife.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15730.870842322303!2d-35.10441772507353!3d-8.75994776463038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a997f17fc2893b%3A0xa169bf40b0a6786f!2sTamandar%C3%A9%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'olinda' %}
-                <p>Olinda está localizada na Região Metropolitana do Recife, sendo facilmente acessível por transporte público ou carro a partir do centro da capital pernambucana.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126427.30974367574!2d-35.02614573043207!3d-7.999684080505029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab13ecdf89e8c9%3A0x4d8aee57e6ae720!2sOlinda%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000001!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'caruaru' %}
-                <p>Caruaru está localizada no agreste de Pernambuco. Pode ser acessada pela BR-232, partindo do Recife, em aproximadamente 2 horas e meia de viagem.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126427.30974367574!2d-35.999684080505029!3d-8.283333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a9fbc927d6fd13%3A0xd7584c92f77c87cb!2sCaruaru%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000002!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'parnaiba' %}
-                <p>Parnaíba, no Piauí, pode ser acessada por via aérea através do Aeroporto Internacional de Parnaíba Prefeito Dr. João Silva Filho, ou por rodovia via BR-343.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3977.2406287770274!2d-41.77922668523856!3d-2.904014097916934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78ddf70b29a6d5b%3A0x2db8366edb8b8df0!2sParna%C3%ADba%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000003!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'teresina' %}
-                <p>Teresina é a capital do estado do Piauí e é acessível por meio do Aeroporto Senador Petrônio Portella, além de conexões rodoviárias como as BRs 343 e 316.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.022847655417!2d-42.80160858523055!3d-5.089210952478205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78e37c6b4be0dd1%3A0x6de8fc0fcf4965be!2sTeresina%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000004!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'barra_grande' %}
-                <p>Barra Grande do Piauí é um destino litorâneo acessível a partir de Parnaíba ou Teresina por transporte terrestre, com trechos de estrada de terra.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3974.9908816615363!2d-41.3914932852366!3d-2.904527697915455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78dde5f697d40e1%3A0xb2fa12dc8d7a7e4a!2sBarra%20Grande%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000005!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'sao_raimundo_nonato' %}
-                <p>São Raimundo Nonato, no sul do Piauí, é porta de entrada do Parque Nacional da Serra da Capivara. Pode ser acessada por ônibus ou carro via BR-020 e BR-324.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0732865867584!2d-42.69100028520663!3d-9.012189593482254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78b9ec55df928a7%3A0x6dca0b5bfb2b9d6a!2sS%C3%A3o%20Raimundo%20Nonato%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000006!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'salvador' %}
-                <p>Salvador, capital da Bahia, é servida pelo Aeroporto Internacional de Salvador – Deputado Luís Eduardo Magalhães e também por rodovias como a BR-324.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125919.15203527135!2d-38.56137802441811!3d-12.97160647856944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x71603861b9609a3%3A0x9181ee3509e397a5!2sSalvador%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000007!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'ilheus' %}
-                <p>Ilhéus está localizada no litoral sul da Bahia, sendo servida pelo Aeroporto Jorge Amado, com acesso por via aérea ou pela rodovia BR-101.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126544.29894652283!2d-39.06644977447302!3d-14.793505678553778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x736d0515030e5b3%3A0x7c2ab6ffdc6807cd!2sIlh%C3%A9us%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000008!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% elif cidade == 'luis_eduardo' %}
-                <p>Luís Eduardo Magalhães está no oeste baiano e pode ser acessado pela BR-020, próximo da divisa com o Tocantins. É um dos principais polos do agronegócio do Brasil.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.0164096990854!2d-45.78623288522312!3d-12.088108491431947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x76dc37c5d7de3cb%3A0x51d1a43030f0a30a!2sLu%C3%ADs%20Eduardo%20Magalh%C3%A3es%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000009!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-        
-            {% else %}
-                <p>Informações de como chegar nesta cidade ainda não estão disponíveis.</p>
-            {% endif %}
-        </div>
-        
-    </div>
-
+<div class="container">
+    <h1>COMO CHEGAR</h1>
     
-    <footer id="footer"></footer>
+        {% if cidade == 'recife' %}
+            <p>Recife está localizado no estado de Pernambuco e pode ser acessado facilmente pelo Aeroporto Internacional dos Guararapes.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252823.60132890497!2d-34.923626766884624!3d-8.063815594091169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab196f94e5408b%3A0xe5800ef782bde3a6!2sRecife%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1736165678441!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'tamandare' %}
+            <p>Tamandaré é uma cidade litorânea de Pernambuco, acessível pela PE-060, a partir do Recife. O aeroporto mais próximo é o Aeroporto Internacional do Recife.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15730.870842322303!2d-35.10441772507353!3d-8.75994776463038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a997f17fc2893b%3A0xa169bf40b0a6786f!2sTamandar%C3%A9%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'olinda' %}
+            <p>Olinda está localizada na Região Metropolitana do Recife, sendo facilmente acessível por transporte público ou carro a partir do centro da capital pernambucana.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126427.30974367574!2d-35.02614573043207!3d-7.999684080505029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab13ecdf89e8c9%3A0x4d8aee57e6ae720!2sOlinda%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000001!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'caruaru' %}
+            <p>Caruaru está localizada no agreste de Pernambuco. Pode ser acessada pela BR-232, partindo do Recife, em aproximadamente 2 horas e meia de viagem.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126427.30974367574!2d-35.999684080505029!3d-8.283333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a9fbc927d6fd13%3A0xd7584c92f77c87cb!2sCaruaru%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000002!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'parnaiba' %}
+            <p>Parnaíba, no Piauí, pode ser acessada por via aérea através do Aeroporto Internacional de Parnaíba Prefeito Dr. João Silva Filho, ou por rodovia via BR-343.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3977.2406287770274!2d-41.77922668523856!3d-2.904014097916934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78ddf70b29a6d5b%3A0x2db8366edb8b8df0!2sParna%C3%ADba%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000003!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'teresina' %}
+            <p>Teresina é a capital do estado do Piauí e é acessível por meio do Aeroporto Senador Petrônio Portella, além de conexões rodoviárias como as BRs 343 e 316.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.022847655417!2d-42.80160858523055!3d-5.089210952478205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78e37c6b4be0dd1%3A0x6de8fc0fcf4965be!2sTeresina%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000004!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'barra_grande' %}
+            <p>Barra Grande do Piauí é um destino litorâneo acessível a partir de Parnaíba ou Teresina por transporte terrestre, com trechos de estrada de terra.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3974.9908816615363!2d-41.3914932852366!3d-2.904527697915455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78dde5f697d40e1%3A0xb2fa12dc8d7a7e4a!2sBarra%20Grande%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000005!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'sao_raimundo_nonato' %}
+            <p>São Raimundo Nonato, no sul do Piauí, é porta de entrada do Parque Nacional da Serra da Capivara. Pode ser acessada por ônibus ou carro via BR-020 e BR-324.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0732865867584!2d-42.69100028520663!3d-9.012189593482254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78b9ec55df928a7%3A0x6dca0b5bfb2b9d6a!2sS%C3%A3o%20Raimundo%20Nonato%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000006!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'salvador' %}
+            <p>Salvador, capital da Bahia, é servida pelo Aeroporto Internacional de Salvador – Deputado Luís Eduardo Magalhães e também por rodovias como a BR-324.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125919.15203527135!2d-38.56137802441811!3d-12.97160647856944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x71603861b9609a3%3A0x9181ee3509e397a5!2sSalvador%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000007!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'ilheus' %}
+            <p>Ilhéus está localizada no litoral sul da Bahia, sendo servida pelo Aeroporto Jorge Amado, com acesso por via aérea ou pela rodovia BR-101.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126544.29894652283!2d-39.06644977447302!3d-14.793505678553778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x736d0515030e5b3%3A0x7c2ab6ffdc6807cd!2sIlh%C3%A9us%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000008!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% elif cidade == 'luis_eduardo' %}
+            <p>Luís Eduardo Magalhães está no oeste baiano e pode ser acessado pela BR-020, próximo da divisa com o Tocantins. É um dos principais polos do agronegócio do Brasil.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.0164096990854!2d-45.78623288522312!3d-12.088108491431947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x76dc37c5d7de3cb%3A0x51d1a43030f0a30a!2sLu%C3%ADs%20Eduardo%20Magalh%C3%A3es%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000009!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    
+        {% else %}
+            <p>Informações de como chegar nesta cidade ainda não estão disponíveis.</p>
+        {% endif %}
+    </div>
+    
+</div>
 
-    <script src="{{ url_for('static', filename='js/cidades.js') }}"></script>
-</body>
-</html>
+<footer>
+    <img class="logo" src="{{ url_for('static', filename='images/logo/LOGO_WHITE.svg') }}" alt="Rotas Nordestinas">
+    <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
+    <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
+</footer>
+
+    {% endblock %}
+    
+    {% block extra_js %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
+

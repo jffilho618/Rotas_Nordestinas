@@ -1,5 +1,4 @@
 
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // Selecionar elementos
@@ -11,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const suggestionButton = document.getElementById('suggestionButton');
     const options = document.querySelectorAll('#userSidebar .option');
     const supportButton = document.querySelector('#userSidebar .support-button');
+    
+    // Adicionar esta linha para selecionar o botão X
+    const closeXButton = document.querySelector('.close-x-button'); // Ajuste o seletor conforme o ID ou classe real do seu botão X
+
 
     // Abrir sidebar do usuário
     menuButton.addEventListener('click', () => {
@@ -18,19 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
         userSidebar.classList.add('open');
     });
 
-    // Fechar sidebar com o botão "Sair"
-    closeButton.addEventListener('click', () => {
-        userSidebarWrapper.classList.remove('open');
-        userSidebar.classList.remove('open');
-        showSuccessToast('Logout realizado com sucesso!');
-    });
-
     // Fechar sidebar com o "X"
-    closeXButton.addEventListener('click', () => {
-        userSidebarWrapper.classList.remove('open');
-        userSidebar.classList.remove('open');
-    });
-
+    if (closeXButton) { // Verificar se o elemento existe antes de adicionar o listener
+        closeXButton.addEventListener('click', () => {
+            userSidebarWrapper.classList.remove('open');
+            userSidebar.classList.remove('open');
+        });
+    }
     // Fechar sidebar ao clicar fora
     userSidebarWrapper.addEventListener('click', (event) => {
         if (!userSidebar.contains(event.target)) {
