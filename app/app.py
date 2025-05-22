@@ -312,32 +312,38 @@ def api_sugestao(sugestao_id):
 @app.route('/aprovar_sugestao/<int:sugestao_id>', methods=['POST'])
 def aprovar_sugestao(sugestao_id):
     if 'usuario_id' not in session:
-        return jsonify({'error': 'Não autorizado'}), 401
+        flash('Você precisa estar logado para realizar esta ação.', 'warning')
+        return redirect(url_for('home'))
     
     usuario = Usuario.query.get(session['usuario_id'])
     if usuario.role != 'admin':
-        return jsonify({'error': 'Apenas administradores podem aprovar sugestões'}), 403
+        flash('Apenas administradores podem aprovar sugestões.', 'warning')
+        return redirect(url_for('perfil'))
     
     sugestao = Sugestao.query.get_or_404(sugestao_id)
     sugestao.status = 'aprovada'
     db.session.commit()
     
-    return jsonify({'success': True})
+    flash('Sugestão aprovada com sucesso!', 'success')
+    return redirect(url_for('perfil'))
 
 @app.route('/rejeitar_sugestao/<int:sugestao_id>', methods=['POST'])
 def rejeitar_sugestao(sugestao_id):
     if 'usuario_id' not in session:
-        return jsonify({'error': 'Não autorizado'}), 401
+        flash('Você precisa estar logado para realizar esta ação.', 'warning')
+        return redirect(url_for('home'))
     
     usuario = Usuario.query.get(session['usuario_id'])
     if usuario.role != 'admin':
-        return jsonify({'error': 'Apenas administradores podem rejeitar sugestões'}), 403
+        flash('Apenas administradores podem rejeitar sugestões.', 'warning')
+        return redirect(url_for('perfil'))
     
     sugestao = Sugestao.query.get_or_404(sugestao_id)
     sugestao.status = 'rejeitada'
     db.session.commit()
     
-    return jsonify({'success': True})
+    flash('Sugestão rejeitada com sucesso!', 'success')
+    return redirect(url_for('perfil'))
 
 @app.route('/recife')
 def recife():
