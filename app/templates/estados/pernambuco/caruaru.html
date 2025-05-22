@@ -1,105 +1,113 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caruaru - Conheça Pernambuco</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-</head>
-<body>
-    {% include 'global/header.html' %}
+{% extends "base.html" %}
 
-    <div class="banner">
-        <div class="city-banner">
-            <img src="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}" alt="Caruaru">
-            <div class="city-name">CARUARU</div>
+{% block title %}Rotas Nordestinas{% endblock %}
+
+{% block extra_css %}
+<title>{{ cidade.title() }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="banner">
+    <div class="city-banner">
+        <img src="{{ url_for('static', filename='images/cidades/Caruaru_01.jpg') }}" alt="Caruaru">
+        <div class="city-name">CARUARU</div>
+    </div>
+    <div class="city-description">
+        <p>Caruaru está situada no Agreste pernambucano e é reconhecida como a capital do forró. Com forte identidade cultural, é famosa pela sua festa de São João, uma das maiores do Brasil, além do artesanato e do Alto do Moura, importante centro de arte figurativa.</p>
+    </div>
+    <div class="city-buttons">
+        <a href="{{ url_for('como_chegar', estado='pernambuco', cidade='caruaru') }}" class="button-link">
+            <img src="{{ url_for('static', filename='images/icons/location-white.svg') }}" alt="Como chegar"> Como chegar
+        </a>
+        <a href="{{ url_for('pontos_turisticos', estado='pernambuco', cidade='caruaru') }}" class="button-link">
+          <img src="{{ url_for('static', filename='images/icons/places-white.svg') }}" alt="Pontos turísticos"> Pontos Turísticos
+        </a>
+        <a href="{{ url_for('atividades', estado='pernambuco', cidade='caruaru') }}" class="button-link">
+          <img src="{{ url_for('static', filename='images/icons/calendar-white.svg') }}" alt="Atividades"> Atividades
+        </a>
+        <a href="{{ url_for('dicas', estado='pernambuco', cidade='caruaru') }}" class="button-link">
+          <img src="{{ url_for('static', filename='images/icons/lampada-white.svg') }}" alt="Dicas"> Dicas
+        </a>
+    </div>
+</div>
+
+<!-- Seção de Feedback Integrada -->
+<section id="feedback-section">
+    <div class="part1">
+        <h2>Feedback dos Usuários em Caruaru</h2>
+        <hr class="divider-line">
+    </div>
+
+    {% for f in feedbacks %}
+    <div class="part2">
+        <div class="part2-1">
+            <div class="user-info">
+                <img class="user" src="{{ url_for('static', filename='images/icons/user1.png') }}">
+                <div class="user-data">
+                    <h3>{{ f.autor.nome }}</h3>
+                    <p>{{ f.data.strftime('%d/%m/%Y') }}</p>
+                </div>
+            </div>
+            <div class="actions">
+                <img class="like" src="{{ url_for('static', filename='images/icons/danger.png') }}" title="Denunciar">
+                {% if session.get('usuario_role') == 'admin' %}
+                <form method="POST" action="{{ url_for('deletar_feedback', feedback_id=f.id) }}?estado={{ estado }}" class="delete-form">
+                    <button type="submit" class="delete-button" onclick="return confirm('Tem certeza que deseja excluir este feedback?')">Excluir</button>
+                </form>                    
+                {% endif %}
+            </div>
         </div>
-        <div class="city-description">
-            <p>Caruaru está situada no Agreste pernambucano e é reconhecida como a capital do forró. Com forte identidade cultural, é famosa pela sua festa de São João, uma das maiores do Brasil, além do artesanato e do Alto do Moura, importante centro de arte figurativa.</p>
-        </div>
-        <div class="city-buttons">
-            <a href="{{ url_for('como_chegar', estado='pernambuco', cidade='caruaru') }}" class="button-link">
-                <img src="{{ url_for('static', filename='images/icons/location-white.svg') }}" alt="Como chegar"> Como chegar
-            </a>
-            <a href="{{ url_for('pontos_turisticos', estado='pernambuco', cidade='caruaru') }}" class="button-link">
-              <img src="{{ url_for('static', filename='images/icons/places-white.svg') }}" alt="Pontos turísticos"> Pontos Turísticos
-            </a>
-            <a href="{{ url_for('atividades', estado='pernambuco', cidade='caruaru') }}" class="button-link">
-              <img src="{{ url_for('static', filename='images/icons/calendar-white.svg') }}" alt="Atividades"> Atividades
-            </a>
-            <a href="{{ url_for('dicas', estado='pernambuco', cidade='caruaru') }}" class="button-link">
-              <img src="{{ url_for('static', filename='images/icons/lampada-white.svg') }}" alt="Dicas"> Dicas
-            </a>
+        <div class="part2-2">
+            <p><strong>{{ f.titulo }}</strong><br>{{ f.descricao }}</p>
         </div>
     </div>
-    
-    <!-- Seção de Feedback Integrada -->
-    <section id="feedback-section">
-        <div class="part1">
-            <h2>Feedback dos Usuários em Caruaru</h2>
-            <hr class="divider-line">
-        </div>
+    {% endfor %}
 
-        {% for f in feedbacks %}
-        <div class="part2">
-            <div class="part2-1">
-                <div class="user-info">
-                    <img class="user" src="{{ url_for('static', filename='images/icons/user1.png') }}">
-                    <div class="user-data">
-                        <h3>{{ f.autor.nome }}</h3>
-                        <p>{{ f.data.strftime('%d/%m/%Y') }}</p>
-                    </div>
-                </div>
-                <div class="actions">
-                    <img class="like" src="{{ url_for('static', filename='images/icons/danger.png') }}" title="Denunciar">
-                    {% if session.get('usuario_role') == 'admin' %}
-                    <form method="POST" action="{{ url_for('deletar_feedback', feedback_id=f.id) }}?estado={{ estado }}" class="delete-form">
-                        <button type="submit" class="delete-button" onclick="return confirm('Tem certeza que deseja excluir este feedback?')">Excluir</button>
-                    </form>                    
-                    {% endif %}
-                </div>
-            </div>
-            <div class="part2-2">
-                <p><strong>{{ f.titulo }}</strong><br>{{ f.descricao }}</p>
-            </div>
-        </div>
-        {% endfor %}
+    {% if session.get('usuario_id') %}
+    <div class="feedback-form">
+        <h3>Deixe seu Feedback</h3>
+        <form method="POST" action="{{ url_for('cidade', nome_cidade='caruaru') }}">
+            <input type="hidden" name="cidade" value="Caruaru">
 
-        {% if session.get('usuario_id') %}
-        <div class="feedback-form">
-            <h3>Deixe seu Feedback</h3>
-            <form method="POST" action="{{ url_for('cidade', nome_cidade='caruaru') }}">
-                <input type="hidden" name="cidade" value="Caruaru">
+            <input type="hidden" name="estado" value="pernambuco">
+            
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Digite um título" required>
 
-                <input type="hidden" name="estado" value="pernambuco">
-                
-                <label for="titulo">Título:</label>
-                <input type="text" id="titulo" name="titulo" placeholder="Digite um título" required>
+            <label for="descricao">Seu Feedback:</label>
+            <textarea id="descricao" name="descricao" rows="4" placeholder="Escreva seu feedback" required></textarea>
 
-                <label for="descricao">Seu Feedback:</label>
-                <textarea id="descricao" name="descricao" rows="4" placeholder="Escreva seu feedback" required></textarea>
+            <button type="submit">Enviar Feedback</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="login-message">
+        <i class='bx bx-log-in'></i>
+        <p><a href="{{ url_for('index') }}" class="login-link">Faça login</a> para enviar um feedback.</p>
+    </div>
+    {% endif %}
+</section>
 
-                <button type="submit">Enviar Feedback</button>
-            </form>
-        </div>
-        {% else %}
-        <div class="login-message">
-            <i class='bx bx-log-in'></i>
-            <p><a href="{{ url_for('index') }}" class="login-link">Faça login</a> para enviar um feedback.</p>
-        </div>
-        {% endif %}
-    </section>
 
-    <footer>
-        <img class="logo" src="{{ url_for('static', filename='images/logo/LOGO_WHITE.svg') }}" alt="Rotas Nordestinas">
-        <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
-        <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
-    </footer>
 
-    <script src="{{ url_for('static', filename='js/cidades.js') }}"></script>
-</body>
-</html>
+<footer>
+    <img class="logo" src="{{ url_for('static', filename='images/logo/LOGO_WHITE.svg') }}" alt="Rotas Nordestinas">
+    <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
+    <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
+</footer>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cidades.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
