@@ -1,52 +1,58 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recife - Atividades</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/atividades.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-    <script defer src="/js/pontos_turisticos.js"></script>
-</head>
+{% extends "base.html" %}
 
-<body>
-    <header id="header"></header>
+{% block title %}Rotas Nordestinas{% endblock %}
 
-    <div class="container">
-        <h1 class="cityName">Recife</h1>
-        <h2 class="points-title">Atividades:</h2>
-        <div class="points-list">
-            <div class="group1" data-id="atividade1">
-                <img class="point-image" src="{{ url_for('static', filename='images/atividades/passeio_escuna.png') }}" alt="Passeio de Escuna">
-                <div class="group2">    
-                    <div class="point-header">
-                        <h3 class="point-name">Passeio de Escuna a Ilhas dos Frades e Itaparica</h3>
-                        <i class='bx bx-star favorite-star' onclick="toggleFavorite('atividade1')"></i>
-                    </div>
-                    <p class="point-description">"Uma experiência incrível navegando pelas águas tranquilas da Baía de Todos-os-Santos. O passeio de escuna leva você a duas das mais belas ilhas da região: a Ilha dos Frades, com sua natureza exuberante e águas cristalinas, e a charmosa Ilha de Itaparica, famosa por suas praias paradisíacas e cultura rica. Aproveite um dia de lazer com paradas para banho e a oportunidade de explorar paisagens únicas."</p>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/atividades.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="cityName">Recife</h1>
+    <h2 class="points-title">Atividades:</h2>
+    <div class="points-list">
+        <div class="group1" data-id="atividade1">
+            <img class="point-image" src="{{ url_for('static', filename='images/atividades/passeio_escuna.png') }}" alt="Passeio de Escuna">
+            <div class="group2">    
+                <div class="point-header">
+                    <h3 class="point-name">Passeio de Escuna a Ilhas dos Frades e Itaparica</h3>
+                    <i class='bx bx-star favorite-star' onclick="toggleFavorite('atividade1')"></i>
                 </div>
+                <p class="point-description">"Uma experiência incrível navegando pelas águas tranquilas da Baía de Todos-os-Santos. O passeio de escuna leva você a duas das mais belas ilhas da região: a Ilha dos Frades, com sua natureza exuberante e águas cristalinas, e a charmosa Ilha de Itaparica, famosa por suas praias paradisíacas e cultura rica. Aproveite um dia de lazer com paradas para banho e a oportunidade de explorar paisagens únicas."</p>
             </div>
-            <div class="group1" data-id="atividade2">
-                <img class="point-image" src="{{ url_for('static', filename='images/atividades/tour_praia_forte.png') }}" alt="Tour Praia do Forte">
-                <div class="group2">    
-                    <div class="point-header">
-                        <h3 class="point-name">Tour Regular à Praia do Forte</h3>
-                        <i class='bx bx-star favorite-star' onclick="toggleFavorite('atividade2')"></i>
-                    </div>
-                    <p class="point-description">"Descubra as belezas da Praia do Forte em um tour inesquecível. Conhecida por suas paisagens deslumbrantes e pelo Projeto Tamar, que preserva as tartarugas marinhas, a região é um verdadeiro refúgio de biodiversidade. Durante o passeio, você terá a chance de caminhar pelo vilarejo encantador, apreciar a gastronomia local e relaxar nas águas tranquilas e paradisíacas do litoral baiano."</p>
+        </div>
+        <div class="group1" data-id="atividade2">
+            <img class="point-image" src="{{ url_for('static', filename='images/atividades/tour_praia_forte.png') }}" alt="Tour Praia do Forte">
+            <div class="group2">    
+                <div class="point-header">
+                    <h3 class="point-name">Tour Regular à Praia do Forte</h3>
+                    <i class='bx bx-star favorite-star' onclick="toggleFavorite('atividade2')"></i>
                 </div>
+                <p class="point-description">"Descubra as belezas da Praia do Forte em um tour inesquecível. Conhecida por suas paisagens deslumbrantes e pelo Projeto Tamar, que preserva as tartarugas marinhas, a região é um verdadeiro refúgio de biodiversidade. Durante o passeio, você terá a chance de caminhar pelo vilarejo encantador, apreciar a gastronomia local e relaxar nas águas tranquilas e paradisíacas do litoral baiano."</p>
             </div>
         </div>
     </div>
+</div>
 
-    <footer id="footer"></footer>
+<footer>
+    <img class="logo" src="{{ url_for('static', filename='images/logo/LOGO_WHITE.svg') }}" alt="Rotas Nordestinas">
+    <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
+    <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
+</footer>
 
-    <script src="{{ url_for('static', filename='js/cidades.js') }}"></script>
+    {% endblock %}
+    
+    {% block extra_js %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
         // Função para carregar e verificar favoritos quando a página carrega
         document.addEventListener('DOMContentLoaded', function() {
@@ -96,5 +102,6 @@
             });
         }
     </script>
-</body>
-</html>
+
+{% endblock %}
+
