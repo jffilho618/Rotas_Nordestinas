@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Rotas Nordestinas{% endblock %}</title>
+    {% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    {% block extra_css %}{% endblock %}
+    {% endblock %}
 </head>
 <body>
     <header class="header">
@@ -95,7 +96,8 @@
         font-size: 18px;
     }</style>
 
-    {% block extra_js %}{% endblock %}
+    {% block extra_js %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% endblock %}
 </body>
 </html>
