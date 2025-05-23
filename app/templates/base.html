@@ -6,7 +6,9 @@
     <title>{% block title %}Rotas Nordestinas{% endblock %}</title>
     {% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='global/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+
+
     {% endblock %}
 </head>
 <body>
@@ -60,9 +62,9 @@
         </div>
     </div>
 
-    <main>
+    <div>
         {% block content %}{% endblock %}
-    </main>
+    </div>
 
     <style>
     
