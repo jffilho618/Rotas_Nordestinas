@@ -1,76 +1,330 @@
-
 {% extends "base.html" %}
 
-{% block title %}Rotas Nordestinas{% endblock %}
+{% block title %}{{ cidade.title() }} - Como chegar{% endblock %}
 
 {% block extra_css %}
-<title>{{cidade.title()}} - Como chegar</title>
-
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/cidades.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/como_chegar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/cidades/como_chegar.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='images/logo/favicon_verde.png') }}" type="image/png">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet Routing Machine CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+
+<style>
+    .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        padding: 20px;
+    }
+    
+    .container h1 {
+        font-size: 2em;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-top: 40px;
+    }
+    
+    #map-container {
+        width: 80%;
+        height: 100vh;
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .map-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 80%;
+    }
+    
+    .map-button {
+        background-color: var(--cor6);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+        font-size: 14px;
+    }
+    
+    .map-button:hover {
+        background-color: var(--sombraCor6);
+    }
+    
+    .map-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    
+    .map-button i {
+        font-size: 18px;
+    }
+    
+    .location-status {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+        font-size: 14px;
+        width: 80%;
+        text-align: center;
+    }
+    
+    .location-status.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        display: block;
+    }
+    
+    .location-status.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        display: block;
+    }
+    
+    .location-status.loading {
+        background-color: #e2e3e5;
+        color: #383d41;
+        border: 1px solid #d6d8db;
+        display: block;
+    }
+    
+    .transport-options {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 80%;
+    }
+    
+    .transport-option {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+    
+    .transport-option:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .transport-option.active {
+        background-color: var(--cor6);
+        color: white;
+        border-color: var(--cor6);
+    }
+    
+    .route-info {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        display: none;
+        width: 80%;
+    }
+    
+    .route-info.show {
+        display: block;
+    }
+    
+    .route-info h3 {
+        margin: 0 0 10px 0;
+        color: var(--cor6);
+        text-align: center;
+    }
+    
+    .route-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    
+    .route-detail {
+        text-align: center;
+        padding: 10px;
+        background-color: white;
+        border-radius: 4px;
+    }
+    
+    .route-detail strong {
+        display: block;
+        color: var(--cor6);
+        font-size: 18px;
+    }
+    
+    /* Customizar controles do Leaflet */
+    .leaflet-routing-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .leaflet-routing-container h2 {
+        background-color: var(--cor6);
+        color: white;
+        margin: 0;
+        padding: 10px;
+        border-radius: 8px 8px 0 0;
+    }
+    
+   
+    /* Ajustes para dispositivos móveis */
+    @media (max-width: 768px) {
+        #map-container {
+            width: 95%;
+            height: 60vh;
+            min-height: 350px;
+        }
+        
+        .map-controls, .transport-options, .location-status, .route-info {
+            width: 95%;
+        }
+        
+        .map-button {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        
+        .transport-option {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+    }
+    
+    /* Garantir que o mapa seja visível em telas muito pequenas */
+    @media (max-width: 480px) {
+        #map-container {
+            height: 50vh;
+            min-height: 300px;
+        }
+        
+        .container h1 {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    }
+    
+    /* Corrigir problemas com o Leaflet Routing Machine */
+    .leaflet-routing-container.leaflet-routing-container-hide {
+        display: none;
+    }
+    
+    /* Garantir que o mapa mantenha o tamanho após calcular rota */
+    .leaflet-container {
+        height: 100% ;
+        width: 100% ;
+    }
+</style>
 {% endblock %}
+
 {% block content %}
-
-<h1 id="cityName"></h1>
-
 <div class="container">
     <h1>COMO CHEGAR</h1>
     
-        {% if cidade == 'recife' %}
-            <p>Recife está localizado no estado de Pernambuco e pode ser acessado facilmente pelo Aeroporto Internacional dos Guararapes.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252823.60132890497!2d-34.923626766884624!3d-8.063815594091169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab196f94e5408b%3A0xe5800ef782bde3a6!2sRecife%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1736165678441!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
+    {% if cidade == 'recife' %}
+        <p>Recife está localizado no estado de Pernambuco e pode ser acessado facilmente pelo Aeroporto Internacional dos Guararapes.</p>
+    {% elif cidade == 'tamandare' %}
+        <p>Tamandaré é uma cidade litorânea de Pernambuco, acessível pela PE-060, a partir do Recife. O aeroporto mais próximo é o Aeroporto Internacional do Recife.</p>
+    {% elif cidade == 'olinda' %}
+        <p>Olinda está localizada na Região Metropolitana do Recife, sendo facilmente acessível por transporte público ou carro a partir do centro da capital pernambucana.</p>
+    {% elif cidade == 'caruaru' %}
+        <p>Caruaru está localizada no agreste de Pernambuco. Pode ser acessada pela BR-232, partindo do Recife, em aproximadamente 2 horas e meia de viagem.</p>
+    {% elif cidade == 'parnaiba' %}
+        <p>Parnaíba, no Piauí, pode ser acessada por via aérea através do Aeroporto Internacional de Parnaíba Prefeito Dr. João Silva Filho, ou por rodovia via BR-343.</p>
+    {% elif cidade == 'teresina' %}
+        <p>Teresina é a capital do estado do Piauí e é acessível por meio do Aeroporto Senador Petrônio Portella, além de conexões rodoviárias como as BRs 343 e 316.</p>
+    {% elif cidade == 'barra_grande' %}
+        <p>Barra Grande do Piauí é um destino litorâneo acessível a partir de Parnaíba ou Teresina por transporte terrestre, com trechos de estrada de terra.</p>
+    {% elif cidade == 'sao_raimundo_nonato' %}
+        <p>São Raimundo Nonato, no sul do Piauí, é porta de entrada do Parque Nacional da Serra da Capivara. Pode ser acessada por ônibus ou carro via BR-020 e BR-324.</p>
+    {% elif cidade == 'salvador' %}
+        <p>Salvador, capital da Bahia, é servida pelo Aeroporto Internacional de Salvador – Deputado Luís Eduardo Magalhães e também por rodovias como a BR-324.</p>
+    {% elif cidade == 'ilheus' %}
+        <p>Ilhéus está localizada no litoral sul da Bahia, sendo servida pelo Aeroporto Jorge Amado, com acesso por via aérea ou pela rodovia BR-101.</p>
+    {% elif cidade == 'luis_eduardo' %}
+        <p>Luís Eduardo Magalhães está no oeste baiano e pode ser acessado pela BR-020, próximo da divisa com o Tocantins. É um dos principais polos do agronegócio do Brasil.</p>
+    {% else %}
+        <p>Informações de como chegar nesta cidade ainda não estão disponíveis.</p>
+    {% endif %}
     
-        {% elif cidade == 'tamandare' %}
-            <p>Tamandaré é uma cidade litorânea de Pernambuco, acessível pela PE-060, a partir do Recife. O aeroporto mais próximo é o Aeroporto Internacional do Recife.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15730.870842322303!2d-35.10441772507353!3d-8.75994776463038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a997f17fc2893b%3A0xa169bf40b0a6786f!2sTamandar%C3%A9%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000000!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'olinda' %}
-            <p>Olinda está localizada na Região Metropolitana do Recife, sendo facilmente acessível por transporte público ou carro a partir do centro da capital pernambucana.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126427.30974367574!2d-35.02614573043207!3d-7.999684080505029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab13ecdf89e8c9%3A0x4d8aee57e6ae720!2sOlinda%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000001!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'caruaru' %}
-            <p>Caruaru está localizada no agreste de Pernambuco. Pode ser acessada pela BR-232, partindo do Recife, em aproximadamente 2 horas e meia de viagem.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126427.30974367574!2d-35.999684080505029!3d-8.283333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a9fbc927d6fd13%3A0xd7584c92f77c87cb!2sCaruaru%2C%20PE!5e0!3m2!1spt-BR!2sbr!4v1680000000002!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'parnaiba' %}
-            <p>Parnaíba, no Piauí, pode ser acessada por via aérea através do Aeroporto Internacional de Parnaíba Prefeito Dr. João Silva Filho, ou por rodovia via BR-343.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3977.2406287770274!2d-41.77922668523856!3d-2.904014097916934!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78ddf70b29a6d5b%3A0x2db8366edb8b8df0!2sParna%C3%ADba%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000003!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'teresina' %}
-            <p>Teresina é a capital do estado do Piauí e é acessível por meio do Aeroporto Senador Petrônio Portella, além de conexões rodoviárias como as BRs 343 e 316.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.022847655417!2d-42.80160858523055!3d-5.089210952478205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78e37c6b4be0dd1%3A0x6de8fc0fcf4965be!2sTeresina%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000004!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'barra_grande' %}
-            <p>Barra Grande do Piauí é um destino litorâneo acessível a partir de Parnaíba ou Teresina por transporte terrestre, com trechos de estrada de terra.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3974.9908816615363!2d-41.3914932852366!3d-2.904527697915455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78dde5f697d40e1%3A0xb2fa12dc8d7a7e4a!2sBarra%20Grande%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000005!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'sao_raimundo_nonato' %}
-            <p>São Raimundo Nonato, no sul do Piauí, é porta de entrada do Parque Nacional da Serra da Capivara. Pode ser acessada por ônibus ou carro via BR-020 e BR-324.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0732865867584!2d-42.69100028520663!3d-9.012189593482254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x78b9ec55df928a7%3A0x6dca0b5bfb2b9d6a!2sS%C3%A3o%20Raimundo%20Nonato%2C%20PI!5e0!3m2!1spt-BR!2sbr!4v1680000000006!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'salvador' %}
-            <p>Salvador, capital da Bahia, é servida pelo Aeroporto Internacional de Salvador – Deputado Luís Eduardo Magalhães e também por rodovias como a BR-324.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125919.15203527135!2d-38.56137802441811!3d-12.97160647856944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x71603861b9609a3%3A0x9181ee3509e397a5!2sSalvador%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000007!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'ilheus' %}
-            <p>Ilhéus está localizada no litoral sul da Bahia, sendo servida pelo Aeroporto Jorge Amado, com acesso por via aérea ou pela rodovia BR-101.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126544.29894652283!2d-39.06644977447302!3d-14.793505678553778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x736d0515030e5b3%3A0x7c2ab6ffdc6807cd!2sIlh%C3%A9us%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000008!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% elif cidade == 'luis_eduardo' %}
-            <p>Luís Eduardo Magalhães está no oeste baiano e pode ser acessado pela BR-020, próximo da divisa com o Tocantins. É um dos principais polos do agronegócio do Brasil.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.0164096990854!2d-45.78623288522312!3d-12.088108491431947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x76dc37c5d7de3cb%3A0x51d1a43030f0a30a!2sLu%C3%ADs%20Eduardo%20Magalh%C3%A3es%2C%20BA!5e0!3m2!1spt-BR!2sbr!4v1680000000009!5m2!1spt-BR!2sbr" class="mapa" allowfullscreen="" loading="lazy"></iframe>
-    
-        {% else %}
-            <p>Informações de como chegar nesta cidade ainda não estão disponíveis.</p>
-        {% endif %}
+    <div class="map-controls">
+        <button id="get-directions" class="map-button">
+            <i class='bx bx-current-location'></i> Traçar rota da minha localização
+        </button>
+        <button id="reset-map" class="map-button" style="display: none;">
+            <i class='bx bx-reset'></i> Voltar ao mapa original
+        </button>
+        <button id="open-external" class="map-button" style="display: none;">
+            <i class='bx bx-map'></i> Abrir no Google Maps
+        </button>
     </div>
     
+    <div id="location-status" class="location-status"></div>
+    
+    <div id="transport-options" class="transport-options" style="display: none;">
+        <div class="transport-option active" data-mode="driving">
+            <i class='bx bx-car'></i> Carro
+        </div>
+        <div class="transport-option" data-mode="walking">
+            <i class='bx bx-walk'></i> A pé
+        </div>
+        <div class="transport-option" data-mode="cycling">
+            <i class='bx bx-cycling'></i> Bicicleta
+        </div>
+    </div>
+    
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+    
+    <div id="route-info" class="route-info">
+        <h3>Informações da Rota</h3>
+        <div class="route-details">
+            <div class="route-detail">
+                <strong id="route-distance">-</strong>
+                <span>Distância</span>
+            </div>
+            <div class="route-detail">
+                <strong id="route-time">-</strong>
+                <span>Tempo estimado</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer>
@@ -78,10 +332,277 @@
     <p class="intro">O Rotas Nordestinas é o seu guia definitivo para descobrir o melhor do Nordeste do Brasil! Lançado em 2024, nosso site é feito especialmente para quem deseja explorar a rica cultura, as paisagens exuberantes e os destinos únicos que essa região oferece. De praias paradisíacas a centros históricos repletos de charme, aqui você encontra guias completos e gratuitos sobre os principais destinos nordestinos, com informações essenciais, fotos encantadoras e dicas exclusivas. Seja bem-vindo e embarque nessa jornada inesquecível!</p>
     <p id="slogan">Rotas Nordestinas – Seu Portal para o Melhor do Nordeste Brasileiro! <br>Lançado em 2024</p>
 </footer>
-
-    {% endblock %}
-    
-    {% block extra_js %}
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
 
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet Routing Machine JS -->
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+<script>
+    // Coordenadas das cidades
+    const cityCoordinates = {
+        'recife': { lat: -8.0584933, lng: -34.8848193, name: 'Recife, PE' },
+        'tamandare': { lat: -8.7599478, lng: -35.1044177, name: 'Tamandaré, PE' },
+        'olinda': { lat: -7.9996841, lng: -35.0261457, name: 'Olinda, PE' },
+        'caruaru': { lat: -8.2833330, lng: -35.9996841, name: 'Caruaru, PE' },
+        'parnaiba': { lat: -2.9040141, lng: -41.7792267, name: 'Parnaíba, PI' },
+        'teresina': { lat: -5.0892110, lng: -42.8016086, name: 'Teresina, PI' },
+        'barra_grande': { lat: -2.9045277, lng: -41.3914933, name: 'Barra Grande, PI' },
+        'sao_raimundo_nonato': { lat: -9.0121896, lng: -42.6910003, name: 'São Raimundo Nonato, PI' },
+        'salvador': { lat: -12.9716065, lng: -38.5613780, name: 'Salvador, BA' },
+        'ilheus': { lat: -14.7935057, lng: -39.0664498, name: 'Ilhéus, BA' },
+        'luis_eduardo': { lat: -12.0881085, lng: -45.7862329, name: 'Luís Eduardo Magalhães, BA' }
+    };
+    
+    // Variáveis globais
+    const currentCity = '{{ cidade }}';
+    let map;
+    let routingControl;
+    let currentTransportMode = 'driving';
+    let userLocation = null;
+    let cityMarker = null;
+    let userMarker = null;
+    
+    // Inicializar o mapa
+    function initMap() {
+        const cityCoord = cityCoordinates[currentCity] || { lat: -10.9, lng: -37.7, name: 'Nordeste' };
+        
+        // Criar o mapa
+        map = L.map('map').setView([cityCoord.lat, cityCoord.lng], 12);
+        
+        // Adicionar camada de tiles do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Adicionar marcador para a cidade
+        cityMarker = L.marker([cityCoord.lat, cityCoord.lng])
+            .addTo(map)
+            .bindPopup(`<b>${cityCoord.name}</b><br>Destino`)
+            .openPopup();
+        
+        // Configurar eventos
+        setupEventListeners();
+    }
+    
+    // Configurar event listeners
+    function setupEventListeners() {
+        document.getElementById('get-directions').addEventListener('click', getUserLocation);
+        document.getElementById('reset-map').addEventListener('click', resetMap);
+        document.getElementById('open-external').addEventListener('click', openInGoogleMaps);
+        
+        // Configurar eventos para as opções de transporte
+        const transportOptions = document.querySelectorAll('.transport-option');
+        transportOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                transportOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                currentTransportMode = this.getAttribute('data-mode');
+                
+                if (userLocation && routingControl) {
+                    updateRoute();
+                }
+            });
+        });
+    }
+    
+    // Obter localização do usuário
+    function getUserLocation() {
+        const locationStatus = document.getElementById('location-status');
+        const getDirectionsBtn = document.getElementById('get-directions');
+        
+        locationStatus.className = 'location-status loading';
+        locationStatus.textContent = 'Obtendo sua localização...';
+        getDirectionsBtn.disabled = true;
+        
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    locationStatus.className = 'location-status success';
+                    locationStatus.textContent = 'Localização obtida! Calculando rota...';
+                    
+                    // Mostrar controles
+                    document.getElementById('transport-options').style.display = 'flex';
+                    document.getElementById('reset-map').style.display = 'block';
+                    document.getElementById('open-external').style.display = 'block';
+                    
+                    // Adicionar marcador do usuário
+                    if (userMarker) {
+                        map.removeLayer(userMarker);
+                    }
+                    
+                    userMarker = L.marker([userLocation.lat, userLocation.lng], {
+                        icon: L.icon({
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                        })
+                    }).addTo(map).bindPopup('<b>Sua localização</b><br>Ponto de partida');
+                    
+                    // Calcular rota
+                    calculateRoute();
+                    
+                    getDirectionsBtn.disabled = false;
+                },
+                (error) => {
+                    locationStatus.className = 'location-status error';
+                    getDirectionsBtn.disabled = false;
+                    
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            locationStatus.textContent = 'Permissão para acessar localização negada. Clique no ícone de localização na barra de endereços e permita o acesso.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            locationStatus.textContent = 'Informações de localização não disponíveis.';
+                            break;
+                        case error.TIMEOUT:
+                            locationStatus.textContent = 'Tempo esgotado ao obter localização.';
+                            break;
+                        default:
+                            locationStatus.textContent = 'Erro desconhecido ao obter localização.';
+                            break;
+                    }
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            locationStatus.className = 'location-status error';
+            locationStatus.textContent = 'Geolocalização não é suportada pelo seu navegador.';
+            getDirectionsBtn.disabled = false;
+        }
+    }
+    
+    // Calcular rota
+    function calculateRoute() {
+        if (!userLocation) return;
+        
+        const cityCoord = cityCoordinates[currentCity];
+        
+        // Remover rota anterior se existir
+        if (routingControl) {
+            map.removeControl(routingControl);
+        }
+        
+        // Criar nova rota
+        routingControl = L.Routing.control({
+            waypoints: [
+                L.latLng(userLocation.lat, userLocation.lng),
+                L.latLng(cityCoord.lat, cityCoord.lng)
+            ],
+            routeWhileDragging: false,
+            addWaypoints: false,
+            createMarker: function() { return null; }, // Não criar marcadores automáticos
+            lineOptions: {
+                styles: [{ color: '#6FA1EC', weight: 4, opacity: 0.7 }]
+            },
+            show: false, // Não mostrar o painel de instruções por padrão
+            collapsible: true
+        }).on('routesfound', function(e) {
+            const routes = e.routes;
+            const summary = routes[0].summary;
+            
+            // Atualizar informações da rota
+            updateRouteInfo(summary);
+            
+            // Ajustar zoom para mostrar toda a rota
+            const group = new L.featureGroup([userMarker, cityMarker]);
+            map.fitBounds(group.getBounds().pad(0.1));
+            
+            // Atualizar status
+            const locationStatus = document.getElementById('location-status');
+            locationStatus.className = 'location-status success';
+            locationStatus.textContent = `Rota calculada com sucesso! Distância: ${(summary.totalDistance / 1000).toFixed(1)} km`;
+            
+        }).addTo(map);
+    }
+    
+    // Atualizar rota com novo modo de transporte
+    function updateRoute() {
+        if (routingControl && userLocation) {
+            calculateRoute();
+        }
+    }
+    
+    // Atualizar informações da rota
+    function updateRouteInfo(summary) {
+        const distance = (summary.totalDistance / 1000).toFixed(1) + ' km';
+        let time = '';
+        
+        // Converter tempo de segundos para formato mais legível
+        const totalMinutes = Math.round(summary.totalTime / 60);
+        if (totalMinutes >= 60) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            time = `${hours} h ${minutes > 0 ? minutes + ' min' : ''}`;
+        } else {
+            time = totalMinutes + ' min';
+        }
+        
+        document.getElementById('route-distance').textContent = distance;
+        document.getElementById('route-time').textContent = time;
+        document.getElementById('route-info').classList.add('show');
+    }
+    
+    // Resetar mapa
+    function resetMap() {
+        // Remover rota
+        if (routingControl) {
+            map.removeControl(routingControl);
+            routingControl = null;
+        }
+        
+        // Remover marcador do usuário
+        if (userMarker) {
+            map.removeLayer(userMarker);
+            userMarker = null;
+        }
+        
+        // Centralizar na cidade
+        const cityCoord = cityCoordinates[currentCity];
+        map.setView([cityCoord.lat, cityCoord.lng], 12);
+        
+        // Esconder controles
+        document.getElementById('reset-map').style.display = 'none';
+        document.getElementById('open-external').style.display = 'none';
+        document.getElementById('transport-options').style.display = 'none';
+        document.getElementById('route-info').classList.remove('show');
+        
+        // Limpar status
+        const locationStatus = document.getElementById('location-status');
+        locationStatus.className = 'location-status';
+        locationStatus.textContent = '';
+        
+        // Resetar variáveis
+        userLocation = null;
+    }
+    
+    // Abrir no Google Maps
+    function openInGoogleMaps() {
+        if (!userLocation) return;
+        
+        const cityCoord = cityCoordinates[currentCity];
+        const url = `https://www.google.com/maps/dir/${userLocation.lat},${userLocation.lng}/${cityCoord.lat},${cityCoord.lng}`;
+        window.open(url, '_blank');
+    }
+    
+    // Inicializar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        initMap();
+    });
+</script>
+{% endblock %}

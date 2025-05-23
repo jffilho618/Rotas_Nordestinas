@@ -6,6 +6,7 @@
     <title>{% block title %}Rotas Nordestinas{% endblock %}</title>
     {% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global/global.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -63,7 +64,16 @@
         {% block content %}{% endblock %}
     </main>
 
-    <style>.login-button, .register-button {
+    <style>
+    
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+
+    .login-button, .register-button {
         display: flex;
         align-items: center;
         justify-content: center;
