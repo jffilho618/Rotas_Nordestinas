@@ -76,15 +76,40 @@ def verificar_autenticacao():
 
 
 @app.context_processor
-def inject_back_button():
+def inject_global_vars():
     def get_back_url():
-        if request.path == '/recife':
-            return '/main'
-        elif request.path in ['/como-chegar', '/atividades', '/pontos-turisticos', '/dicas']:
-            return '/recife'
-        else:
-            return '/main'
-    return dict(get_back_url=get_back_url)
+        # Seu código existente...
+        return '/main'
+    
+    # Carregar usuário se estiver logado
+    usuario = None
+    if 'usuario_id' in session:
+        try:
+            usuario_id = session['usuario_id']
+            usuario = Usuario.query.get(usuario_id)
+            if not usuario:
+                print(f"AVISO: Usuário com ID {usuario_id} não encontrado no banco de dados, mas existe na sessão")
+                # Opcionalmente, limpar a sessão inválida
+                session.pop('usuario_id', None)
+        except Exception as e:
+            print(f"ERRO ao carregar usuário: {e}")
+            # Limpar a sessão em caso de erro
+            session.pop('usuario_id', None)
+    
+    return dict(get_back_url=get_back_url, usuario=usuario)
+
+@app.context_processor
+def inject_user():
+    """Injetar o usuário logado em todos os templates"""
+    usuario = None
+    if 'usuario_id' in session:
+        try:
+            usuario_id = session['usuario_id']
+            usuario = Usuario.query.get(usuario_id)
+        except Exception as e:
+            print(f"Erro ao carregar usuário: {e}")
+            session.pop('usuario_id', None)
+    return dict(usuario=usuario)
 
 @app.route('/cidade/<nome_cidade>', methods=['GET', 'POST'])
 def cidade(nome_cidade):
