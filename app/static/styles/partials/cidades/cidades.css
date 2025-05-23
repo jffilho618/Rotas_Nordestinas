@@ -374,6 +374,9 @@ footer {
     text-align: center;
     padding: 20px;
     margin-top: 50px;
+    width: 100%;            /* Garante que ocupe toda a largura da tela */
+    position: relative;     /* Garante posicionamento padrão */
+    box-sizing: border-box;
 
 }
 
@@ -384,13 +387,10 @@ footer .logo {
 }
 
 footer .intro {
-    padding: 0px 100px;
     text-align: center;
     color: #ffffff;
     /* font-size: 12.85px;  */
     /* font-family: Inter;  */
-    font-weight: 500;
-    margin-bottom: 20px;
 
     font-family: Arial, sans-serif; /* Fonte para o texto */
     line-height: 1.5; /* Espaçamento entre linhas */
