@@ -62,7 +62,7 @@ def cadastro():
         db.session.commit()
         
         flash('Cadastro realizado com sucesso! Faça login.', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
     
     return render_template('index.html')        
 
