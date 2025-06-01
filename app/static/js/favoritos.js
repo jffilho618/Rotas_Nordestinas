@@ -1,10 +1,22 @@
+// favoritos.js
+
+// Dados das atividades/pontos turísticos
 let atividadesData = {};
 
 // Carrega os dados do JSON no HTML
 document.addEventListener('DOMContentLoaded', function() {
-    const dataScript = document.getElementById('atividades-data');
-    if (dataScript) {
-        atividadesData = JSON.parse(dataScript.textContent);
+    // Tenta carregar dados de atividades
+    const atividadesScript = document.getElementById('atividades-data');
+    if (atividadesScript) {
+        atividadesData = JSON.parse(atividadesScript.textContent);
+    }
+    
+    // Tenta carregar dados de pontos turísticos
+    const pontosScript = document.getElementById('pontos-data');
+    if (pontosScript) {
+        const pontosData = JSON.parse(pontosScript.textContent);
+        // Combina os dados
+        atividadesData = { ...atividadesData, ...pontosData };
     }
     
     // Carrega o estado dos favoritos
@@ -39,6 +51,7 @@ async function adicionarFavorito(itemId, element) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken() // Se você estiver usando CSRF protection
             },
             body: JSON.stringify({
                 item_id: itemData.id,
@@ -70,7 +83,10 @@ async function adicionarFavorito(itemId, element) {
 async function removerFavorito(itemId, element) {
     try {
         const response = await fetch(`/api/favoritos/${itemId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': getCSRFToken() // Se você estiver usando CSRF protection
+            }
         });
         
         const result = await response.json();
@@ -111,6 +127,11 @@ async function carregarEstadoFavoritos() {
     }
 }
 
+// Função para obter CSRF token (se necessário)
+function getCSRFToken() {
+    const token = document.querySelector('meta[name="csrf-token"]');
+    return token ? token.getAttribute('content') : '';
+}
 
 // Função para mostrar toast notifications
 function showToast(message, type = 'info') {

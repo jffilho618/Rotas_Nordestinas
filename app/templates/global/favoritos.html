@@ -5,6 +5,8 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/favoritos/favoritos.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/global/global.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/partials/main/main.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Jockey+One&family=Poppins..." rel="stylesheet">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <style>
 .favoritos-container {
@@ -319,4 +321,7 @@ document.querySelectorAll('.btn-remover').forEach(btn => {
     });
 });
 </script>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
