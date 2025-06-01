@@ -100,3 +100,22 @@ class FotoSugestao(db.Model):
     
     def __repr__(self):
         return f'<FotoSugestao {self.id} da Sugestao {self.sugestao_id}>'
+    
+class Favorito(db.Model):
+    __tablename__ = 'favoritos'
+    
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    item_id = db.Column(db.String(50), nullable=False)  # ID único do item (ex: 'atividade1', 'ponto_turistico1')
+    tipo = db.Column(db.String(20), nullable=False)  # 'atividade' ou 'ponto_turistico'
+    cidade = db.Column(db.String(100), nullable=False)  # Cidade onde está localizado
+    nome = db.Column(db.String(200), nullable=False)  # Nome do item
+    descricao = db.Column(db.Text, nullable=False)  # Descrição do item
+    imagem = db.Column(db.String(255), nullable=False)  # Caminho da imagem
+    data_adicionado = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Constraint para evitar duplicatas
+    __table_args__ = (db.UniqueConstraint('usuario_id', 'item_id', name='unique_user_item'),)
+    
+    def __repr__(self):
+        return f'<Favorito {self.nome} do Usuario {self.usuario_id}>'
