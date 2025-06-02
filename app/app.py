@@ -69,12 +69,31 @@ def cadastro():
 
 @app.before_request
 def verificar_autenticacao():
-    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal', 'como_chegar', 'atividades', 'pontos_turisticos', 'dicas', 'cidade', 'recife', 'global_template', 'render_dynamic_template', 'main']    
+    rotas_liberadas = [
+        'home', 'login', 'cadastro', 'static', 'load_modal',
+        'como_chegar', 'atividades', 'pontos_turisticos',
+        'dicas', 'cidade', 'recife', 'global_template',
+        'render_dynamic_template', 'main', 'banido'
+    ]
 
-    if request.endpoint not in rotas_liberadas and 'usuario_id' not in session:
-        flash('Você precisa estar logado para acessar esta página.', 'warning')
-        return redirect(url_for('home'))
+    endpoint = request.endpoint
 
+    if endpoint not in rotas_liberadas:
+        usuario_id = session.get('usuario_id')
+
+        if not usuario_id:
+            flash('Você precisa estar logado para acessar esta página.', 'warning')
+            return redirect(url_for('home'))
+
+        # Verifica se o usuário está banido
+        usuario = db.session.get(Usuario, usuario_id)
+        if usuario and usuario.banido:
+            flash('Sua conta está banida. Acesso negado.', 'danger')
+            return redirect(url_for('banido')) 
+
+@app.route('/banido')
+def banido():
+    return render_template('global/banido.html')
 
 @app.context_processor
 def inject_global_vars():

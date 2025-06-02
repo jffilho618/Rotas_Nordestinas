@@ -23,8 +23,7 @@ function finalizarCadastro() {
     })
     .then(response => {
         if (response.ok) {
-            alert('Cadastro realizado com sucesso!');
-            window.location.href = '/login';
+            // talvez alguma resposta pode ser posta aqui
         } else {
             alert('Erro no cadastro.');
         }
