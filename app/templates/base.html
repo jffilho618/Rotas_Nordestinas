@@ -38,7 +38,7 @@
                     <a href="{{ url_for('sugerir_rotas') }}" class="option"><i class="bx bx-map"></i><span>Sugerir Rota</span></a>
                 </div>
                 <div class="bottom-buttons">
-                    <button class="support-button"><i class="bx bx-support"></i>Suporte</button>
+                      <a href="https://wa.me/5511912345678?text=Olá,%20preciso%20de%20ajuda!" class="support-button" target="_blank"><i class="bx bx-support"></i>Suporte</a>
                     <a href="{{url_for('logout')}}" class="close-button" id="closeButton"><i class="bx bx-log-out"></i>Sair</a>
                 </div>
                 {% else %}
@@ -107,7 +107,37 @@
     .login-button i, .register-button i {
         margin-right: 8px;
         font-size: 18px;
-    }</style>
+    }
+    
+    .close-x-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.close-x-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.close-x-button:active {
+    transform: rotate(90deg) scale(0.95);
+}
+    </style>
 
     {% block extra_js %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
