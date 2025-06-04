@@ -306,6 +306,9 @@
         <div class="transport-option" data-mode="cycling">
             <i class='bx bx-cycling'></i> Bicicleta
         </div>
+        <div class="transport-option" data-mode="bus">
+            <i class='bx bx-bus'></i> Ônibus
+        </div>
     </div>
     
     <div id="map-container">
@@ -357,6 +360,14 @@
         'luis_eduardo': { lat: -12.0881085, lng: -45.7862329, name: 'Luís Eduardo Magalhães, BA' }
     };
     
+    // Velocidades médias para cada modalidade (km/h)
+    const transportSpeeds = {
+        'driving': 60,    // Carro - velocidade média considerando trânsito urbano e rodovias
+        'walking': 5,     // A pé - velocidade média de caminhada
+        'cycling': 20,    // Bicicleta - velocidade média urbana
+        'bus': 45         // Ônibus - velocidade média considerando paradas e trânsito
+    };
+    
     // Variáveis globais
     const currentCity = '{{ cidade }}';
     let map;
@@ -365,6 +376,7 @@
     let userLocation = null;
     let cityMarker = null;
     let userMarker = null;
+    let currentRouteDistance = 0; // Armazenar distância da rota atual
     
     // Inicializar o mapa
     function initMap() {
@@ -402,8 +414,9 @@
                 this.classList.add('active');
                 currentTransportMode = this.getAttribute('data-mode');
                 
-                if (userLocation && routingControl) {
-                    updateRoute();
+                // Se já temos uma rota calculada, atualizar apenas o tempo
+                if (userLocation && currentRouteDistance > 0) {
+                    updateRouteInfoForCurrentMode();
                 }
             });
         });
@@ -516,8 +529,11 @@
             const routes = e.routes;
             const summary = routes[0].summary;
             
-            // Atualizar informações da rota
-            updateRouteInfo(summary);
+            // Armazenar distância da rota
+            currentRouteDistance = summary.totalDistance;
+            
+            // Atualizar informações da rota com base no modo de transporte atual
+            updateRouteInfoForCurrentMode();
             
             // Ajustar zoom para mostrar toda a rota
             const group = new L.featureGroup([userMarker, cityMarker]);
@@ -526,31 +542,54 @@
             // Atualizar status
             const locationStatus = document.getElementById('location-status');
             locationStatus.className = 'location-status success';
-            locationStatus.textContent = `Rota calculada com sucesso! Distância: ${(summary.totalDistance / 1000).toFixed(1)} km`;
+            locationStatus.textContent = `Rota calculada com sucesso! Distância: ${(currentRouteDistance / 1000).toFixed(1)} km`;
             
         }).addTo(map);
     }
     
-    // Atualizar rota com novo modo de transporte
-    function updateRoute() {
-        if (routingControl && userLocation) {
-            calculateRoute();
-        }
-    }
-    
-    // Atualizar informações da rota
-    function updateRouteInfo(summary) {
-        const distance = (summary.totalDistance / 1000).toFixed(1) + ' km';
+    // Atualizar informações da rota para o modo de transporte atual
+    function updateRouteInfoForCurrentMode() {
+        if (currentRouteDistance === 0) return;
+        
+        const distanceKm = currentRouteDistance / 1000;
+        const distance = distanceKm.toFixed(1) + ' km';
+        
+        // Calcular tempo baseado na velocidade do modo de transporte
+        const speed = transportSpeeds[currentTransportMode];
+        const timeHours = distanceKm / speed;
         let time = '';
         
-        // Converter tempo de segundos para formato mais legível
-        const totalMinutes = Math.round(summary.totalTime / 60);
-        if (totalMinutes >= 60) {
+        // Converter tempo para formato mais legível
+        const totalMinutes = Math.round(timeHours * 60);
+        
+        if (currentTransportMode === 'walking' && totalMinutes >= 60) {
+            // Para caminhada, mostrar em horas e minutos mesmo que seja muito tempo
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            time = `${hours} h ${minutes > 0 ? minutes + ' min' : ''}`;
+        } else if (currentTransportMode === 'cycling' && totalMinutes >= 60) {
+            // Para bicicleta, também mostrar em horas e minutos
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            time = `${hours} h ${minutes > 0 ? minutes + ' min' : ''}`;
+        } else if (currentTransportMode === 'bus' && totalMinutes >= 60) {
+            // Para ônibus, mostrar em horas e minutos
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            time = `${hours} h ${minutes > 0 ? minutes + ' min' : ''}`;
+        } else if (currentTransportMode === 'driving' && totalMinutes >= 60) {
+            // Para carro, mostrar em horas e minutos
             const hours = Math.floor(totalMinutes / 60);
             const minutes = totalMinutes % 60;
             time = `${hours} h ${minutes > 0 ? minutes + ' min' : ''}`;
         } else {
+            // Se for menos de 1 hora, mostrar apenas em minutos
             time = totalMinutes + ' min';
+        }
+        
+        // Adicionar informação adicional para distâncias muito longas a pé
+        if (currentTransportMode === 'walking' && totalMinutes > 480) { // Mais de 8 horas
+            time += ' (vários dias)';
         }
         
         document.getElementById('route-distance').textContent = distance;
@@ -589,6 +628,7 @@
         
         // Resetar variáveis
         userLocation = null;
+        currentRouteDistance = 0;
     }
     
     // Abrir no Google Maps
@@ -596,7 +636,18 @@
         if (!userLocation) return;
         
         const cityCoord = cityCoordinates[currentCity];
-        const url = `https://www.google.com/maps/dir/${userLocation.lat},${userLocation.lng}/${cityCoord.lat},${cityCoord.lng}`;
+        
+        // Determinar o modo de transporte para o Google Maps
+        let travelMode = 'driving';
+        if (currentTransportMode === 'walking') {
+            travelMode = 'walking';
+        } else if (currentTransportMode === 'cycling') {
+            travelMode = 'bicycling';
+        } else if (currentTransportMode === 'bus') {
+            travelMode = 'transit'; // Google Maps usa 'transit' para transporte público
+        }
+        
+        const url = `https://www.google.com/maps/dir/${userLocation.lat},${userLocation.lng}/${cityCoord.lat},${cityCoord.lng}/@${cityCoord.lat},${cityCoord.lng},10z/data=!3m1!4b1!4m2!4m1!3e${travelMode === 'driving' ? '0' : travelMode === 'walking' ? '2' : travelMode === 'bicycling' ? '1' : '3'}`;
         window.open(url, '_blank');
     }
     

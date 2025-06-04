@@ -1,9 +1,10 @@
 from datetime import datetime
 import os
+from sqlite3 import IntegrityError
 from werkzeug.utils import secure_filename
 from flask import session
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
-from models import db, Usuario, Feedback, Denuncia, Sugestao, PontoTuristico, FotoSugestao
+from models import db, Usuario, Feedback, Denuncia, Sugestao, PontoTuristico, FotoSugestao, Favorito
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -68,12 +69,31 @@ def cadastro():
 
 @app.before_request
 def verificar_autenticacao():
-    rotas_liberadas = ['home', 'login', 'cadastro', 'static', 'load_modal', 'como_chegar', 'atividades', 'pontos_turisticos', 'dicas', 'cidade', 'recife', 'global_template', 'render_dynamic_template', 'main']    
+    rotas_liberadas = [
+        'home', 'login', 'cadastro', 'static', 'load_modal',
+        'como_chegar', 'atividades', 'pontos_turisticos',
+        'dicas', 'cidade', 'recife', 'global_template',
+        'render_dynamic_template', 'main', 'banido'
+    ]
 
-    if request.endpoint not in rotas_liberadas and 'usuario_id' not in session:
-        flash('Você precisa estar logado para acessar esta página.', 'warning')
-        return redirect(url_for('home'))
+    endpoint = request.endpoint
 
+    if endpoint not in rotas_liberadas:
+        usuario_id = session.get('usuario_id')
+
+        if not usuario_id:
+            flash('Você precisa estar logado para acessar esta página.', 'warning')
+            return redirect(url_for('home'))
+
+        # Verifica se o usuário está banido
+        usuario = db.session.get(Usuario, usuario_id)
+        if usuario and usuario.banido:
+            flash('Sua conta está banida. Acesso negado.', 'danger')
+            return redirect(url_for('banido')) 
+
+@app.route('/banido')
+def banido():
+    return render_template('global/banido.html')
 
 @app.context_processor
 def inject_global_vars():
@@ -173,13 +193,6 @@ def deletar_feedback(feedback_id):
     flash('Feedback excluído com sucesso!', 'success')
 
     return redirect(url_for('cidade', nome_cidade=cidade, estado=estado))
-
-@app.route('/favoritos')
-def favoritos():
-    usuario = None
-    if 'usuario_id' in session:
-        usuario = Usuario.query.get(session['usuario_id'])
-    return render_template('global/favoritos.html', usuario=usuario)
 
 @app.route('/perfil')
 def perfil():
@@ -533,6 +546,177 @@ def atualizar_perfil():
     db.session.commit()
 
     return redirect(url_for('perfil'))
+
+@app.route('/api/favoritos', methods=['GET'])
+def get_favoritos():
+    """Retorna todos os favoritos do usuário atual"""
+    try:
+        usuario_id = session['usuario_id']
+        favoritos = Favorito.query.filter_by(usuario_id=usuario_id).all()
+        favoritos_data = []
+        
+        for favorito in favoritos:
+            favoritos_data.append({
+                'id': favorito.id,
+                'item_id': favorito.item_id,
+                'tipo': favorito.tipo,
+                'cidade': favorito.cidade,
+                'nome': favorito.nome,
+                'descricao': favorito.descricao,
+                'imagem': favorito.imagem,
+                'data_adicionado': favorito.data_adicionado.isoformat()
+            })
+        
+        return jsonify(favoritos_data), 200
+    
+    except Exception as e:
+        return jsonify({'error': 'Erro interno do servidor'}), 500
+
+@app.route('/api/favoritos', methods=['POST'])
+def adicionar_favorito():
+    """Adiciona um item aos favoritos"""
+    try:
+        data = request.get_json()
+        usuario_id = session['usuario_id']
+        
+        # Validação dos dados obrigatórios
+        required_fields = ['item_id', 'nome', 'descricao', 'imagem', 'tipo', 'cidade']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({'error': f'Campo {field} é obrigatório'}), 400
+        
+        # Verifica se já existe
+        favorito_existente = Favorito.query.filter_by(
+            usuario_id=usuario_id,
+            item_id=data['item_id']
+        ).first()
+        
+        if favorito_existente:
+            return jsonify({'error': 'Item já está nos favoritos'}), 409
+        
+        # Cria novo favorito
+        novo_favorito = Favorito(
+            usuario_id=usuario_id,
+            item_id=data['item_id'],
+            tipo=data['tipo'],
+            cidade=data['cidade'],
+            nome=data['nome'],
+            descricao=data['descricao'],
+            imagem=data['imagem']
+        )
+        
+        db.session.add(novo_favorito)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Favorito adicionado com sucesso',
+            'favorito_id': novo_favorito.id
+        }), 201
+    
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'error': 'Item já está nos favoritos'}), 409
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Erro interno do servidor'}), 500
+
+@app.route('/api/favoritos/<item_id>', methods=['DELETE'])
+def remover_favorito(item_id):
+    """Remove um item dos favoritos"""
+    try:
+        usuario_id = session['usuario_id']
+        favorito = Favorito.query.filter_by(
+            usuario_id=usuario_id,
+            item_id=item_id
+        ).first()
+        
+        if not favorito:
+            return jsonify({'error': 'Favorito não encontrado'}), 404
+        
+        db.session.delete(favorito)
+        db.session.commit()
+        
+        return jsonify({'message': 'Favorito removido com sucesso'}), 200
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Erro interno do servidor'}), 500
+
+# Rotas para páginas HTML
+
+@app.route('/favoritos')
+def favoritos():
+    try:
+        usuario_id = session.get('usuario_id')
+        if not usuario_id:
+            return redirect(url_for('login'))
+
+        favoritos = Favorito.query.filter_by(usuario_id=usuario_id)\
+                                  .order_by(Favorito.data_adicionado.desc()).all()
+
+        favoritos_por_cidade = {}
+        for favorito in favoritos:
+            cidade = favorito.cidade.title()
+            if cidade not in favoritos_por_cidade:
+                favoritos_por_cidade[cidade] = {
+                    'atividades': [],
+                    'pontos_turisticos': []
+                }
+
+            if favorito.tipo == 'atividade':
+                favoritos_por_cidade[cidade]['atividades'].append(favorito)
+            else:
+                favoritos_por_cidade[cidade]['pontos_turisticos'].append(favorito)
+
+        return render_template(
+            'global/favoritos.html',
+            favoritos_por_cidade=favoritos_por_cidade,
+            total_favoritos=len(favoritos)
+        )
+
+    except Exception as e:
+        return render_template(
+            'global/favoritos.html',
+            favoritos_por_cidade={},
+            total_favoritos=0,
+            error='Erro ao carregar favoritos'
+        )
+
+@app.route('/favoritos/remover/<int:favorito_id>')
+def remover_favorito_web(favorito_id):
+    """Remove favorito via interface web"""
+    try:
+        usuario_id = session['usuario_id']
+        favorito = Favorito.query.filter_by(
+            id=favorito_id,
+            usuario_id=usuario_id
+        ).first()
+        
+        if favorito:
+            db.session.delete(favorito)
+            db.session.commit()
+        
+        return redirect(url_for('favoritos'))
+    
+    except Exception as e:
+        return redirect(url_for('favoritos'))
+
+# Função helper para verificar se um item é favorito
+def is_favorito(usuario_id, item_id):
+    """Verifica se um item é favorito do usuário"""
+    return Favorito.query.filter_by(
+        usuario_id=usuario_id,
+        item_id=item_id
+    ).first() is not None
+
+# Template filter para usar no Jinja2
+@app.template_filter('is_favorito')
+def is_favorito_filter(item_id):
+    usuario_id = session.get('usuario_id')
+    if not usuario_id:
+        return False
+    return is_favorito(usuario_id, item_id)
 
 
 if __name__ == '__main__':
