@@ -56,7 +56,20 @@
                     <p>{{ f.data.strftime('%d/%m/%Y') }}</p>
                 </div>
             </div>
-            <img class="like" src="{{ url_for('static', filename='images/confirm/like.png') }}">
+                        <div class="actions">
+                <form method="POST" action="{{ url_for('denunciar_feedback', feedback_id=f.id) }}?estado={{ estado }}&cidade={{ cidade }}" class="report-form">
+                    <button type="submit" class="report-button" onclick="return confirm('Tem certeza que deseja denunciar este feedback?')">
+                        <img class="like" src="{{ url_for('static', filename='images/icons/danger.png') }}" title="Denunciar">
+                    </button>
+                </form>
+            
+                {% if session.get('usuario_role') == 'admin' %}
+                <form method="POST" action="{{ url_for('deletar_feedback', feedback_id=f.id) }}?estado={{ estado }}" class="delete-form">
+                    <button type="submit" class="delete-button" onclick="return confirm('Tem certeza que deseja excluir este feedback?')">Excluir</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
         </div>
         <div class="part2-2">
             <p><strong>{{ f.titulo }}</strong><br>{{ f.descricao }}</p>
